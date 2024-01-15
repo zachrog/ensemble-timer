@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
-import * as path from 'path';
-import * as isDev from 'electron-is-dev';
+import { join } from 'path';
+import isDev from 'electron-is-dev';
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -13,8 +13,8 @@ function createWindow() {
 
   win.loadURL(
     isDev
-      ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
+      ? 'http://localhost:5173'
+      : `file://${join(__dirname, '../build/index.html')}`
   );
 
   win.webContents.openDevTools();
