@@ -1,63 +1,32 @@
 {
-  "name": "ensemble-timer",
-  "version": "0.1.0",
+  "name": "electron-vite-project",
   "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "electron-devtools-installer": "^3.2.0",
-    "electron-reload": "^2.0.0-alpha.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/electron-devtools-installer": "^2.2.2",
-    "@types/node": "^18.15.12",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
-    "@vitejs/plugin-react": "^4.2.1",
-    "concurrently": "^8.0.1",
-    "cross-env": "^7.0.3",
-    "electron": "^24.1.2",
-    "electron-builder": "^24.0.0",
-    "electron-is-dev": "^2.0.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-react": "^7.33.2",
-    "prettier": "3.2.2",
-    "typescript": "^5.0.4",
-    "vite": "^5.0.11",
-    "wait-on": "^7.0.1"
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "@vitejs/plugin-react": "^4.0.4",
+    "eslint": "^8.48.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "electron": "^26.1.0",
+    "electron-builder": "^24.6.4",
+    "vite-plugin-electron": "^0.14.0",
+    "vite-plugin-electron-renderer": "^0.14.5"
   },
-  "scripts": {
-    "start": "vite serve ./ui --config ./ui/vite.config.ts",
-    "build": "vite build ./ui --config ./ui/vite.config.ts",
-    "eject": "react-scripts eject",
-    "lint": "eslint 'ui/src/**/*.{ts,tsx}' 'electron/**/*.ts'",
-    "lint:fix": "eslint --fix 'ui/src/**/*.{ts,tsx}' 'electron/**/*.ts'",
-    "test": "react-scripts test",
-    "electron:dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://127.0.0.1:5173 && tsc -p electron -w\" \"wait-on http://127.0.0.1:5173 && tsc -p electron && electron .\"",
-    "electron:build": "npm run build && tsc -p electron && electron-builder",
-    "electron:dist": "npm run build && tsc -p electron && electron-builder --mac --dir"
-  },
-  "build": {
-    "productName": "productName",
-    "mac": {
-      "target": {
-        "target": "default",
-        "arch": [
-          "universal"
-        ]
-      },
-      "category": "public.app-category.productivity"
-    },
-    "extends": null,
-    "files": [
-      "build/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
-  "type": "module"
+  "main": "dist-electron/main.js"
 }
