@@ -34,8 +34,8 @@
     "start": "vite serve ./ui --config ./ui/vite.config.ts",
     "build": "vite build ./ui --config ./ui/vite.config.ts",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{ts,tsx}' 'electron/**/*.ts'",
-    "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}' 'electron/**/*.ts'",
+    "lint": "eslint 'ui/src/**/*.{ts,tsx}' 'electron/**/*.ts'",
+    "lint:fix": "eslint --fix 'ui/src/**/*.{ts,tsx}' 'electron/**/*.ts'",
     "test": "react-scripts test",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p electron && electron .\"",
     "electron:build": "npm run build && tsc -p electron && electron-builder",
@@ -60,23 +60,5 @@
       "buildResources": "assets"
     }
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "type": "module",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "type": "module"
 }
