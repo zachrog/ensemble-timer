@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import { ipcMain } from "electron";
 import path from "node:path";
 
 // The built directory structure
@@ -41,6 +42,9 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(process.env.DIST, "index.html"));
   }
+  ipcMain.on('whatever-channel', (metadata, message) => {
+    console.log({message})
+  } )
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

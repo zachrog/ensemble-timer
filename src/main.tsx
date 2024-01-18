@@ -16,3 +16,7 @@ postMessage({ payload: 'removeLoading' }, '*')
 window.ipcRenderer.on('main-process-message', (_event, message) => {
   console.log(message)
 })
+
+setInterval(() => {
+  window.ipcRenderer.send('whatever-channel', 'yo it is me')
+}, 2000)
