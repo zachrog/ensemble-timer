@@ -9,29 +9,29 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.6.0",
-    "@vitejs/plugin-react": "^4.0.4",
-    "autoprefixer": "^10.4.16",
-    "electron": "^26.1.0",
-    "electron-builder": "^24.6.4",
-    "eslint": "^8.48.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "postcss": "^8.4.33",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.7",
+    "@typescript-eslint/eslint-plugin": "6.6.0",
+    "@typescript-eslint/parser": "6.6.0",
+    "@vitejs/plugin-react": "4.0.4",
+    "autoprefixer": "10.4.16",
+    "electron": "26.1.0",
+    "electron-builder": "24.6.4",
+    "eslint": "8.48.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-refresh": "0.4.3",
+    "postcss": "8.4.33",
     "prettier": "3.2.4",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.2.2",
-    "vite": "^4.4.9",
-    "vite-plugin-electron": "^0.14.0",
-    "vite-plugin-electron-renderer": "^0.14.5"
+    "tailwindcss": "3.4.1",
+    "typescript": "5.2.2",
+    "vite": "4.4.9",
+    "vite-plugin-electron": "0.14.0",
+    "vite-plugin-electron-renderer": "0.14.5"
   },
   "main": "dist-electron/main.js"
 }
