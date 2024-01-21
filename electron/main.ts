@@ -23,7 +23,7 @@ const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
-    transparent: true,
+    // transparent: true,
     // fullscreen: true,
     frame: false,
     webPreferences: {
@@ -43,7 +43,10 @@ function createWindow() {
     win.loadFile(path.join(process.env.DIST, "index.html"));
   }
   ipcMain.on('whatever-channel', (metadata, message) => {
-    console.log({message})
+    const currentOpacity = win?.getOpacity()
+    const newOpacity = currentOpacity === 1 ? 0.5 : 1;
+    console.log(`Setting opacity to ${newOpacity}`)
+    win?.setOpacity(newOpacity)
   } )
 }
 
