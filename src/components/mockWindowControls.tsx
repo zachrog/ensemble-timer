@@ -1,19 +1,17 @@
 export function WindowControls() {
   return (
     <header>
-      <div className="bg-zinc-800 h-10 draggable">
-        <div className="flex align-middle">
-          <div className="flex-grow"></div>
-          <button className="hover:bg-gray-600 text-gray-300 no-drag">
-            <MinimizeIcon />
-          </button>
-          <button className="hover:bg-gray-600 text-gray-300 no-drag">
-            <WindowIcon />
-          </button>
-          <button className="hover:bg-red-600 text-gray-300 no-drag">
-            <CloseIcon />
-          </button>
-        </div>
+      <div className="bg-zinc-900 h-10 draggable flex align-middle">
+        <div className="flex-grow"></div>
+        <button className="hover:bg-zinc-700 text-zinc-300 no-drag">
+          <MinimizeIcon />
+        </button>
+        <button className="hover:bg-zinc-700 text-zinc-300 no-drag">
+          <WindowIcon />
+        </button>
+        <button className="hover:bg-red-600 text-zinc-300 no-drag">
+          <CloseIcon />
+        </button>
       </div>
     </header>
   );
