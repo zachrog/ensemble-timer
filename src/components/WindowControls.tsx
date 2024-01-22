@@ -5,6 +5,10 @@ type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
 
 export function WindowControls() {
   const [windowState, setWindowState] = useState('default' as WindowState);
+  const hideWindowControls = false;
+  if (hideWindowControls) {
+    return;
+  }
   return (
     <header>
       <div className="bg-zinc-900 h-10 draggable flex align-middle">
