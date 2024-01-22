@@ -9,3 +9,4 @@ Handle multiple screens
 - Duplicate the window for every screen the user has.
   + Allows all screens to be taken over and shows the user the state no matter where they look.
   - Because state cannot be shared in React, the main process would have to maintain state and pass that state to all child windows. This could get pretty complex depending on the user interaction and what is contained in state.
+- Only one window but create a custom title bar that I can show and hide depending on state.
