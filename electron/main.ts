@@ -25,9 +25,10 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     // transparent: true,
     // fullscreen: true,
-
-    // frame: false, // controls whether the window has minimize, maximaize, close. Do not want this when showing semi-transparent timer
+    frame: false, // controls whether the window has minimize, maximaize, close. Do not want this when showing semi-transparent timer
+    autoHideMenuBar: true,
     webPreferences: {
+      devTools: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -45,20 +46,14 @@ function createWindow() {
   }
   createCommunicationBridge({ window: win });
 
-  // let x = 0
-  // let y = 0
-  // setInterval(() => {
-  //   // x+=10;
-  //   // y+=10;
-  //   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
-  //   // Calculate the position for the bottom right-hand corner
-  //   const x = width - win?.getSize()[0];
-  //   const y = height - win?.getSize()[1];
-
-  //   // Move the window to the calculated position
-  //   win?.setPosition(x, y);
-  // }, 3000);
+  let idk = true;
+  setInterval(() => {
+    // // Calculate the position for the bottom right-hand corner
+    // const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    // const x = width - win?.getSize()[0];
+    // const y = height - win?.getSize()[1];
+    // win?.setPosition(x, y);
+  }, 3000);
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
