@@ -1,15 +1,44 @@
+import { useState } from 'react';
+import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
+
+type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
+
 export function WindowControls() {
+  const [windowState, setWindowState] = useState('default' as WindowState);
   return (
     <header>
       <div className="bg-zinc-900 h-10 draggable flex align-middle">
         <div className="flex-grow"></div>
-        <button className="hover:bg-zinc-700 text-zinc-300 no-drag">
+        <button
+          className="hover:bg-zinc-700 text-zinc-300 no-drag"
+          onClick={() => {
+            setWindowState('minimized');
+            RendererWindowBrowser.minimize();
+          }}
+        >
           <MinimizeIcon />
         </button>
-        <button className="hover:bg-zinc-700 text-zinc-300 no-drag">
+        <button
+          className="hover:bg-zinc-700 text-zinc-300 no-drag"
+          onClick={() => {
+            if (windowState === 'default') {
+              setWindowState('maximized');
+              RendererWindowBrowser.maximize();
+            } else {
+              setWindowState('default');
+              RendererWindowBrowser.restore();
+            }
+          }}
+        >
           <WindowIcon />
         </button>
-        <button className="hover:bg-red-600 text-zinc-300 no-drag">
+        <button
+          className="hover:bg-red-600 text-zinc-300 no-drag"
+          onClick={() => {
+            setWindowState('closed');
+            RendererWindowBrowser.close();
+          }}
+        >
           <CloseIcon />
         </button>
       </div>

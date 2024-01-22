@@ -45,15 +45,7 @@ function createWindow() {
     win.loadFile(path.join(process.env.DIST, 'index.html'));
   }
   createCommunicationBridge({ window: win });
-
-  let idk = true;
-  setInterval(() => {
-    // // Calculate the position for the bottom right-hand corner
-    // const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-    // const x = width - win?.getSize()[0];
-    // const y = height - win?.getSize()[1];
-    // win?.setPosition(x, y);
-  }, 3000);
+  win.webContents.openDevTools();
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -77,3 +69,10 @@ app.on('activate', () => {
 app.whenReady().then(() => {
   createWindow();
 });
+
+function moveWindowToBottomRight({ window }: { window: BrowserWindow }) {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const x = width - window.getSize()[0];
+  const y = height - window.getSize()[1];
+  win?.setPosition(x, y);
+}

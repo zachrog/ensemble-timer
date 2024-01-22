@@ -1,13 +1,16 @@
 import { BrowserWindow, ipcMain } from 'electron';
-import { CommsAction, mainCommChannelName } from './constants';
-import { rendererHandler } from './rendererHandler';
+import { mainCommChannelName } from './constants';
 
 export function createCommunicationBridge({
   window,
 }: {
   window: BrowserWindow;
 }) {
-  ipcMain.on(mainCommChannelName, async (metadata, message: CommsAction) => {
-    await rendererHandler({ message, window });
-  });
+  ipcMain.on(
+    mainCommChannelName,
+    async (metadata, message: { functionName: string; arguments: any[] }) => {
+      console.log('Main Channel received message: ', message);
+      await (window as any)[message.functionName](...message.arguments);
+    },
+  );
 }
