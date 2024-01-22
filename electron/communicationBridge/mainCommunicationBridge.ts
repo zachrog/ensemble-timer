@@ -1,9 +1,13 @@
-import { BrowserWindow, ipcMain } from "electron";
-import { CommsAction, mainCommChannelName } from "./constants";
+import { BrowserWindow, ipcMain } from 'electron';
+import { CommsAction, mainCommChannelName } from './constants';
+import { rendererHandler } from './rendererHandler';
 
-export function createCommunicationBridge(win: BrowserWindow) {
-  ipcMain.on(mainCommChannelName, (metadata, message: CommsAction) => {
-    console.log(`Setting opacity to ${message.payload}`);
-    win.setOpacity(message.payload);
+export function createCommunicationBridge({
+  window,
+}: {
+  window: BrowserWindow;
+}) {
+  ipcMain.on(mainCommChannelName, async (metadata, message: CommsAction) => {
+    await rendererHandler({ message, window });
   });
 }
