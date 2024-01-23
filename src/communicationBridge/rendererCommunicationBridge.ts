@@ -1,5 +1,9 @@
-import { CommsAction, mainCommChannelName } from "../../electron/communicationBridge/constants";
-
-export function sendMessage(action: CommsAction) {
-  window.ipcRenderer.send(mainCommChannelName, action);
+export function sendMessage({
+  channel,
+  message,
+}: {
+  channel: string;
+  message: any;
+}) {
+  window.ipcRenderer.send(channel, message);
 }

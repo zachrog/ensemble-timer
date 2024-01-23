@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@types/react": "18.2.48",
@@ -33,5 +34,5 @@
     "vite-plugin-electron": "0.15.6",
     "vite-plugin-electron-renderer": "0.14.5"
   },
-  "main": "dist-electron/main.js" 
+  "main": "dist-electron/main.js"
 }

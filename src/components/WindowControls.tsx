@@ -5,7 +5,7 @@ type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
 
 export function WindowControls() {
   const [windowState, setWindowState] = useState('default' as WindowState);
-  const hideWindowControls = false;
+  const hideWindowControls = true;
   if (hideWindowControls) {
     return;
   }
@@ -25,12 +25,12 @@ export function WindowControls() {
         <button
           className="hover:bg-zinc-700 text-zinc-300 no-drag"
           onClick={() => {
-            if (windowState === 'default') {
-              setWindowState('maximized');
-              RendererWindowBrowser.maximize();
-            } else {
+            if (windowState === 'maximized') {
               setWindowState('default');
               RendererWindowBrowser.restore();
+            } else {
+              setWindowState('maximized');
+              RendererWindowBrowser.maximize();
             }
           }}
         >

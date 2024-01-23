@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import { mainCommChannelName } from './constants';
 
-export function createCommunicationBridge({
+export function createWindowBrowserReceiver({
   window,
 }: {
   window: BrowserWindow;
@@ -9,7 +9,7 @@ export function createCommunicationBridge({
   ipcMain.on(
     mainCommChannelName,
     async (metadata, message: { functionName: string; arguments: any[] }) => {
-      console.log('Main Channel received message: ', message);
+      console.log(`${mainCommChannelName} received message: ${message}`);
       await (window as any)[message.functionName](...message.arguments);
     },
   );

@@ -1,6 +1,7 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
-import { createCommunicationBridge } from './communicationBridge/mainCommunicationBridge';
+import { createWindowBrowserReceiver } from './communicationBridge/mainCommunicationBridge';
+import { createCustomCommandReceiver } from './communicationBridge/customCommandReceiver';
 
 // The built directory structure
 //
@@ -44,7 +45,8 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(process.env.DIST, 'index.html'));
   }
-  createCommunicationBridge({ window: win });
+  createWindowBrowserReceiver({ window: win });
+  createCustomCommandReceiver({ window: win });
   win.webContents.openDevTools();
 }
 
@@ -69,10 +71,3 @@ app.on('activate', () => {
 app.whenReady().then(() => {
   createWindow();
 });
-
-function moveWindowToBottomRight({ window }: { window: BrowserWindow }) {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const x = width - window.getSize()[0];
-  const y = height - window.getSize()[1];
-  win?.setPosition(x, y);
-}

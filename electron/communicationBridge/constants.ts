@@ -6,3 +6,5 @@ export type CommsAction<T = any> = {
 };
 
 export const mainCommChannelName = 'communication-bridge';
+
+export const customCommandChannelName = 'custom-command';
