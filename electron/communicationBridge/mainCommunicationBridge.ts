@@ -9,7 +9,7 @@ export function createWindowBrowserReceiver({
   ipcMain.on(
     mainCommChannelName,
     async (metadata, message: { functionName: string; arguments: any[] }) => {
-      console.log(`${mainCommChannelName} received message: ${message}`);
+      console.log(`${mainCommChannelName} received message: `, message);
       await (window as any)[message.functionName](...message.arguments);
     },
   );
