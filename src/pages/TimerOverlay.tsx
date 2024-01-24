@@ -2,8 +2,17 @@ import { useEffect } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import { sendMessage } from '../communicationBridge/rendererCommunicationBridge';
 import { customCommandChannelName } from '../../electron/communicationBridge/constants';
+import { useAppStore } from '../state.ts/defaultState';
 
 export function TimerOverlay() {
+  const { setTimeStarted, setTimeRemaining, timeRemaining } = useAppStore(
+    (state) => ({
+      setTimeStarted: state.setTimeStarted,
+      setTimeRemaining: state.setTimeRemaining,
+      timeRemaining: state.timeRemaining,
+    }),
+  );
+
   useEffect(() => {
     RendererWindowBrowser.setOpacity(0.5);
     RendererWindowBrowser.setSize(240, 240);
@@ -13,12 +22,23 @@ export function TimerOverlay() {
       channel: customCommandChannelName,
       message: 'move-to-bottom-right',
     });
-  });
+
+    setTimeStarted();
+    const interval = setInterval(() => {
+      setTimeRemaining();
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+  const minutesRemaining = Math.floor(timeRemaining / 60);
+  const secondsRemaining = timeRemaining % 60;
+  const secondsPadded = `${secondsRemaining}`.padStart(2, '0');
 
   return (
     <>
       <div className="h-60 w-60 bg-black text-white-700 flex items-center flex-col">
-        <h1 className="text-white font-normal flex text-8xl font-sans">5:00</h1>
+        <h1 className="text-white font-normal flex text-8xl font-sans">
+          {minutesRemaining}:{secondsPadded}
+        </h1>
         <div className="flex items-center mt-6">
           <NavigatorIcon />
           <span className="text-white text-4xl font-light pl-3"> Zach</span>

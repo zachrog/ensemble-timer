@@ -2,15 +2,25 @@ import { create } from 'zustand';
 
 export type AppStore = {
   timeStarted: number;
-  timerLength: number;
   setTimeStarted: () => void;
+  timerLength: number;
+  setTimerLength: (timer: number) => void;
+  timeRemaining: number;
+  setTimeRemaining: () => void;
 };
 
-export const useAppStore = create<AppStore>()((set) => ({
-  // bears: 0,
-  // increase: (by) => set((state) => ({ bears: state.bears + by })),
+export const useAppStore = create<AppStore>()((set, get) => ({
   timeStarted: 0,
+  setTimeStarted: () => set((state) => ({ timeStarted: Date.now() })),
   timerLength: 5 * 60 * 1000,
-  setTimeStarted: () => set((state) => ({timeStarted: Date.now()})),
+  setTimerLength: (timerLength) => set(() => ({ timerLength })),
+  timeRemaining: 0,
+  setTimeRemaining: () =>
+    set((state) => {
+      const timeRemainingSec =
+        (state.timeStarted + state.timerLength - Date.now()) / 1000;
+      const timeRemainingClamped = Math.max(timeRemainingSec, 0);
+      const timeRemainingInt = Math.floor(timeRemainingClamped);
+      return { timeRemaining: timeRemainingInt };
+    }),
 }));
-
