@@ -47,7 +47,7 @@ function createWindow() {
   }
   createWindowBrowserReceiver({ window: win });
   createCustomCommandReceiver({ window: win });
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -61,6 +61,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('browser-window-focus', () => {
+  console.log('browser gained focus!')
   win?.webContents.send('main-process-message', 'browser-gained-focus');
 } )
 

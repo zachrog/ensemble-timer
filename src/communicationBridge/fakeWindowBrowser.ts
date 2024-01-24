@@ -5,8 +5,6 @@ export const RendererWindowBrowser: BrowserWindow = new Proxy(
   {},
   {
     get: (target, prop, receiver) => {
-      console.log(`get.prop`, prop, typeof prop);
-      console.log('get.target', target);
       return function sendMessageFunction(...args: any[]) {
         window.ipcRenderer.send(mainCommChannelName, {
           functionName: prop,

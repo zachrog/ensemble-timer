@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
+import { useAppStore } from '../state.ts/defaultState';
 
 type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
 
 export function WindowControls() {
   const [windowState, setWindowState] = useState('default' as WindowState);
-  const hideWindowControls = true;
-  if (hideWindowControls) {
+  const currentMode = useAppStore((state) => state.currentMode);
+  if (currentMode === 'timer') {
     return;
   }
   return (

@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 
+export type EnsembleModes = 'timer' | 'break' | 'edit';
+
 export type AppStore = {
+  currentMode: EnsembleModes,
   timeStarted: number;
   setTimeStarted: () => void;
   timerLength: number;
@@ -10,6 +13,7 @@ export type AppStore = {
 };
 
 export const useAppStore = create<AppStore>()((set, get) => ({
+  currentMode: 'edit',
   timeStarted: 0,
   setTimeStarted: () => set((state) => ({ timeStarted: Date.now() })),
   timerLength: 5 * 60 * 1000,

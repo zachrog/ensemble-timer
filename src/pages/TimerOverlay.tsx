@@ -14,6 +14,7 @@ export function TimerOverlay() {
   );
 
   useEffect(() => {
+    RendererWindowBrowser.restore();
     RendererWindowBrowser.setOpacity(0.5);
     RendererWindowBrowser.setSize(240, 240);
     RendererWindowBrowser.setAlwaysOnTop(true);
