@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import { useAppStore } from '../state.ts/defaultState';
+import { Badge } from '@/components/ui/badge';
 
 export function EditEnsemble() {
   const ensembleMembers = useAppStore((state) => state.ensembleMembers);
@@ -15,7 +16,7 @@ export function EditEnsemble() {
     <>
       <h1>Hey you are in edit mode</h1>
       {ensembleMembers.map((member) => (
-        <h1 key={member.id}>{member.name}</h1>
+        <Badge>{member.name}</Badge>
       ))}
     </>
   );
