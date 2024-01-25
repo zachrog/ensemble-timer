@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <div className="bg-zinc-600 antialiased">
+      <div className="bg-zinc-600 antialiased h-screen w-full">
         <WindowControls />
         {currentMode === 'timer' && <TimerOverlay />}
         {currentMode === 'edit' && <EditEnsemble />}
