@@ -3,6 +3,7 @@ import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser'
 import { useAppStore } from '../state.ts/defaultState';
 import { Badge } from '@/components/ui/badge';
 import { CloseIcon } from '@/components/icons/icons';
+import { Input } from '@/components/ui/input';
 
 export function EditEnsemble() {
   const { ensembleMembers, removeMember } = useAppStore((state) => ({
@@ -18,7 +19,8 @@ export function EditEnsemble() {
 
   return (
     <>
-      <div className="flex justify-items-center">
+      <div className="">
+        <Input placeholder="Name"></Input>
         {ensembleMembers.map((member) => (
           <Badge className="text-4xl items-center">
             {member.name}{' '}
