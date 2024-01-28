@@ -13,6 +13,9 @@ export type AppStore = {
   removeMember: (member: { id: number }) => void;
   ensembleMembers: { name: string; id: number }[];
   setTimeRemaining: () => void;
+  newMemberName: string;
+  setNewMemberName: (name: string) => void;
+  startProgramming: () => void;
 };
 
 export const useAppStore = create<AppStore>()((set, get) => ({
@@ -50,4 +53,8 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       const timeRemainingInt = Math.floor(timeRemainingClamped);
       return { timeRemaining: timeRemainingInt };
     }),
+  newMemberName: '',
+  setNewMemberName: (name) => set(() => ({ newMemberName: name })),
+  startProgramming: () =>
+    set(() => ({ currentMode: 'timer', timeStarted: Date.now() })),
 }));

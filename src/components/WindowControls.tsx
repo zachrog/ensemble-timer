@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import { useAppStore } from '../state.ts/defaultState';
-import { CloseIcon, MinimizeIcon, WindowIcon } from '@/components/icons/icons';
+import { CloseIcon, MinusIcon, WindowIcon } from '@/components/icons/icons';
 
 type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
 
@@ -22,7 +22,7 @@ export function WindowControls() {
             RendererWindowBrowser.minimize();
           }}
         >
-          <MinimizeIcon className="w-10 h-10 p-3" />
+          <MinusIcon className="w-10 h-10 p-3" />
         </button>
         <button
           className="hover:bg-zinc-700 text-zinc-300 no-drag"
