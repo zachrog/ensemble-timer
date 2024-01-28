@@ -48,11 +48,9 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     }),
   setTimeRemaining: () =>
     set((state) => {
-      const timeRemainingSec =
-        (state.timeStarted + state.timerLength - Date.now()) / 1000;
-      const timeRemainingClamped = Math.max(timeRemainingSec, 0);
-      const timeRemainingInt = Math.floor(timeRemainingClamped);
-      return { timeRemaining: timeRemainingInt };
+      const timeRemaining = state.timeStarted + state.timerLength - Date.now();
+      const timeRemainingClamped = Math.max(timeRemaining, 0);
+      return { timeRemaining: timeRemainingClamped };
     }),
   newMemberName: '',
   setNewMemberName: (name) => set(() => ({ newMemberName: name })),
