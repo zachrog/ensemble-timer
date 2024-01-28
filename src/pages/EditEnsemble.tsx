@@ -34,6 +34,19 @@ export function EditEnsemble() {
     <>
       <div className="">
         <EnsembleOptions />
+        {ensembleMembers.map((member) => (
+          <Badge key={member.id} className="text-4xl items-center">
+            {member.name}{' '}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                removeMember({ id: member.id });
+              }}
+            >
+              <CloseIcon className="w-9 h-9" strokeWidth={2} />
+            </button>
+          </Badge>
+        ))}
         <form>
           <Input
             value={newMemberName}
@@ -51,19 +64,7 @@ export function EditEnsemble() {
             Add
           </Button>
         </form>
-        {ensembleMembers.map((member) => (
-          <Badge key={member.id} className="text-4xl items-center">
-            {member.name}{' '}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                removeMember({ id: member.id });
-              }}
-            >
-              <CloseIcon className="w-9 h-9" strokeWidth={2} />
-            </button>
-          </Badge>
-        ))}
+
         <Button
           onClick={() => {
             startProgramming();
@@ -77,12 +78,24 @@ export function EditEnsemble() {
 }
 
 function EnsembleOptions() {
-  const { timerLength, setTimerLength } = useAppStore((state) => ({
+  const {
+    timerLength,
+    setTimerLength,
+    breakLength,
+    setBreakLength,
+    rotationsPerBreak,
+    setRotationsPerBreak,
+  } = useAppStore((state) => ({
     timerLength: state.timerLength,
     setTimerLength: state.setTimerLength,
+    breakLength: state.breakLength,
+    setBreakLength: state.setBreakLength,
+    rotationsPerBreak: state.rotationsPerBreak,
+    setRotationsPerBreak: state.setRotationsPerBreak,
   }));
 
   const timerLengthInMinutes = Math.round(timerLength / (60 * 1000));
+  const breakLengthInMinutes = Math.round(breakLength / (60 * 1000));
   return (
     <>
       <Card className="bg-zinc-800 text-zinc-200">
@@ -90,7 +103,7 @@ function EnsembleOptions() {
           <CardTitle>Options</CardTitle>
         </CardHeader>
         <CardContent>
-          <h1>Timer Options</h1>
+          <h1>Timer</h1>
           <div>
             <Button
               onClick={() => {
@@ -108,8 +121,49 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
+            <span>Minutes</span>
           </div>
-          <h1>Break Options</h1>
+          <h1>Breaks</h1>
+          <div>
+            <Button
+              onClick={() => {
+                setBreakLength(breakLength - 60 * 1000);
+              }}
+              disabled={breakLengthInMinutes <= 1}
+            >
+              <MinusIcon />
+            </Button>
+            <span className="w-5 h-5">{breakLengthInMinutes}</span>
+            <Button
+              onClick={() => {
+                setBreakLength(breakLength + 60 * 1000);
+              }}
+            >
+              <PlusIcon />
+            </Button>
+            <span>Minutes</span>
+          </div>
+          <div>
+            <Button
+              onClick={() => {
+                setRotationsPerBreak(rotationsPerBreak - 1);
+              }}
+              disabled={rotationsPerBreak <= 1}
+            >
+              <MinusIcon />
+            </Button>
+            <span className="w-5 h-5">{rotationsPerBreak}</span>
+            <Button
+              onClick={() => {
+                setBreakLength(rotationsPerBreak + 1);
+              }}
+            >
+              <PlusIcon />
+            </Button>
+            <span>
+              Every {rotationsPerBreak * timerLengthInMinutes} Minutes
+            </span>
+          </div>
         </CardContent>
       </Card>
     </>
