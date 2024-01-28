@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import { useAppStore } from '../state.ts/defaultState';
 import { Badge } from '@/components/ui/badge';
 import { CloseIcon } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export function EditEnsemble() {
-  const { ensembleMembers, removeMember } = useAppStore((state) => ({
+  const { ensembleMembers, removeMember, addMember } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
+    addMember: state.addMember,
   }));
+  const [newMemberName, setNewMemberName] = useState('');
   useEffect(() => {
     RendererWindowBrowser.setOpacity(1.0);
     RendererWindowBrowser.maximize();
@@ -20,9 +23,25 @@ export function EditEnsemble() {
   return (
     <>
       <div className="">
-        <Input placeholder="Name"></Input>
+        <form>
+          <Input
+            value={newMemberName}
+            placeholder="Name"
+            onChange={(e) => setNewMemberName(e.target.value)}
+          ></Input>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              addMember({ name: newMemberName });
+              setNewMemberName('');
+            }}
+            disabled={!newMemberName}
+          >
+            Add
+          </Button>
+        </form>
         {ensembleMembers.map((member) => (
-          <Badge className="text-4xl items-center">
+          <Badge key={member.id} className="text-4xl items-center">
             {member.name}{' '}
             <button
               onClick={(e) => {
