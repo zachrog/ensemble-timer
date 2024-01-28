@@ -21,7 +21,7 @@ export function EditEnsemble() {
     addMember: state.addMember,
     newMemberName: state.newMemberName,
     setNewMemberName: state.setNewMemberName,
-    startProgramming: state.startProgramming,
+    startProgramming: state.startTurn,
   }));
   useEffect(() => {
     RendererWindowBrowser.setOpacity(1.0);

@@ -5,13 +5,12 @@ import { customCommandChannelName } from '../../electron/communicationBridge/con
 import { useAppStore } from '../state.ts/defaultState';
 
 export function TimerOverlay() {
-  const { setTimeStarted, setTimeRemaining, timeRemaining } = useAppStore(
-    (state) => ({
-      setTimeStarted: state.setTimeStarted,
+  const { setTimeRemaining, timeRemaining, endTurn } =
+    useAppStore((state) => ({
       setTimeRemaining: state.setTimeRemaining,
       timeRemaining: state.timeRemaining,
-    }),
-  );
+      endTurn: state.endTurn,
+    }));
 
   useEffect(() => {
     RendererWindowBrowser.restore();
@@ -24,12 +23,18 @@ export function TimerOverlay() {
       message: 'move-to-bottom-right',
     });
 
-    setTimeStarted();
     const interval = setInterval(() => {
       setTimeRemaining();
     }, 100);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (timeRemaining <= 0) {
+      endTurn();
+    }
+  }, [timeRemaining]);
+
   const minutesRemaining = Math.floor(timeRemaining / 60);
   const secondsRemaining = timeRemaining % 60;
   const secondsPadded = `${secondsRemaining}`.padStart(2, '0');

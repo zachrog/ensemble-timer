@@ -15,7 +15,8 @@ export type AppStore = {
   setTimeRemaining: () => void;
   newMemberName: string;
   setNewMemberName: (name: string) => void;
-  startProgramming: () => void;
+  startTurn: () => void;
+  endTurn: () => void;
 };
 
 export const useAppStore = create<AppStore>()((set, get) => ({
@@ -55,6 +56,11 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     }),
   newMemberName: '',
   setNewMemberName: (name) => set(() => ({ newMemberName: name })),
-  startProgramming: () =>
-    set(() => ({ currentMode: 'timer', timeStarted: Date.now() })),
+  startTurn: () =>
+    set((state) => {
+      state.setTimeStarted();
+      state.setTimeRemaining();
+      return { currentMode: 'timer' };
+    }),
+  endTurn: () => set(() => ({ currentMode: 'edit' })),
 }));
