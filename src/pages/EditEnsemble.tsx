@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RotationProgress } from '@/components/RotationProgress';
+import { Separator } from '@/components/ui/separator';
 
 export function EditEnsemble() {
   useEffect(() => {
@@ -16,14 +17,7 @@ export function EditEnsemble() {
     RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 
-  const {
-    ensembleMembers,
-    removeMember,
-    addMember,
-    newMemberName,
-    setNewMemberName,
-    startProgramming,
-  } = useAppStore((state) => ({
+  const { startProgramming } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
     addMember: state.addMember,
@@ -34,40 +28,13 @@ export function EditEnsemble() {
 
   return (
     <>
-      <div className="">
+      <div className="p-5">
         <RotationProgress />
-        <EnsembleOptions />
-        {ensembleMembers.map((member) => (
-          <Badge key={member.id} className="text-4xl items-center">
-            {member.name}{' '}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                removeMember({ id: member.id });
-              }}
-            >
-              <CloseIcon className="w-9 h-9" strokeWidth={2} />
-            </button>
-          </Badge>
-        ))}
-        <form>
-          <Input
-            value={newMemberName}
-            placeholder="Name"
-            onChange={(e) => setNewMemberName(e.target.value)}
-          ></Input>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              addMember({ name: newMemberName });
-              setNewMemberName('');
-            }}
-            disabled={!newMemberName}
-          >
-            Add
-          </Button>
-        </form>
-
+        <div className="flex">
+          <EnsembleOptions />
+          <RosterEdit />
+        </div>
+        <Separator className="my-10" />
         <Button
           onClick={() => {
             startProgramming();
@@ -168,6 +135,62 @@ function EnsembleOptions() {
             </span>
           </div>
         </CardContent>
+      </Card>
+    </>
+  );
+}
+
+function RosterEdit() {
+  const {
+    ensembleMembers,
+    removeMember,
+    addMember,
+    newMemberName,
+    setNewMemberName,
+  } = useAppStore((state) => ({
+    ensembleMembers: state.ensembleMembers,
+    removeMember: state.removeMember,
+    addMember: state.addMember,
+    newMemberName: state.newMemberName,
+    setNewMemberName: state.setNewMemberName,
+  }));
+
+  return (
+    <>
+      <Card className="bg-zinc-800 text-zinc-200 ml-5 flex-grow p-3">
+        {ensembleMembers.map((member) => (
+          <Badge key={member.id} className="text-4xl">
+            <span>{member.name}</span>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                removeMember({ id: member.id });
+              }}
+              className="w-16 h-16"
+            >
+              <CloseIcon className="w-9 h-9" strokeWidth={2} />
+            </Button>
+          </Badge>
+        ))}
+        <form>
+          <Input
+            value={newMemberName}
+            placeholder="Name"
+            onChange={(e) => setNewMemberName(e.target.value)}
+            className="w-30 bg-zinc-800 text-4xl h-13 mt-5"
+          ></Input>
+          <Button
+            className="mt-5"
+            onClick={(e) => {
+              e.preventDefault();
+              addMember({ name: newMemberName });
+              setNewMemberName('');
+            }}
+            disabled={!newMemberName}
+          >
+            Add
+          </Button>
+        </form>
       </Card>
     </>
   );
