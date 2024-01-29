@@ -8,7 +8,7 @@ type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
 export function WindowControls() {
   const [windowState, setWindowState] = useState('default' as WindowState);
   const currentMode = useAppStore((state) => state.currentMode);
-  if (currentMode === 'timer') {
+  if (currentMode === 'timer' || currentMode === 'break') {
     return;
   }
   return (

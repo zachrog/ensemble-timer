@@ -1,8 +1,13 @@
 import { create } from 'zustand';
 
-export type EnsembleModes = 'edit' | 'timer' | 'handoff' | 'break';
+export type EnsembleModes =
+  | 'edit'
+  | 'timer'
+  | 'handoff'
+  | 'want-a-break?'
+  | 'break';
 
-type EnsembleMember = {
+export type EnsembleMember = {
   name: string;
   id: number;
 };
@@ -29,18 +34,21 @@ export type AppStore = {
   setNewMemberName: (name: string) => void;
   startTurn: () => void;
   endTurn: () => void;
+  skipBreak: () => void;
+  takeBreak: () => void;
+  endBreak: () => void;
 };
 
 export const useAppStore = create<AppStore>()((set, get) => ({
-  currentMode: 'handoff',
+  currentMode: 'want-a-break?',
   timeStarted: 0,
   setTimeStarted: () => set((state) => ({ timeStarted: Date.now() })),
   timerLength: 1 * 60 * 1000,
   setTimerLength: (timerLength) => set(() => ({ timerLength })),
   breakLength: 1 * 60 * 1000,
   setBreakLength: (breakLength) => set(() => ({ breakLength: breakLength })),
-  rotationsPerBreak: 10,
-  currentRotation: 1,
+  rotationsPerBreak: 1,
+  currentRotation: 0,
   setRotationsPerBreak: (rotations) =>
     set(() => ({ rotationsPerBreak: rotations })),
   nextDriver: () =>
@@ -101,11 +109,25 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     }),
   endTurn: () =>
     set((state) => {
+      const currentRotation = state.currentRotation + 1;
+      const currentMode =
+        currentRotation === state.rotationsPerBreak
+          ? 'want-a-break?'
+          : 'handoff';
+
       return {
-        currentMode: 'handoff',
-        currentRotation: state.currentRotation + 1,
+        currentMode,
+        currentRotation,
       };
     }),
+  skipBreak: () => set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
+  takeBreak: () =>
+    set((state) => {
+      state.setTimeStarted();
+      state.setTimeRemaining();
+      return { currentMode: 'break' };
+    }),
+  endBreak: () => set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
 }));
 
 export function getCurrentNavigator({

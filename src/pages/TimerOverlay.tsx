@@ -3,11 +3,13 @@ import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser'
 import { sendMessage } from '../communicationBridge/rendererCommunicationBridge';
 import { customCommandChannelName } from '../../electron/communicationBridge/constants';
 import {
+  EnsembleMember,
+  EnsembleModes,
   getCurrentDriver,
   getCurrentNavigator,
   useAppStore,
 } from '../state.ts/defaultState';
-import { NavigatorIcon, WheelIcon } from '@/components/icons/icons';
+import { CoffeeIcon, NavigatorIcon, WheelIcon } from '@/components/icons/icons';
 
 export function TimerOverlay() {
   const {
@@ -16,12 +18,16 @@ export function TimerOverlay() {
     endTurn,
     ensembleMembers,
     currentRotation,
+    currentMode,
+    endBreak,
   } = useAppStore((state) => ({
     setTimeRemaining: state.setTimeRemaining,
     timeRemaining: state.timeRemaining,
     endTurn: state.endTurn,
     ensembleMembers: state.ensembleMembers,
     currentRotation: state.currentRotation,
+    currentMode: state.currentMode,
+    endBreak: state.endBreak,
   }));
 
   useEffect(() => {
@@ -42,10 +48,15 @@ export function TimerOverlay() {
   }, []);
 
   useEffect(() => {
-    if (timeRemaining <= 0) {
-      endTurn();
+    if (timeRemaining <= 0 && currentMode === 'break') {
+      endBreak();
+      return;
     }
-  }, [timeRemaining]);
+    if (timeRemaining <= 0 && currentMode === 'timer') {
+      endTurn();
+      return;
+    }
+  }, [timeRemaining, currentMode]);
 
   const minutesRemaining = Math.floor(timeRemaining / (60 * 1000));
   const secondsRemaining = Math.floor(timeRemaining / 1000) % 60;
@@ -62,18 +73,56 @@ export function TimerOverlay() {
         <h1 className="text-white font-normal flex text-8xl font-sans">
           {minutesRemaining}:{secondsPadded}
         </h1>
-        <div className="flex items-center">
-          <WheelIcon className='w-6 h-6 text-white'/>
-          <span className="text-white text-4xl font-light pl-3">
-            {currentDriver.name}
-          </span>
-        </div>
-        <div className="flex items-center mt-6">
-          <NavigatorIcon className='w-6 h-6 text-white'/>
-          <span className="text-white text-4xl font-light pl-3">
-            {currentNavigator.name}
-          </span>
-        </div>
+        <TimerDisplay
+          currentDriver={currentDriver}
+          currentMode={currentMode}
+          currentNavigator={currentNavigator}
+        />
+        <BreakDisplay currentMode={currentMode} />
+      </div>
+    </>
+  );
+}
+
+function TimerDisplay({
+  currentDriver,
+  currentNavigator,
+  currentMode,
+}: {
+  currentDriver: EnsembleMember;
+  currentNavigator: EnsembleMember;
+  currentMode: EnsembleModes;
+}) {
+  if (currentMode !== 'timer') {
+    return;
+  }
+  return (
+    <>
+      <div className="flex items-center">
+        <WheelIcon className="w-6 h-6 text-white" />
+        <span className="text-white text-4xl font-light pl-3">
+          {currentDriver.name}
+        </span>
+      </div>
+      <div className="flex items-center mt-6">
+        <NavigatorIcon className="w-6 h-6 text-white" />
+        <span className="text-white text-4xl font-light pl-3">
+          {currentNavigator.name}
+        </span>
+      </div>
+    </>
+  );
+}
+
+function BreakDisplay({ currentMode }: { currentMode: EnsembleModes }) {
+  if (currentMode !== 'break') {
+    return;
+  }
+
+  return (
+    <>
+      <div className="flex-auto h-max">
+        <CoffeeIcon className="text-emerald-400 w-20 h-20 mt-7" />
       </div>
     </>
   );
