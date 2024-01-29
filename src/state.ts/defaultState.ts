@@ -18,6 +18,8 @@ export type AppStore = {
   rotationsPerBreak: number;
   currentRotation: number;
   setRotationsPerBreak: (rotations: number) => void;
+  previousDriver: () => void;
+  nextDriver: () => void;
   timeRemaining: number;
   addMember: (member: { name: string }) => void;
   removeMember: (member: { id: number }) => void;
@@ -41,6 +43,24 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   currentRotation: 1,
   setRotationsPerBreak: (rotations) =>
     set(() => ({ rotationsPerBreak: rotations })),
+  nextDriver: () =>
+    set((state) => {
+      const front = state.ensembleMembers.shift();
+      if (!front) {
+        return { ensembleMembers: [] };
+      }
+      state.ensembleMembers.push(front);
+      return { ensembleMembers: state.ensembleMembers };
+    }),
+  previousDriver: () =>
+    set((state) => {
+      const back = state.ensembleMembers.pop();
+      if (!back) {
+        return { ensembleMembers: [] };
+      }
+      state.ensembleMembers.unshift(back);
+      return { ensembleMembers: state.ensembleMembers };
+    }),
   timeRemaining: 0,
   ensembleMembers: [
     { id: 1, name: 'Zach' },

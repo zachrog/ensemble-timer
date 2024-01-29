@@ -14,9 +14,18 @@ import {
 } from '@/state.ts/defaultState';
 
 export function Handoff() {
-  const { ensembleMembers, currentRotation } = useAppStore((state) => ({
+  const {
+    ensembleMembers,
+    currentRotation,
+    removeMember,
+    previousDriver,
+    nextDriver,
+  } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     currentRotation: state.currentRotation,
+    removeMember: state.removeMember,
+    previousDriver: state.previousDriver,
+    nextDriver: state.nextDriver,
   }));
   const currentDriver = getCurrentDriver({ currentRotation, ensembleMembers });
   const currentNavigator = getCurrentNavigator({
@@ -28,13 +37,21 @@ export function Handoff() {
     <>
       <RotationProgress />
       <div>
-        <Button>
+        <Button
+          onClick={() => {
+            previousDriver();
+          }}
+        >
           <LeftIcon />
         </Button>
         <div>
           <WheelIcon className="w-20 h-20 text-white" />
           <span className="text-white">{currentDriver.name}</span>
-          <Button >
+          <Button
+            onClick={() => {
+              removeMember({ id: currentDriver.id });
+            }}
+          >
             <CloseIcon />
             <p>Away</p>
           </Button>
@@ -42,13 +59,21 @@ export function Handoff() {
         <div>
           <NavigatorIcon className="w-20 h-20 text-white" />
           <span className="text-white">{currentNavigator.name}</span>
-          <Button>
+          <Button
+            onClick={() => {
+              removeMember({ id: currentNavigator.id });
+            }}
+          >
             <CloseIcon />
             <p>Away</p>
           </Button>
         </div>
 
-        <Button>
+        <Button
+          onClick={() => {
+            nextDriver();
+          }}
+        >
           <RightIcon />
         </Button>
       </div>
