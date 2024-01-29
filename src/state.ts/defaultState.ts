@@ -37,6 +37,7 @@ export type AppStore = {
   skipBreak: () => void;
   takeBreak: () => void;
   endBreak: () => void;
+  goToEdit: () => void;
 };
 
 export const useAppStore = create<AppStore>()((set, get) => ({
@@ -128,6 +129,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       return { currentMode: 'break' };
     }),
   endBreak: () => set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
+  goToEdit: () => set(() => ({ currentMode: 'edit' })),
 }));
 
 export function getCurrentNavigator({

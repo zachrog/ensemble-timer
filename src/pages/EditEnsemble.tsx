@@ -6,6 +6,7 @@ import { CloseIcon, MinusIcon, PlusIcon } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { RotationProgress } from '@/components/RotationProgress';
 
 export function EditEnsemble() {
   useEffect(() => {
@@ -14,7 +15,7 @@ export function EditEnsemble() {
     RendererWindowBrowser.setAlwaysOnTop(false);
     RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
-  
+
   const {
     ensembleMembers,
     removeMember,
@@ -31,10 +32,10 @@ export function EditEnsemble() {
     startProgramming: state.startTurn,
   }));
 
-
   return (
     <>
       <div className="">
+        <RotationProgress />
         <EnsembleOptions />
         {ensembleMembers.map((member) => (
           <Badge key={member.id} className="text-4xl items-center">
