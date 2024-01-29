@@ -8,6 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function EditEnsemble() {
+  useEffect(() => {
+    RendererWindowBrowser.setOpacity(1.0);
+    RendererWindowBrowser.maximize();
+    RendererWindowBrowser.setAlwaysOnTop(false);
+    RendererWindowBrowser.setIgnoreMouseEvents(false);
+  }, []);
+  
   const {
     ensembleMembers,
     removeMember,
@@ -23,12 +30,7 @@ export function EditEnsemble() {
     setNewMemberName: state.setNewMemberName,
     startProgramming: state.startTurn,
   }));
-  useEffect(() => {
-    RendererWindowBrowser.setOpacity(1.0);
-    RendererWindowBrowser.maximize();
-    RendererWindowBrowser.setAlwaysOnTop(false);
-    RendererWindowBrowser.setIgnoreMouseEvents(false);
-  }, []);
+
 
   return (
     <>

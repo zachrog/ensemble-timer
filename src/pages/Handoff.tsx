@@ -1,3 +1,4 @@
+import { RendererWindowBrowser } from '@/communicationBridge/fakeWindowBrowser';
 import {
   CloseIcon,
   LeftIcon,
@@ -12,20 +13,30 @@ import {
   getCurrentNavigator,
   useAppStore,
 } from '@/state.ts/defaultState';
+import { useEffect } from 'react';
 
 export function Handoff() {
+  useEffect(() => {
+    RendererWindowBrowser.setOpacity(1.0);
+    RendererWindowBrowser.maximize();
+    RendererWindowBrowser.setAlwaysOnTop(false);
+    RendererWindowBrowser.setIgnoreMouseEvents(false);
+  }, []);
+
   const {
     ensembleMembers,
     currentRotation,
     removeMember,
     previousDriver,
     nextDriver,
+    startTurn,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     currentRotation: state.currentRotation,
     removeMember: state.removeMember,
     previousDriver: state.previousDriver,
     nextDriver: state.nextDriver,
+    startTurn: state.startTurn,
   }));
   const currentDriver = getCurrentDriver({ currentRotation, ensembleMembers });
   const currentNavigator = getCurrentNavigator({
@@ -79,7 +90,13 @@ export function Handoff() {
       </div>
       <Separator className="bg-zinc-300" />
       <div>
-        <Button>Continue</Button>
+        <Button
+          onClick={() => {
+            startTurn();
+          }}
+        >
+          Continue
+        </Button>
       </div>
     </>
   );
