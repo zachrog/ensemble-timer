@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
 import { WindowControls } from './components/WindowControls';
 import { EditEnsemble } from './pages/EditEnsemble';
 import { TimerOverlay } from './pages/TimerOverlay';
 import { useAppStore } from './state.ts/defaultState';
+import { Handoff } from '@/pages/Handoff';
 
 function App() {
   const currentMode = useAppStore((state) => state.currentMode);
@@ -13,6 +13,7 @@ function App() {
         <WindowControls />
         {currentMode === 'timer' && <TimerOverlay />}
         {currentMode === 'edit' && <EditEnsemble />}
+        {currentMode === 'handoff' && <Handoff />}
       </div>
     </>
   );

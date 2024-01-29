@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type EnsembleModes = 'timer' | 'handoff' | 'edit' | 'break';
+export type EnsembleModes = 'edit' | 'timer' | 'handoff' | 'break';
 
 type EnsembleMember = {
   name: string;
@@ -30,7 +30,7 @@ export type AppStore = {
 };
 
 export const useAppStore = create<AppStore>()((set, get) => ({
-  currentMode: 'edit',
+  currentMode: 'handoff',
   timeStarted: 0,
   setTimeStarted: () => set((state) => ({ timeStarted: Date.now() })),
   timerLength: 5 * 60 * 1000,
@@ -45,6 +45,9 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   ensembleMembers: [
     { id: 1, name: 'Zach' },
     { id: 2, name: 'Rachel' },
+    { id: 3, name: 'Cody' },
+    { id: 4, name: 'Jon' },
+    { id: 5, name: 'Tom' },
   ],
   addMember: ({ name }) =>
     set((state) => ({
@@ -77,10 +80,12 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       return { currentMode: 'timer' };
     }),
   endTurn: () =>
-    set((state) => ({
-      currentMode: 'edit',
-      currentRotation: state.currentRotation + 1,
-    })),
+    set((state) => {
+      return {
+        currentMode: 'handoff',
+        currentRotation: state.currentRotation + 1,
+      };
+    }),
 }));
 
 export function getCurrentNavigator({
