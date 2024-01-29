@@ -12,8 +12,10 @@ export function createCustomCommandReceiver({
 }
 
 function moveWindowToBottomRight({ window }: { window: BrowserWindow }) {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const x = width - window.getSize()[0];
-  const y = height - window.getSize()[1];
+  const display = screen.getDisplayMatching(window.getBounds());
+  const x =
+    display.workArea.x + display.workAreaSize.width - window.getSize()[0];
+  const y =
+    display.workArea.y + display.workAreaSize.height - window.getSize()[1];
   window.setPosition(x, y);
 }
