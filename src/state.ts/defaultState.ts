@@ -2,6 +2,11 @@ import { create } from 'zustand';
 
 export type EnsembleModes = 'timer' | 'handoff' | 'edit' | 'break';
 
+type EnsembleMember = {
+  name: string;
+  id: number;
+};
+
 export type AppStore = {
   currentMode: EnsembleModes;
   timeStarted: number;
@@ -11,11 +16,12 @@ export type AppStore = {
   breakLength: number;
   setBreakLength: (breakLength: number) => void;
   rotationsPerBreak: number;
+  currentRotation: number;
   setRotationsPerBreak: (rotations: number) => void;
   timeRemaining: number;
   addMember: (member: { name: string }) => void;
   removeMember: (member: { id: number }) => void;
-  ensembleMembers: { name: string; id: number }[];
+  ensembleMembers: EnsembleMember[];
   setTimeRemaining: () => void;
   newMemberName: string;
   setNewMemberName: (name: string) => void;
@@ -32,6 +38,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   breakLength: 5 * 60 * 1000,
   setBreakLength: (breakLength) => set(() => ({ breakLength: breakLength })),
   rotationsPerBreak: 10,
+  currentRotation: 1,
   setRotationsPerBreak: (rotations) =>
     set(() => ({ rotationsPerBreak: rotations })),
   timeRemaining: 0,
@@ -69,5 +76,31 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       state.setTimeRemaining();
       return { currentMode: 'timer' };
     }),
-  endTurn: () => set(() => ({ currentMode: 'edit' })),
+  endTurn: () =>
+    set((state) => ({
+      currentMode: 'edit',
+      currentRotation: state.currentRotation + 1,
+    })),
 }));
+
+export function getCurrentNavigator({
+  ensembleMembers,
+  currentRotation,
+}: {
+  ensembleMembers: EnsembleMember[];
+  currentRotation: number;
+}): EnsembleMember {
+  const index = (currentRotation + 1) % ensembleMembers.length;
+  return ensembleMembers[index];
+}
+
+export function getCurrentDriver({
+  ensembleMembers,
+  currentRotation,
+}: {
+  ensembleMembers: EnsembleMember[];
+  currentRotation: number;
+}): EnsembleMember {
+  const index = currentRotation % ensembleMembers.length;
+  return ensembleMembers[index];
+}

@@ -2,13 +2,25 @@ import { useEffect } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import { sendMessage } from '../communicationBridge/rendererCommunicationBridge';
 import { customCommandChannelName } from '../../electron/communicationBridge/constants';
-import { useAppStore } from '../state.ts/defaultState';
+import {
+  getCurrentDriver,
+  getCurrentNavigator,
+  useAppStore,
+} from '../state.ts/defaultState';
 
 export function TimerOverlay() {
-  const { setTimeRemaining, timeRemaining, endTurn } = useAppStore((state) => ({
+  const {
+    setTimeRemaining,
+    timeRemaining,
+    endTurn,
+    ensembleMembers,
+    currentRotation,
+  } = useAppStore((state) => ({
     setTimeRemaining: state.setTimeRemaining,
     timeRemaining: state.timeRemaining,
     endTurn: state.endTurn,
+    ensembleMembers: state.ensembleMembers,
+    currentRotation: state.currentRotation,
   }));
 
   useEffect(() => {
@@ -37,6 +49,11 @@ export function TimerOverlay() {
   const minutesRemaining = Math.floor(timeRemaining / (60 * 1000));
   const secondsRemaining = Math.floor(timeRemaining / 1000) % 60;
   const secondsPadded = `${secondsRemaining}`.padStart(2, '0');
+  const currentNavigator = getCurrentNavigator({
+    ensembleMembers,
+    currentRotation,
+  });
+  const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
 
   return (
     <>
@@ -44,13 +61,17 @@ export function TimerOverlay() {
         <h1 className="text-white font-normal flex text-8xl font-sans">
           {minutesRemaining}:{secondsPadded}
         </h1>
-        <div className="flex items-center mt-6">
-          <NavigatorIcon />
-          <span className="text-white text-4xl font-light pl-3"> Zach</span>
-        </div>
         <div className="flex items-center">
           <WheelIcon />
-          <span className="text-white text-4xl font-light pl-3">Rachel</span>
+          <span className="text-white text-4xl font-light pl-3">
+            {currentDriver.name}
+          </span>
+        </div>
+        <div className="flex items-center mt-6">
+          <NavigatorIcon />
+          <span className="text-white text-4xl font-light pl-3">
+            {currentNavigator.name}
+          </span>
         </div>
       </div>
     </>
