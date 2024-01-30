@@ -6,7 +6,13 @@ import {
   useAppStore,
 } from '../state.ts/defaultState';
 import { Badge } from '@/components/ui/badge';
-import { CloseIcon, MinusIcon, NavigatorIcon, PlusIcon, WheelIcon } from '@/components/icons/icons';
+import {
+  CloseIcon,
+  MinusIcon,
+  NavigatorIcon,
+  PlusIcon,
+  WheelIcon,
+} from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -72,9 +78,9 @@ function EnsembleOptions() {
   const breakLengthInMinutes = Math.round(breakLength / (60 * 1000));
   return (
     <>
-      <Card className="bg-zinc-800 text-zinc-200">
+      <Card className="bg-zinc-800 text-zinc-200 flex-none">
         <CardHeader>
-          <CardTitle>Options</CardTitle>
+          <CardTitle className="text-2xl">Options</CardTitle>
         </CardHeader>
         <CardContent>
           <h1>Timer</h1>
@@ -169,47 +175,56 @@ function RosterEdit() {
 
   return (
     <>
-      <Card className="bg-zinc-800 text-zinc-200 ml-5 flex-grow p-3">
-        <div>
-          {ensembleMembers.map((member) => (
-            <Badge key={member.id} className="text-3xl mr-2 mb-2">
-              {member.id === currentDriver.id && <WheelIcon className='w-6 h-6'/>}
-              {member.id === currentNavigator.id && <NavigatorIcon className='w-6 h-6'/>}
-              <span className="text-zinc-200 ml-2">{member.name}</span>
+      <Card className="bg-zinc-800 text-zinc-200 ml-5 flex-grow">
+        <CardHeader>
+          <CardTitle className="text-2xl">Ensemble</CardTitle>
+        </CardHeader>
+        <CardContent>
+            <div className="flex gap-2 flex-wrap">
+              {ensembleMembers.map((member) => (
+                <Badge key={member.id} className="text-2xl mb-2">
+                  {member.id === currentDriver.id && (
+                    <WheelIcon className="w-6 h-6" />
+                  )}
+                  {member.id === currentNavigator.id && (
+                    <NavigatorIcon className="w-6 h-6" />
+                  )}
+                  <span className="text-zinc-200 ml-2">{member.name}</span>
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeMember({ id: member.id });
+                    }}
+                    className="w-8 h-8 p-1 ml-2"
+                  >
+                    <CloseIcon
+                      className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200"
+                      strokeWidth={2}
+                    />
+                  </Button>
+                </Badge>
+              ))}
+            </div>
+            <form className="flex items-center gap-4">
+              <Input
+                value={newMemberName}
+                placeholder="Name"
+                onChange={(e) => setNewMemberName(e.target.value)}
+                className="w-30 bg-zinc-800 text-2xl h-13 mt-5"
+              ></Input>
               <Button
+                className="mt-5 inline"
                 onClick={(e) => {
                   e.preventDefault();
-                  removeMember({ id: member.id });
+                  addMember({ name: newMemberName });
+                  setNewMemberName('');
                 }}
-                className="w-8 h-8 p-1 ml-2"
+                disabled={!newMemberName}
               >
-                <CloseIcon
-                  className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200"
-                  strokeWidth={2}
-                />
+                Add
               </Button>
-            </Badge>
-          ))}
-        </div>
-        <form>
-          <Input
-            value={newMemberName}
-            placeholder="Name"
-            onChange={(e) => setNewMemberName(e.target.value)}
-            className="w-30 bg-zinc-800 text-3xl h-13 mt-5"
-          ></Input>
-          <Button
-            className="mt-5"
-            onClick={(e) => {
-              e.preventDefault();
-              addMember({ name: newMemberName });
-              setNewMemberName('');
-            }}
-            disabled={!newMemberName}
-          >
-            Add
-          </Button>
-        </form>
+            </form>
+        </CardContent>
       </Card>
     </>
   );
