@@ -203,7 +203,7 @@ function RosterEdit() {
                   className="w-8 h-8 p-1 ml-2"
                 >
                   <CloseIcon
-                    className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200"
+                    className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200 hover:text-red-500"
                     strokeWidth={2}
                   />
                 </Button>
