@@ -9,12 +9,12 @@ export function Settings({ className }: { className?: string }) {
     <>
       <div className={className}>
         <Button
-          className="h-20 w-20 p-1 border-zinc-700 border bg-zinc-800 hover:bg-zinc-700"
+          className="h-16 w-16 p-1 border-zinc-700 border bg-zinc-900 hover:bg-zinc-700"
           onClick={() => {
             goToEdit();
           }}
         >
-          <GearIcon className="h-20 w-20" />
+          <GearIcon className="h-16 w-16" />
         </Button>
       </div>
     </>

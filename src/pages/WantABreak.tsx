@@ -19,13 +19,12 @@ export function WantABreak() {
   }));
   return (
     <>
-      <div className="h-full p-10">
-        <Settings className='flex justify-end'/>
-        <div className="flex justify-center items-center h-full">
+      <Settings className="flex justify-end m-3" />
+      <div className="flex items-center justify-center flex-grow p-3">
+        <div className="flex items-center justify-center flex-grow">
           <Button
-            className="hover:bg-zinc-700 flex-grow h-25 text-6xl flex font-thin p-5"
+            className="hover:bg-zinc-700 flex-grow h-25 text-6xl flex font-thin p-5 border-zinc-700 border bg-zinc-900"
             onClick={() => skipBreak()}
-            variant='default'
           >
             Skip Break
           </Button>

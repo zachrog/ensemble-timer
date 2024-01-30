@@ -10,7 +10,7 @@ function App() {
   const shouldDisplayTimer = currentMode === 'timer' || currentMode === 'break';
   return (
     <>
-      <div className="bg-zinc-800 antialiased h-screen w-full">
+      <div className="flex flex-col bg-zinc-800 antialiased h-screen">
         <WindowControls />
         {shouldDisplayTimer && <TimerOverlay />}
         {currentMode === 'edit' && <EditEnsemble />}

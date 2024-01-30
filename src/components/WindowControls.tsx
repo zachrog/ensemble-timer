@@ -12,42 +12,40 @@ export function WindowControls() {
     return;
   }
   return (
-    <header>
-      <div className="bg-zinc-900 h-10 draggable flex align-middle">
-        <div className="flex-grow"></div>
-        <button
-          className="hover:bg-zinc-700 text-zinc-300 no-drag"
-          onClick={() => {
-            setWindowState('minimized');
-            RendererWindowBrowser.minimize();
-          }}
-        >
-          <MinusIcon className="w-10 h-10 p-3" />
-        </button>
-        <button
-          className="hover:bg-zinc-700 text-zinc-300 no-drag"
-          onClick={() => {
-            if (windowState === 'maximized') {
-              setWindowState('default');
-              RendererWindowBrowser.restore();
-            } else {
-              setWindowState('maximized');
-              RendererWindowBrowser.maximize();
-            }
-          }}
-        >
-          <WindowIcon className="w-10 h-10 p-3" />
-        </button>
-        <button
-          className="hover:bg-red-600 text-zinc-300 no-drag"
-          onClick={() => {
-            setWindowState('closed');
-            RendererWindowBrowser.close();
-          }}
-        >
-          <CloseIcon className="w-10 h-10 p-3" />
-        </button>
-      </div>
+    <header className="flex align-middle bg-zinc-900 h-10 draggable">
+      <div className="flex-grow"></div>
+      <button
+        className="hover:bg-zinc-700 text-zinc-300 no-drag"
+        onClick={() => {
+          setWindowState('minimized');
+          RendererWindowBrowser.minimize();
+        }}
+      >
+        <MinusIcon className="w-10 h-10 p-3" />
+      </button>
+      <button
+        className="hover:bg-zinc-700 text-zinc-300 no-drag"
+        onClick={() => {
+          if (windowState === 'maximized') {
+            setWindowState('default');
+            RendererWindowBrowser.restore();
+          } else {
+            setWindowState('maximized');
+            RendererWindowBrowser.maximize();
+          }
+        }}
+      >
+        <WindowIcon className="w-10 h-10 p-3" />
+      </button>
+      <button
+        className="hover:bg-red-600 text-zinc-300 no-drag"
+        onClick={() => {
+          setWindowState('closed');
+          RendererWindowBrowser.close();
+        }}
+      >
+        <CloseIcon className="w-10 h-10 p-3" />
+      </button>
     </header>
   );
 }
