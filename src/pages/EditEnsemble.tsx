@@ -45,13 +45,16 @@ export function EditEnsemble() {
           <RosterEdit />
         </div>
         <Separator className="my-10" />
-        <Button
-          onClick={() => {
-            startProgramming();
-          }}
-        >
-          Start
-        </Button>
+        <div className="flex">
+          <Button
+            onClick={() => {
+              startProgramming();
+            }}
+            className="hover:bg-zinc-700 flex-grow h-25 text-6xl flex font-thin p-5 border-zinc-700 border bg-zinc-900 text-zinc-200"
+          >
+            Start
+          </Button>
+        </div>
       </div>
     </>
   );
@@ -80,11 +83,11 @@ function EnsembleOptions() {
     <>
       <Card className="bg-zinc-800 text-zinc-200 flex-none">
         <CardHeader>
-          <CardTitle className="text-2xl">Options</CardTitle>
+          <CardTitle className="text-4xl">Options</CardTitle>
         </CardHeader>
         <CardContent>
-          <h1>Timer</h1>
-          <div>
+          <h1 className='text-2xl'>Timer</h1>
+          <div className='mt-2'>
             <Button
               onClick={() => {
                 setTimerLength(timerLength - 60 * 1000);
@@ -93,7 +96,7 @@ function EnsembleOptions() {
             >
               <MinusIcon />
             </Button>
-            <span className="w-5 h-5">{timerLengthInMinutes}</span>
+            <span className="text-2xl mx-3">{timerLengthInMinutes}</span>
             <Button
               onClick={() => {
                 setTimerLength(timerLength + 60 * 1000);
@@ -101,10 +104,10 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
-            <span>Minutes</span>
+            <span className='text-2xl ml-3'>Minutes</span>
           </div>
-          <h1>Breaks</h1>
-          <div>
+          <h1 className='mt-3 text-2xl'>Breaks</h1>
+          <div className='mt-2'>
             <Button
               onClick={() => {
                 setBreakLength(breakLength - 60 * 1000);
@@ -113,7 +116,7 @@ function EnsembleOptions() {
             >
               <MinusIcon />
             </Button>
-            <span className="w-5 h-5">{breakLengthInMinutes}</span>
+            <span className="text-2xl mx-3">{breakLengthInMinutes}</span>
             <Button
               onClick={() => {
                 setBreakLength(breakLength + 60 * 1000);
@@ -121,9 +124,9 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
-            <span>Minutes</span>
+            <span className='text-2xl ml-3'>Minutes</span>
           </div>
-          <div>
+          <div className='mt-2'>
             <Button
               onClick={() => {
                 setRotationsPerBreak(rotationsPerBreak - 1);
@@ -132,7 +135,7 @@ function EnsembleOptions() {
             >
               <MinusIcon />
             </Button>
-            <span className="w-5 h-5">{rotationsPerBreak}</span>
+            <span className="text-2xl mx-3">{rotationsPerBreak}</span>
             <Button
               onClick={() => {
                 setRotationsPerBreak(rotationsPerBreak + 1);
@@ -140,7 +143,7 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
-            <span>
+            <span className='text-2xl ml-3'>
               Every {rotationsPerBreak * timerLengthInMinutes} Minutes
             </span>
           </div>
@@ -177,53 +180,53 @@ function RosterEdit() {
     <>
       <Card className="bg-zinc-800 text-zinc-200 ml-5 flex-grow">
         <CardHeader>
-          <CardTitle className="text-2xl">Ensemble</CardTitle>
+          <CardTitle className="text-4xl">Ensemble</CardTitle>
         </CardHeader>
         <CardContent>
-            <div className="flex gap-2 flex-wrap">
-              {ensembleMembers.map((member) => (
-                <Badge key={member.id} className="text-2xl mb-2">
-                  {member.id === currentDriver.id && (
-                    <WheelIcon className="w-6 h-6" />
-                  )}
-                  {member.id === currentNavigator.id && (
-                    <NavigatorIcon className="w-6 h-6" />
-                  )}
-                  <span className="text-zinc-200 ml-2">{member.name}</span>
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      removeMember({ id: member.id });
-                    }}
-                    className="w-8 h-8 p-1 ml-2"
-                  >
-                    <CloseIcon
-                      className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200"
-                      strokeWidth={2}
-                    />
-                  </Button>
-                </Badge>
-              ))}
-            </div>
-            <form className="flex items-center gap-4">
-              <Input
-                value={newMemberName}
-                placeholder="Name"
-                onChange={(e) => setNewMemberName(e.target.value)}
-                className="w-30 bg-zinc-800 text-2xl h-13 mt-5"
-              ></Input>
-              <Button
-                className="mt-5 inline"
-                onClick={(e) => {
-                  e.preventDefault();
-                  addMember({ name: newMemberName });
-                  setNewMemberName('');
-                }}
-                disabled={!newMemberName}
-              >
-                Add
-              </Button>
-            </form>
+          <div className="flex gap-2 flex-wrap">
+            {ensembleMembers.map((member) => (
+              <Badge key={member.id} className="text-2xl mb-2">
+                {member.id === currentDriver.id && (
+                  <WheelIcon className="w-6 h-6" />
+                )}
+                {member.id === currentNavigator.id && (
+                  <NavigatorIcon className="w-6 h-6" />
+                )}
+                <span className="text-zinc-200 ml-2">{member.name}</span>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    removeMember({ id: member.id });
+                  }}
+                  className="w-8 h-8 p-1 ml-2"
+                >
+                  <CloseIcon
+                    className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200"
+                    strokeWidth={2}
+                  />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+          <form className="flex items-center gap-4">
+            <Input
+              value={newMemberName}
+              placeholder="Name"
+              onChange={(e) => setNewMemberName(e.target.value)}
+              className="w-30 bg-zinc-800 text-2xl h-13 mt-5"
+            ></Input>
+            <Button
+              className="mt-5 inline"
+              onClick={(e) => {
+                e.preventDefault();
+                addMember({ name: newMemberName });
+                setNewMemberName('');
+              }}
+              disabled={!newMemberName}
+            >
+              Add
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </>
