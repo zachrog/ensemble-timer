@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
-import { useAppStore } from '../state.ts/defaultState';
+import {
+  getCurrentDriver,
+  getCurrentNavigator,
+  useAppStore,
+} from '../state.ts/defaultState';
 import { Badge } from '@/components/ui/badge';
-import { CloseIcon, MinusIcon, PlusIcon } from '@/components/icons/icons';
+import { CloseIcon, MinusIcon, NavigatorIcon, PlusIcon, WheelIcon } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,8 +33,8 @@ export function EditEnsemble() {
   return (
     <>
       <div className="p-5">
-        <RotationProgress />
-        <div className="flex">
+        <RotationProgress className="" />
+        <div className="flex mt-5">
           <EnsembleOptions />
           <RosterEdit />
         </div>
@@ -125,7 +129,7 @@ function EnsembleOptions() {
             <span className="w-5 h-5">{rotationsPerBreak}</span>
             <Button
               onClick={() => {
-                setBreakLength(rotationsPerBreak + 1);
+                setRotationsPerBreak(rotationsPerBreak + 1);
               }}
             >
               <PlusIcon />
@@ -147,37 +151,52 @@ function RosterEdit() {
     addMember,
     newMemberName,
     setNewMemberName,
+    currentRotation,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
     addMember: state.addMember,
     newMemberName: state.newMemberName,
     setNewMemberName: state.setNewMemberName,
+    currentRotation: state.currentRotation,
   }));
+
+  const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
+  const currentNavigator = getCurrentNavigator({
+    ensembleMembers,
+    currentRotation,
+  });
 
   return (
     <>
       <Card className="bg-zinc-800 text-zinc-200 ml-5 flex-grow p-3">
-        {ensembleMembers.map((member) => (
-          <Badge key={member.id} className="text-4xl">
-            <span>{member.name}</span>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                removeMember({ id: member.id });
-              }}
-              className="w-16 h-16"
-            >
-              <CloseIcon className="w-9 h-9" strokeWidth={2} />
-            </Button>
-          </Badge>
-        ))}
+        <div>
+          {ensembleMembers.map((member) => (
+            <Badge key={member.id} className="text-3xl mr-2 mb-2">
+              {member.id === currentDriver.id && <WheelIcon className='w-6 h-6'/>}
+              {member.id === currentNavigator.id && <NavigatorIcon className='w-6 h-6'/>}
+              <span className="text-zinc-200 ml-2">{member.name}</span>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeMember({ id: member.id });
+                }}
+                className="w-8 h-8 p-1 ml-2"
+              >
+                <CloseIcon
+                  className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200"
+                  strokeWidth={2}
+                />
+              </Button>
+            </Badge>
+          ))}
+        </div>
         <form>
           <Input
             value={newMemberName}
             placeholder="Name"
             onChange={(e) => setNewMemberName(e.target.value)}
-            className="w-30 bg-zinc-800 text-4xl h-13 mt-5"
+            className="w-30 bg-zinc-800 text-3xl h-13 mt-5"
           ></Input>
           <Button
             className="mt-5"

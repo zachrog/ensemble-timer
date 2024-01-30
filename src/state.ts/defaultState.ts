@@ -48,8 +48,8 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   setTimerLength: (timerLength) => set(() => ({ timerLength })),
   breakLength: 1 * 60 * 1000,
   setBreakLength: (breakLength) => set(() => ({ breakLength: breakLength })),
-  rotationsPerBreak: 1,
-  currentRotation: 0,
+  rotationsPerBreak: 5,
+  currentRotation: 2,
   setRotationsPerBreak: (rotations) =>
     set(() => ({ rotationsPerBreak: rotations })),
   nextDriver: () =>
@@ -112,7 +112,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     set((state) => {
       const currentRotation = state.currentRotation + 1;
       const currentMode =
-        currentRotation === state.rotationsPerBreak
+        currentRotation >= state.rotationsPerBreak
           ? 'want-a-break?'
           : 'handoff';
 
