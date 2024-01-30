@@ -86,8 +86,8 @@ function EnsembleOptions() {
           <CardTitle className="text-4xl">Options</CardTitle>
         </CardHeader>
         <CardContent>
-          <h1 className='text-2xl'>Timer</h1>
-          <div className='mt-2'>
+          <h1 className="text-2xl">Timer</h1>
+          <div className="mt-2">
             <Button
               onClick={() => {
                 setTimerLength(timerLength - 60 * 1000);
@@ -96,7 +96,9 @@ function EnsembleOptions() {
             >
               <MinusIcon />
             </Button>
-            <span className="text-2xl mx-3">{timerLengthInMinutes}</span>
+            <div className='inline h-10 w-10'>
+              <p className="text-2xl mx-3 inline h-10 w-10">{timerLengthInMinutes}</p>
+            </div>
             <Button
               onClick={() => {
                 setTimerLength(timerLength + 60 * 1000);
@@ -104,10 +106,10 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
-            <span className='text-2xl ml-3'>Minutes</span>
+            <span className="text-2xl ml-3">Minutes</span>
           </div>
-          <h1 className='mt-3 text-2xl'>Breaks</h1>
-          <div className='mt-2'>
+          <h1 className="mt-3 text-2xl">Breaks</h1>
+          <div className="mt-2">
             <Button
               onClick={() => {
                 setBreakLength(breakLength - 60 * 1000);
@@ -124,9 +126,9 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
-            <span className='text-2xl ml-3'>Minutes</span>
+            <span className="text-2xl ml-3">Minutes</span>
           </div>
-          <div className='mt-2'>
+          <div className="mt-2">
             <Button
               onClick={() => {
                 setRotationsPerBreak(rotationsPerBreak - 1);
@@ -143,7 +145,7 @@ function EnsembleOptions() {
             >
               <PlusIcon />
             </Button>
-            <span className='text-2xl ml-3'>
+            <span className="text-2xl ml-3">
               Every {rotationsPerBreak * timerLengthInMinutes} Minutes
             </span>
           </div>
