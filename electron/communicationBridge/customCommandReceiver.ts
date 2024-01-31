@@ -6,8 +6,19 @@ export function createCustomCommandReceiver({
 }: {
   window: BrowserWindow;
 }) {
-  ipcMain.on(customCommandChannelName, async (metadata, message) => {
-    moveWindowToBottomRight({ window });
+  ipcMain.on(customCommandChannelName, async (metadata, message: string) => {
+    console.log(`${customCommandChannelName} received a message: `, message);
+    switch (message) {
+      case 'move-to-bottom-right':
+        moveWindowToBottomRight({ window });
+        break;
+      case 'toggle-maximize':
+        toggleMaximize({ window });
+        break;
+      default:
+        console.warn('UH OH no command found for: ', message);
+        break;
+    }
   });
 }
 
@@ -18,4 +29,12 @@ function moveWindowToBottomRight({ window }: { window: BrowserWindow }) {
   const y =
     display.workArea.y + display.workAreaSize.height - window.getSize()[1];
   window.setPosition(x, y);
+}
+
+function toggleMaximize({ window }: { window: BrowserWindow }) {
+  if (window.isMaximized()) {
+    window.unmaximize();
+  } else {
+    window.maximize();
+  }
 }
