@@ -1,11 +1,8 @@
-import { useState } from 'react';
 import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import { useAppStore } from '../state.ts/defaultState';
 import { CloseIcon, MinusIcon, WindowIcon } from '@/components/icons/icons';
 import { sendMessage } from '@/communicationBridge/rendererCommunicationBridge';
 import { customCommandChannelName } from '../../electron/communicationBridge/constants';
-
-type WindowState = 'maximized' | 'minimized' | 'default' | 'closed';
 
 export function WindowControls() {
   const currentMode = useAppStore((state) => state.currentMode);

@@ -38,9 +38,9 @@ export function EditEnsemble() {
 
   return (
     <>
-      <div className="p-5">
-        <RotationProgress className="" />
-        <div className="flex mt-5">
+      <div className="p-3">
+        <RotationProgress />
+        <div className="flex mt-3">
           <EnsembleOptions />
           <RosterEdit />
         </div>
@@ -50,7 +50,7 @@ export function EditEnsemble() {
             onClick={() => {
               startProgramming();
             }}
-            className="hover:bg-zinc-700 flex-grow h-25 text-6xl flex font-thin p-5 border-zinc-700 border bg-zinc-900 text-zinc-200"
+            className="hover:bg-zinc-700 flex-grow h-25 text-6xl flex font-thin p-3 border-zinc-700 border bg-zinc-900 text-zinc-200"
           >
             Start
           </Button>
@@ -180,7 +180,7 @@ function RosterEdit() {
 
   return (
     <>
-      <Card className="bg-zinc-800 text-zinc-200 ml-5 flex-grow">
+      <Card className="bg-zinc-800 text-zinc-200 ml-3 flex-grow">
         <CardHeader>
           <CardTitle className="text-4xl">Ensemble</CardTitle>
         </CardHeader>
@@ -215,10 +215,10 @@ function RosterEdit() {
               value={newMemberName}
               placeholder="Name"
               onChange={(e) => setNewMemberName(e.target.value)}
-              className="w-30 bg-zinc-800 text-2xl h-13 mt-5"
+              className="w-30 bg-zinc-800 text-2xl h-13 mt-3"
             ></Input>
             <Button
-              className="mt-5 inline"
+              className="mt-3 inline"
               onClick={(e) => {
                 e.preventDefault();
                 addMember({ name: newMemberName });

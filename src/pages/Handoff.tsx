@@ -48,58 +48,70 @@ export function Handoff() {
 
   return (
     <>
-      <RotationProgress />
-      <Settings />
-      <div>
-        <Button
-          onClick={() => {
-            previousDriver();
-          }}
-        >
-          <LeftIcon />
-        </Button>
-        <div>
-          <WheelIcon className="w-20 h-20 text-white" />
-          <span className="text-white">{currentDriver.name}</span>
+      <div className="p-3">
+        <div className="flex justify-between content-center">
+          <RotationProgress />
+          <Settings />
+        </div>
+        <div className="flex justify-around items-center">
           <Button
+            className="h-16"
             onClick={() => {
-              removeMember({ id: currentDriver.id });
+              previousDriver();
             }}
           >
-            <CloseIcon />
-            <p>Away</p>
+            <LeftIcon className="text-yellow-500 h-16 w-16" />
           </Button>
-        </div>
-        <div>
-          <NavigatorIcon className="w-20 h-20 text-white" />
-          <span className="text-white">{currentNavigator.name}</span>
+          <div className="flex items-center">
+            <WheelIcon className="w-24 h-24 text-white" />
+            <span className="text-white text-6xl ml-5">
+              {currentDriver.name}
+            </span>
+            <Button
+              className="ml-5 text-5xl h-19"
+              onClick={() => {
+                removeMember({ id: currentDriver.id });
+              }}
+            >
+              <p>Away</p>
+              <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
+            </Button>
+          </div>
+          <div className="flex items-center">
+            <NavigatorIcon className="w-24 h-24 text-white" />
+            <span className="text-white text-6xl ml-5">
+              {currentNavigator.name}
+            </span>
+            <Button
+              className="ml-5 text-5xl h-22"
+              onClick={() => {
+                removeMember({ id: currentNavigator.id });
+              }}
+            >
+              <p className="text-5xl">Away</p>
+              <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
+            </Button>
+          </div>
           <Button
+            className="h-16"
             onClick={() => {
-              removeMember({ id: currentNavigator.id });
+              nextDriver();
             }}
           >
-            <CloseIcon />
-            <p>Away</p>
+            <RightIcon className="text-yellow-500 h-16 w-16" />
           </Button>
         </div>
-
-        <Button
-          onClick={() => {
-            nextDriver();
-          }}
-        >
-          <RightIcon />
-        </Button>
-      </div>
-      <Separator className="bg-zinc-300" />
-      <div>
-        <Button
-          onClick={() => {
-            startTurn();
-          }}
-        >
-          Continue
-        </Button>
+        <Separator className="bg-zinc-500 my-10" />
+        <div className="flex justify-center">
+          <Button
+            onClick={() => {
+              startTurn();
+            }}
+            className="hover:bg-emerald-500 flex-grow h-25 text-6xl flex font-thin p-5 border-zinc-700 border bg-emerald-600"
+          >
+            Continue
+          </Button>
+        </div>
       </div>
     </>
   );
