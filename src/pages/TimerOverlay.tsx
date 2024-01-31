@@ -35,7 +35,6 @@ export function TimerOverlay() {
     RendererWindowBrowser.setOpacity(0.5);
     RendererWindowBrowser.setSize(240, 240);
     RendererWindowBrowser.setAlwaysOnTop(true);
-    RendererWindowBrowser.setIgnoreMouseEvents(true);
     sendMessage({
       channel: customCommandChannelName,
       message: 'move-to-bottom-right',
@@ -69,7 +68,15 @@ export function TimerOverlay() {
 
   return (
     <>
-      <div className="h-60 w-60 bg-black text-white-700 flex items-center flex-col">
+      <div
+        className="h-60 w-60 bg-black text-white-700 flex items-center flex-col"
+        onMouseEnter={() => {
+          sendMessage({
+            channel: customCommandChannelName,
+            message: 'move-window-to-opposite-corner',
+          });
+        }}
+      >
         <h1 className="text-white font-normal flex text-8xl font-sans">
           {minutesRemaining}:{secondsPadded}
         </h1>

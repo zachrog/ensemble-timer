@@ -15,6 +15,9 @@ export function createCustomCommandReceiver({
       case 'toggle-maximize':
         toggleMaximize({ window });
         break;
+      case 'move-window-to-opposite-corner':
+        moveWindowToOppositeCorner({ window });
+        break;
       default:
         console.warn('UH OH no command found for: ', message);
         break;
@@ -29,6 +32,25 @@ function moveWindowToBottomRight({ window }: { window: BrowserWindow }) {
   const y =
     display.workArea.y + display.workAreaSize.height - window.getSize()[1];
   window.setPosition(x, y);
+}
+
+function moveWindowToBottomLeft({ window }: { window: BrowserWindow }) {
+  const display = screen.getDisplayMatching(window.getBounds());
+  const x = display.workArea.x;
+  const y =
+    display.workArea.y + display.workAreaSize.height - window.getSize()[1];
+  window.setPosition(x, y);
+}
+
+function moveWindowToOppositeCorner({ window }: { window: BrowserWindow }) {
+  const display = screen.getDisplayMatching(window.getBounds());
+  const displayCenterLine = display.workArea.x + display.workArea.width / 2;
+  const [currentWindowX] = window.getPosition();
+  if (currentWindowX < displayCenterLine) {
+    moveWindowToBottomRight({ window });
+  } else {
+    moveWindowToBottomLeft({ window });
+  }
 }
 
 function toggleMaximize({ window }: { window: BrowserWindow }) {
