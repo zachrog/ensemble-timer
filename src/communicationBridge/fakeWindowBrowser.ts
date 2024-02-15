@@ -4,7 +4,7 @@ import { mainCommChannelName } from '../../electron/communicationBridge/constant
 export const RendererWindowBrowser: BrowserWindow = new Proxy(
   {},
   {
-    get: (target, prop, receiver) => {
+    get: (_target, prop, _receiver) => {
       return function sendMessageFunction(...args: any[]) {
         window.ipcRenderer.send(mainCommChannelName, {
           functionName: prop,

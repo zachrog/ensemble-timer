@@ -40,10 +40,10 @@ export type AppStore = {
   goToEdit: () => void;
 };
 
-export const useAppStore = create<AppStore>()((set, get) => ({
+export const useAppStore = create<AppStore>()((set) => ({
   currentMode: 'want-a-break?',
   timeStarted: 0,
-  setTimeStarted: () => set((state) => ({ timeStarted: Date.now() })),
+  setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
   timerLength: 1 * 60 * 1000,
   setTimerLength: (timerLength) => set(() => ({ timerLength })),
   breakLength: 1 * 60 * 1000,

@@ -8,4 +8,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
 postMessage({ payload: 'removeLoading' }, '*');
 
 // Use contextBridge
-window.ipcRenderer.on('main-process-message', (_event, message) => {});
+window.ipcRenderer.on('main-process-message', (_event, _message) => {});

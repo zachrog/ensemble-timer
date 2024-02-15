@@ -6,7 +6,7 @@ export function createCustomCommandReceiver({
 }: {
   window: BrowserWindow;
 }) {
-  ipcMain.on(customCommandChannelName, async (metadata, message: string) => {
+  ipcMain.on(customCommandChannelName, async (_metadata, message: string) => {
     console.log(`${customCommandChannelName} received a message: `, message);
     switch (message) {
       case 'move-to-bottom-right':
