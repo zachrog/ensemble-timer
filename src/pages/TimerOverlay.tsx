@@ -20,6 +20,7 @@ export function TimerOverlay() {
     currentRotation,
     currentMode,
     endBreak,
+    goToEdit,
   } = useAppStore((state) => ({
     setTimeRemaining: state.setTimeRemaining,
     timeRemaining: state.timeRemaining,
@@ -28,6 +29,7 @@ export function TimerOverlay() {
     currentRotation: state.currentRotation,
     currentMode: state.currentMode,
     endBreak: state.endBreak,
+    goToEdit: state.goToEdit,
   }));
 
   useEffect(() => {
@@ -40,19 +42,19 @@ export function TimerOverlay() {
       message: 'move-to-bottom-right',
     });
 
-    const listenerFunc = (event: KeyboardEvent) => {
+    const exitTimer = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        console.log('User hit escape');
+        goToEdit();
       }
     };
-    document.addEventListener('keydown', listenerFunc);
+    document.addEventListener('keydown', exitTimer);
 
     const interval = setInterval(() => {
       setTimeRemaining();
     }, 100);
     return () => {
       clearInterval(interval);
-      document.removeEventListener('keydown', listenerFunc);
+      document.removeEventListener('keydown', exitTimer);
     };
   }, []);
 
