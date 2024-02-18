@@ -96,7 +96,9 @@ export const useAppStore = create<AppStore>()((set) => ({
     }),
   setTimeRemaining: () =>
     set((state) => {
-      const timeRemaining = state.timeStarted + state.timerLength - Date.now();
+      const timerLength =
+        state.currentMode === 'break' ? state.breakLength : state.timerLength;
+      const timeRemaining = state.timeStarted + timerLength - Date.now();
       const timeRemainingClamped = Math.max(timeRemaining, 0);
       return { timeRemaining: timeRemainingClamped };
     }),
