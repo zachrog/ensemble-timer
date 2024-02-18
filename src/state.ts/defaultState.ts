@@ -29,6 +29,7 @@ export type AppStore = {
   timeRemaining: number;
   addMember: (member: { name: string }) => void;
   removeMember: (member: { id: number }) => void;
+  randomizeMembers: () => void;
   ensembleMembers: EnsembleMember[];
   setTimeRemaining: () => void;
   newMemberName: string;
@@ -44,7 +45,7 @@ export type AppStore = {
 export const useAppStore = create<AppStore>()(
   persist(
     (set, _get) => ({
-      currentMode: 'want-a-break?',
+      currentMode: 'edit',
       timeStarted: 0,
       setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
       timerLength: 1 * 60 * 1000,
@@ -97,6 +98,19 @@ export const useAppStore = create<AppStore>()(
           state.ensembleMembers.splice(index, 1);
 
           return { ensembleMembers: state.ensembleMembers };
+        }),
+      randomizeMembers: () =>
+        set((state) => {
+          const newOrder: EnsembleMember[] = [];
+          const oldOrder = state.ensembleMembers;
+          while (oldOrder.length) {
+            const remainingCount = oldOrder.length;
+            const randomPosition = Math.floor(Math.random() * remainingCount);
+            const pluckedMember = oldOrder.splice(randomPosition, 1);
+            newOrder.push(pluckedMember[0]);
+          }
+
+          return { ensembleMembers: newOrder };
         }),
       setTimeRemaining: () =>
         set((state) => {

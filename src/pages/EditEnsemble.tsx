@@ -8,6 +8,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import {
   CloseIcon,
+  DiceIcon,
   MinusIcon,
   NavigatorIcon,
   PlusIcon,
@@ -96,8 +97,10 @@ function EnsembleOptions() {
             >
               <MinusIcon />
             </Button>
-            <div className='inline h-10 w-10'>
-              <p className="text-2xl mx-3 inline h-10 w-10">{timerLengthInMinutes}</p>
+            <div className="inline h-10 w-10">
+              <p className="text-2xl mx-3 inline h-10 w-10">
+                {timerLengthInMinutes}
+              </p>
             </div>
             <Button
               onClick={() => {
@@ -163,6 +166,7 @@ function RosterEdit() {
     newMemberName,
     setNewMemberName,
     currentRotation,
+    randomizeMembers,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
@@ -170,6 +174,7 @@ function RosterEdit() {
     newMemberName: state.newMemberName,
     setNewMemberName: state.setNewMemberName,
     currentRotation: state.currentRotation,
+    randomizeMembers: state.randomizeMembers,
   }));
 
   const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
@@ -182,7 +187,18 @@ function RosterEdit() {
     <>
       <Card className="bg-zinc-800 text-zinc-200 ml-3 flex-grow">
         <CardHeader>
-          <CardTitle className="text-4xl">Ensemble</CardTitle>
+          <CardTitle className="text-4xl items-center flex text-zinc-200">
+            Ensemble{' '}
+            <Button
+              className="ml-6"
+              onClick={() => {
+                randomizeMembers();
+              }}
+            >
+              <DiceIcon className="text-zinc-200 w-6 h-6" />
+              <span className="ml-2 text-xl text-zinc-200">Randomize</span>
+            </Button>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-2 flex-wrap">

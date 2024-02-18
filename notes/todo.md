@@ -1,4 +1,3 @@
 - Make an Icon
 - Add randomize button
-- Add persistence of names upon re-opening of application
 - Reduce install size. Windows installed size is ~300MB
