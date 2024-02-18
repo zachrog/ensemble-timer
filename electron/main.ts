@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, Tray } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import { createWindowBrowserReceiver } from './communicationBridge/mainCommunicationBridge';
 import { createCustomCommandReceiver } from './communicationBridge/customCommandReceiver';
