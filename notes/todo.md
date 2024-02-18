@@ -1,3 +1,2 @@
 - Make an Icon
-- Add randomize button
 - Reduce install size. Windows installed size is ~300MB

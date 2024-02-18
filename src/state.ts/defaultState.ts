@@ -176,7 +176,7 @@ export function getCurrentNavigator({
   currentRotation: number;
 }): EnsembleMember {
   const index = (currentRotation + 1) % ensembleMembers.length;
-  return ensembleMembers[index];
+  return ensembleMembers[index] || { id: Math.random(), name: '' };
 }
 
 export function getCurrentDriver({
@@ -187,5 +187,5 @@ export function getCurrentDriver({
   currentRotation: number;
 }): EnsembleMember {
   const index = currentRotation % ensembleMembers.length;
-  return ensembleMembers[index];
+  return ensembleMembers[index] || { id: Math.random(), name: '' };
 }
