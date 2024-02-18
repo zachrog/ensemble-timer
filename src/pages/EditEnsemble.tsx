@@ -9,9 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import {
   CloseIcon,
   DiceIcon,
+  LeftIcon,
   MinusIcon,
   NavigatorIcon,
   PlusIcon,
+  RightIcon,
   WheelIcon,
 } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
@@ -167,6 +169,8 @@ function RosterEdit() {
     setNewMemberName,
     currentRotation,
     randomizeMembers,
+    nextDriver,
+    previousDriver,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
@@ -175,6 +179,8 @@ function RosterEdit() {
     setNewMemberName: state.setNewMemberName,
     currentRotation: state.currentRotation,
     randomizeMembers: state.randomizeMembers,
+    nextDriver: state.nextDriver,
+    previousDriver: state.previousDriver,
   }));
 
   const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
@@ -201,30 +207,48 @@ function RosterEdit() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2 flex-wrap">
-            {ensembleMembers.map((member) => (
-              <Badge key={member.id} className="text-2xl mb-2">
-                {member.id === currentDriver.id && (
-                  <WheelIcon className="w-6 h-6" />
-                )}
-                {member.id === currentNavigator.id && (
-                  <NavigatorIcon className="w-6 h-6" />
-                )}
-                <span className="text-zinc-200 ml-2">{member.name}</span>
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    removeMember({ id: member.id });
-                  }}
-                  className="w-8 h-8 p-1 ml-2"
-                >
-                  <CloseIcon
-                    className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200 hover:text-red-500"
-                    strokeWidth={2}
-                  />
-                </Button>
-              </Badge>
-            ))}
+          <div className='flex items-center'>
+            <Button
+              className=""
+              onClick={() => {
+                nextDriver();
+              }}
+            >
+              <LeftIcon className="h-6 w-6" />
+            </Button>
+            <div className="flex gap-2 flex-wrap px-3">
+              {ensembleMembers.map((member) => (
+                <Badge key={member.id} className="text-2xl">
+                  {member.id === currentDriver.id && (
+                    <WheelIcon className="w-6 h-6" />
+                  )}
+                  {member.id === currentNavigator.id && (
+                    <NavigatorIcon className="w-6 h-6" />
+                  )}
+                  <span className="text-zinc-200 ml-2">{member.name}</span>
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeMember({ id: member.id });
+                    }}
+                    className="w-8 h-8 p-1 ml-2"
+                  >
+                    <CloseIcon
+                      className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200 hover:text-red-500"
+                      strokeWidth={2}
+                    />
+                  </Button>
+                </Badge>
+              ))}
+            </div>
+            <Button
+              className=""
+              onClick={() => {
+                previousDriver();
+              }}
+            >
+              <RightIcon className="h-6 w-6" />
+            </Button>
           </div>
           <form className="flex items-center gap-4">
             <Input

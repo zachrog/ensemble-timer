@@ -109,7 +109,6 @@ export const useAppStore = create<AppStore>()(
             const pluckedMember = oldOrder.splice(randomPosition, 1);
             newOrder.push(pluckedMember[0]);
           }
-
           return { ensembleMembers: newOrder };
         }),
       setTimeRemaining: () =>
