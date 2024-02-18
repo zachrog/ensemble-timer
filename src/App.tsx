@@ -6,7 +6,9 @@ import { useAppStore } from './state.ts/defaultState';
 import { Handoff } from '@/pages/Handoff';
 
 function App() {
-  const currentMode = useAppStore((state) => state.currentMode);
+  const { currentMode } = useAppStore((state) => ({
+    currentMode: state.currentMode,
+  }));
   const shouldDisplayTimer = currentMode === 'timer' || currentMode === 'break';
   return (
     <>

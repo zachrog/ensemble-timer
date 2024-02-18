@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export type EnsembleModes =
   | 'edit'
@@ -40,99 +41,118 @@ export type AppStore = {
   goToEdit: () => void;
 };
 
-export const useAppStore = create<AppStore>()((set) => ({
-  currentMode: 'want-a-break?',
-  timeStarted: 0,
-  setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
-  timerLength: 1 * 60 * 1000,
-  setTimerLength: (timerLength) => set(() => ({ timerLength })),
-  breakLength: 5 * 60 * 1000,
-  setBreakLength: (breakLength) => set(() => ({ breakLength: breakLength })),
-  rotationsPerBreak: 5,
-  currentRotation: 2,
-  setRotationsPerBreak: (rotations) =>
-    set(() => ({ rotationsPerBreak: rotations })),
-  nextDriver: () =>
-    set((state) => {
-      const front = state.ensembleMembers.shift();
-      if (!front) {
-        return { ensembleMembers: [] };
-      }
-      state.ensembleMembers.push(front);
-      return { ensembleMembers: state.ensembleMembers };
+export const useAppStore = create<AppStore>()(
+  persist(
+    (set, _get) => ({
+      currentMode: 'want-a-break?',
+      timeStarted: 0,
+      setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
+      timerLength: 1 * 60 * 1000,
+      setTimerLength: (timerLength) => set(() => ({ timerLength })),
+      breakLength: 5 * 60 * 1000,
+      setBreakLength: (breakLength) =>
+        set(() => ({ breakLength: breakLength })),
+      rotationsPerBreak: 5,
+      currentRotation: 2,
+      setRotationsPerBreak: (rotations) =>
+        set(() => ({ rotationsPerBreak: rotations })),
+      nextDriver: () =>
+        set((state) => {
+          const front = state.ensembleMembers.shift();
+          if (!front) {
+            return { ensembleMembers: [] };
+          }
+          state.ensembleMembers.push(front);
+          return { ensembleMembers: state.ensembleMembers };
+        }),
+      previousDriver: () =>
+        set((state) => {
+          const back = state.ensembleMembers.pop();
+          if (!back) {
+            return { ensembleMembers: [] };
+          }
+          state.ensembleMembers.unshift(back);
+          return { ensembleMembers: state.ensembleMembers };
+        }),
+      timeRemaining: 0,
+      ensembleMembers: [
+        { id: 1, name: 'Zach' },
+        { id: 2, name: 'Rachel' },
+        { id: 3, name: 'Cody' },
+        { id: 4, name: 'Jon' },
+        { id: 5, name: 'Tom' },
+      ],
+      addMember: ({ name }) =>
+        set((state) => ({
+          ensembleMembers: state.ensembleMembers.concat({
+            name,
+            id: Math.random(),
+          }),
+        })),
+      removeMember: ({ id }) =>
+        set((state) => {
+          const index = state.ensembleMembers.findIndex(
+            (ensembleMember) => ensembleMember.id === id,
+          );
+          state.ensembleMembers.splice(index, 1);
+
+          return { ensembleMembers: state.ensembleMembers };
+        }),
+      setTimeRemaining: () =>
+        set((state) => {
+          const timerLength =
+            state.currentMode === 'break'
+              ? state.breakLength
+              : state.timerLength;
+          const timeRemaining = state.timeStarted + timerLength - Date.now();
+          const timeRemainingClamped = Math.max(timeRemaining, 0);
+          return { timeRemaining: timeRemainingClamped };
+        }),
+      newMemberName: '',
+      setNewMemberName: (name) => set(() => ({ newMemberName: name })),
+      startTurn: () =>
+        set((state) => {
+          state.setTimeStarted();
+          state.setTimeRemaining();
+          return { currentMode: 'timer' };
+        }),
+      endTurn: () =>
+        set((state) => {
+          const currentRotation = state.currentRotation + 1;
+          const currentMode =
+            currentRotation >= state.rotationsPerBreak
+              ? 'want-a-break?'
+              : 'handoff';
+
+          return {
+            currentMode,
+            currentRotation,
+          };
+        }),
+      skipBreak: () =>
+        set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
+      takeBreak: () =>
+        set((state) => {
+          state.setTimeStarted();
+          state.setTimeRemaining();
+          return { currentMode: 'break' };
+        }),
+      endBreak: () =>
+        set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
+      goToEdit: () => set(() => ({ currentMode: 'edit' })),
     }),
-  previousDriver: () =>
-    set((state) => {
-      const back = state.ensembleMembers.pop();
-      if (!back) {
-        return { ensembleMembers: [] };
-      }
-      state.ensembleMembers.unshift(back);
-      return { ensembleMembers: state.ensembleMembers };
-    }),
-  timeRemaining: 0,
-  ensembleMembers: [
-    { id: 1, name: 'Zach' },
-    { id: 2, name: 'Rachel' },
-    { id: 3, name: 'Cody' },
-    { id: 4, name: 'Jon' },
-    { id: 5, name: 'Tom' },
-  ],
-  addMember: ({ name }) =>
-    set((state) => ({
-      ensembleMembers: state.ensembleMembers.concat({
-        name,
-        id: Math.random(),
+    {
+      name: 'ensemble-timer-settings',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        ensembleMembers: state.ensembleMembers,
+        rotationsPerBreak: state.rotationsPerBreak,
+        breakLength: state.breakLength,
+        timerLength: state.timerLength,
       }),
-    })),
-  removeMember: ({ id }) =>
-    set((state) => {
-      const index = state.ensembleMembers.findIndex(
-        (ensembleMember) => ensembleMember.id === id,
-      );
-      state.ensembleMembers.splice(index, 1);
-
-      return { ensembleMembers: state.ensembleMembers };
-    }),
-  setTimeRemaining: () =>
-    set((state) => {
-      const timerLength =
-        state.currentMode === 'break' ? state.breakLength : state.timerLength;
-      const timeRemaining = state.timeStarted + timerLength - Date.now();
-      const timeRemainingClamped = Math.max(timeRemaining, 0);
-      return { timeRemaining: timeRemainingClamped };
-    }),
-  newMemberName: '',
-  setNewMemberName: (name) => set(() => ({ newMemberName: name })),
-  startTurn: () =>
-    set((state) => {
-      state.setTimeStarted();
-      state.setTimeRemaining();
-      return { currentMode: 'timer' };
-    }),
-  endTurn: () =>
-    set((state) => {
-      const currentRotation = state.currentRotation + 1;
-      const currentMode =
-        currentRotation >= state.rotationsPerBreak
-          ? 'want-a-break?'
-          : 'handoff';
-
-      return {
-        currentMode,
-        currentRotation,
-      };
-    }),
-  skipBreak: () => set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
-  takeBreak: () =>
-    set((state) => {
-      state.setTimeStarted();
-      state.setTimeRemaining();
-      return { currentMode: 'break' };
-    }),
-  endBreak: () => set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
-  goToEdit: () => set(() => ({ currentMode: 'edit' })),
-}));
+    },
+  ),
+);
 
 export function getCurrentNavigator({
   ensembleMembers,
