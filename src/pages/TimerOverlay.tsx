@@ -40,10 +40,20 @@ export function TimerOverlay() {
       message: 'move-to-bottom-right',
     });
 
+    const listenerFunc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        console.log('User hit escape');
+      }
+    };
+    document.addEventListener('keydown', listenerFunc);
+
     const interval = setInterval(() => {
       setTimeRemaining();
     }, 100);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('keydown', listenerFunc);
+    };
   }, []);
 
   useEffect(() => {
@@ -69,7 +79,7 @@ export function TimerOverlay() {
   return (
     <>
       <div
-        className="h-60 w-60 bg-black text-white-700 flex items-center flex-col"
+        className="h-60 w-60 bg-black text-white flex items-center flex-col justify-between p-2"
         onMouseEnter={() => {
           sendMessage({
             channel: customCommandChannelName,
@@ -86,6 +96,14 @@ export function TimerOverlay() {
           currentNavigator={currentNavigator}
         />
         <BreakDisplay currentMode={currentMode} />
+        <div className="">
+          <span className="text-zinc-300 text-lg font-light">
+            <span className="border-2 rounded-md px-1 border-zinc-300">
+              Esc
+            </span>{' '}
+            to stop
+          </span>
+        </div>
       </div>
     </>
   );
@@ -106,14 +124,12 @@ function TimerDisplay({
   return (
     <>
       <div className="flex items-center">
-        <WheelIcon className="w-6 h-6 text-white" />
-        <span className="text-white text-4xl font-light pl-3">
-          {currentDriver.name}
-        </span>
+        <WheelIcon className="w-6 h-6 " />
+        <span className=" text-4xl font-light pl-3">{currentDriver.name}</span>
       </div>
-      <div className="flex items-center mt-6">
-        <NavigatorIcon className="w-6 h-6 text-white" />
-        <span className="text-white text-4xl font-light pl-3">
+      <div className="flex items-center">
+        <NavigatorIcon className="w-6 h-6" />
+        <span className="text-4xl font-light pl-3">
           {currentNavigator.name}
         </span>
       </div>
@@ -128,8 +144,8 @@ function BreakDisplay({ currentMode }: { currentMode: EnsembleModes }) {
 
   return (
     <>
-      <div className="flex-auto h-max">
-        <CoffeeIcon className="text-emerald-400 w-20 h-20 mt-7" />
+      <div className="">
+        <CoffeeIcon className="text-emerald-400 w-20 h-20" />
       </div>
     </>
   );

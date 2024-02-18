@@ -60,7 +60,7 @@ export function Handoff() {
               previousDriver();
             }}
           >
-            <LeftIcon className="text-yellow-500 h-16 w-16" />
+            <LeftIcon className="h-16 w-16" />
           </Button>
           <div className="flex items-center">
             <WheelIcon className="w-24 h-24 text-white" />
@@ -98,7 +98,7 @@ export function Handoff() {
               nextDriver();
             }}
           >
-            <RightIcon className="text-yellow-500 h-16 w-16" />
+            <RightIcon className="h-16 w-16" />
           </Button>
         </div>
         <Separator className="bg-zinc-500 my-10" />

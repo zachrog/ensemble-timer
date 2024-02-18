@@ -46,7 +46,7 @@ export const useAppStore = create<AppStore>()((set) => ({
   setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
   timerLength: 1 * 60 * 1000,
   setTimerLength: (timerLength) => set(() => ({ timerLength })),
-  breakLength: 1 * 60 * 1000,
+  breakLength: 5 * 60 * 1000,
   setBreakLength: (breakLength) => set(() => ({ breakLength: breakLength })),
   rotationsPerBreak: 5,
   currentRotation: 2,
