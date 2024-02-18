@@ -45,7 +45,7 @@ function createWindow() {
   }
   createWindowBrowserReceiver({ window: win });
   createCustomCommandReceiver({ window: win });
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools(); // opens chrome dev tools
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
