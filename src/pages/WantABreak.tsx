@@ -10,6 +10,8 @@ export function WantABreak() {
     RendererWindowBrowser.setOpacity(1.0);
     RendererWindowBrowser.maximize();
     RendererWindowBrowser.setAlwaysOnTop(false);
+    RendererWindowBrowser.focus();
+    RendererWindowBrowser.moveTop();
     RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 

@@ -22,6 +22,8 @@ export function Handoff() {
     RendererWindowBrowser.setOpacity(1.0);
     RendererWindowBrowser.maximize();
     RendererWindowBrowser.setAlwaysOnTop(false);
+    RendererWindowBrowser.focus();
+    RendererWindowBrowser.moveTop();
     RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 
@@ -55,7 +57,7 @@ export function Handoff() {
         </div>
         <div className="flex justify-around items-center">
           <Button
-            className="h-16"
+            className="h-16 hover:bg-zinc-700"
             onClick={() => {
               previousDriver();
             }}
@@ -68,7 +70,7 @@ export function Handoff() {
               {currentDriver.name}
             </span>
             <Button
-              className="ml-5 text-5xl h-19"
+              className="ml-5 text-5xl h-19 hover:bg-zinc-700"
               onClick={() => {
                 removeMember({ id: currentDriver.id });
               }}
@@ -83,7 +85,7 @@ export function Handoff() {
               {currentNavigator.name}
             </span>
             <Button
-              className="ml-5 text-5xl h-22"
+              className="ml-5 text-5xl h-22 hover:bg-zinc-700"
               onClick={() => {
                 removeMember({ id: currentNavigator.id });
               }}
@@ -93,7 +95,7 @@ export function Handoff() {
             </Button>
           </div>
           <Button
-            className="h-16"
+            className="h-16 hover:bg-zinc-700"
             onClick={() => {
               nextDriver();
             }}

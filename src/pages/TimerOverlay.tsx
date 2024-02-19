@@ -99,7 +99,7 @@ export function TimerOverlay() {
         />
         <BreakDisplay currentMode={currentMode} />
         <div className="">
-          <span className="text-zinc-300 text-lg font-light">
+          <span className="text-zinc-300 text-sm font-light">
             <span className="border-2 rounded-md px-1 border-zinc-300">
               Esc
             </span>{' '}

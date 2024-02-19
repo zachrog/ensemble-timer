@@ -27,6 +27,8 @@ export function EditEnsemble() {
     RendererWindowBrowser.setOpacity(1.0);
     RendererWindowBrowser.maximize();
     RendererWindowBrowser.setAlwaysOnTop(false);
+    RendererWindowBrowser.focus();
+    RendererWindowBrowser.moveTop();
     RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 
@@ -53,7 +55,7 @@ export function EditEnsemble() {
             onClick={() => {
               startProgramming();
             }}
-            className="hover:bg-zinc-700 flex-grow h-25 text-6xl flex font-thin p-3 border-zinc-700 border bg-zinc-900 text-zinc-200"
+            className="hover:bg-emerald-500 flex-grow h-25 text-6xl flex font-thin p-3 border-zinc-700 border bg-emerald-600 text-zinc-200"
           >
             Start
           </Button>
@@ -96,6 +98,7 @@ function EnsembleOptions() {
                 setTimerLength(timerLength - 60 * 1000);
               }}
               disabled={timerLengthInMinutes <= 1}
+              className="hover:bg-zinc-700"
             >
               <MinusIcon />
             </Button>
@@ -108,6 +111,7 @@ function EnsembleOptions() {
               onClick={() => {
                 setTimerLength(timerLength + 60 * 1000);
               }}
+              className="hover:bg-zinc-700"
             >
               <PlusIcon />
             </Button>
@@ -116,6 +120,7 @@ function EnsembleOptions() {
           <h1 className="mt-3 text-2xl">Breaks</h1>
           <div className="mt-2">
             <Button
+              className="hover:bg-zinc-700"
               onClick={() => {
                 setBreakLength(breakLength - 60 * 1000);
               }}
@@ -125,6 +130,7 @@ function EnsembleOptions() {
             </Button>
             <span className="text-2xl mx-3">{breakLengthInMinutes}</span>
             <Button
+              className="hover:bg-zinc-700"
               onClick={() => {
                 setBreakLength(breakLength + 60 * 1000);
               }}
@@ -135,6 +141,7 @@ function EnsembleOptions() {
           </div>
           <div className="mt-2">
             <Button
+              className="hover:bg-zinc-700"
               onClick={() => {
                 setRotationsPerBreak(rotationsPerBreak - 1);
               }}
@@ -144,6 +151,7 @@ function EnsembleOptions() {
             </Button>
             <span className="text-2xl mx-3">{rotationsPerBreak}</span>
             <Button
+              className="hover:bg-zinc-700"
               onClick={() => {
                 setRotationsPerBreak(rotationsPerBreak + 1);
               }}
@@ -196,7 +204,7 @@ function RosterEdit() {
           <CardTitle className="text-4xl items-center flex text-zinc-200">
             Ensemble{' '}
             <Button
-              className="ml-6"
+              className="ml-6 hover:bg-zinc-700"
               onClick={() => {
                 randomizeMembers();
               }}
@@ -207,9 +215,9 @@ function RosterEdit() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='flex items-center'>
+          <div className="flex items-center">
             <Button
-              className=""
+              className="hover:bg-zinc-700"
               onClick={() => {
                 nextDriver();
               }}
@@ -242,7 +250,7 @@ function RosterEdit() {
               ))}
             </div>
             <Button
-              className=""
+              className="hover:bg-zinc-700"
               onClick={() => {
                 previousDriver();
               }}
