@@ -48,13 +48,13 @@ export const useAppStore = create<AppStore>()(
       currentMode: 'edit',
       timeStarted: 0,
       setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
-      timerLength: 1 * 60 * 1000,
+      timerLength: 5 * 60 * 1000,
       setTimerLength: (timerLength) => set(() => ({ timerLength })),
       breakLength: 5 * 60 * 1000,
       setBreakLength: (breakLength) =>
         set(() => ({ breakLength: breakLength })),
-      rotationsPerBreak: 5,
-      currentRotation: 2,
+      rotationsPerBreak: 10,
+      currentRotation: 0,
       setRotationsPerBreak: (rotations) =>
         set(() => ({ rotationsPerBreak: rotations })),
       nextDriver: () =>
@@ -77,11 +77,8 @@ export const useAppStore = create<AppStore>()(
         }),
       timeRemaining: 0,
       ensembleMembers: [
-        { id: 1, name: 'Zach' },
-        { id: 2, name: 'Rachel' },
-        { id: 3, name: 'Cody' },
-        { id: 4, name: 'Jon' },
-        { id: 5, name: 'Tom' },
+        { id: 1, name: 'Person 1' },
+        { id: 2, name: 'Person 2' },
       ],
       addMember: ({ name }) =>
         set((state) => ({
