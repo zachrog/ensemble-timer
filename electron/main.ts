@@ -40,22 +40,23 @@ function createWindow() {
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
   } else {
-    // win.loadFile('dist/index.html')
-    win.loadFile(path.join(process.env.DIST, 'index.html'));
+    win.loadFile('dist/index.html');
   }
   createWindowBrowserReceiver({ window: win });
   createCustomCommandReceiver({ window: win });
   // win.webContents.openDevTools(); // opens chrome dev tools
 }
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-    win = null;
-  }
+  // Quit when all windows are closed, except on macOS. There, it's common
+  // for applications and their menu bar to stay active until the user quits
+  // explicitly with Cmd + Q.
+  // if (process.platform !== 'darwin') {
+  //   app.quit();
+  //   win = null;
+  // }
+  app.quit();
+  win = null;
 });
 
 app.on('browser-window-focus', () => {
