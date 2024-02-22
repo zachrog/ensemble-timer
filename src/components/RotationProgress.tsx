@@ -1,8 +1,8 @@
 import { useAppStore } from '@/state.ts/defaultState';
 
 export function RotationProgress({ className }: { className?: string }) {
-  const { rotationsPerBreak, currentRotation } = useAppStore((state) => ({
-    currentRotation: state.currentRotation,
+  const { rotationsPerBreak, breakRotation } = useAppStore((state) => ({
+    breakRotation: state.breakRotation,
     rotationsPerBreak: state.rotationsPerBreak,
   }));
 
@@ -12,7 +12,7 @@ export function RotationProgress({ className }: { className?: string }) {
         <div className='flex'>
         {new Array(rotationsPerBreak).fill(undefined).map((_, index) => {
           const backgroundColor =
-            index < currentRotation ? 'bg-emerald-500' : 'bg-zinc-700';
+            index < breakRotation ? 'bg-emerald-500' : 'bg-zinc-700';
           return (
             <div
               key={index}

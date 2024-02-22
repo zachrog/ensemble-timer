@@ -20,6 +20,7 @@ export type AppStore = {
   timerLength: number;
   setTimerLength: (timer: number) => void;
   breakLength: number;
+  breakRotation: number;
   setBreakLength: (breakLength: number) => void;
   rotationsPerBreak: number;
   currentRotation: number;
@@ -54,7 +55,8 @@ export const useAppStore = create<AppStore>()(
       setBreakLength: (breakLength) =>
         set(() => ({ breakLength: breakLength })),
       rotationsPerBreak: 10,
-      currentRotation: 0,
+      currentRotation: 9,
+      breakRotation: 9,
       setRotationsPerBreak: (rotations) =>
         set(() => ({ rotationsPerBreak: rotations })),
       nextDriver: () =>
@@ -129,18 +131,20 @@ export const useAppStore = create<AppStore>()(
       endTurn: () =>
         set((state) => {
           const currentRotation = state.currentRotation + 1;
+          const breakRotation = state.breakRotation + 1;
           const currentMode =
-            currentRotation >= state.rotationsPerBreak
+            breakRotation >= state.rotationsPerBreak
               ? 'want-a-break?'
               : 'handoff';
 
           return {
             currentMode,
             currentRotation,
+            breakRotation,
           };
         }),
       skipBreak: () =>
-        set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
+        set(() => ({ currentMode: 'handoff', breakRotation: 0 })),
       takeBreak: () =>
         set((state) => {
           state.setTimeStarted();
@@ -148,7 +152,7 @@ export const useAppStore = create<AppStore>()(
           return { currentMode: 'break' };
         }),
       endBreak: () =>
-        set(() => ({ currentMode: 'handoff', currentRotation: 0 })),
+        set(() => ({ currentMode: 'handoff', breakRotation: 0 })),
       goToEdit: () => set(() => ({ currentMode: 'edit' })),
     }),
     {
