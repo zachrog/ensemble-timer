@@ -32,6 +32,8 @@ export type AppStore = {
   removeMember: (member: { id: number }) => void;
   randomizeMembers: () => void;
   ensembleMembers: EnsembleMember[];
+  inactiveMembers: EnsembleMember[];
+  removeInactiveMember: (member: { id: number }) => void;
   setTimeRemaining: () => void;
   newMemberName: string;
   setNewMemberName: (name: string) => void;
@@ -82,6 +84,16 @@ export const useAppStore = create<AppStore>()(
         { id: 1, name: 'Person 1' },
         { id: 2, name: 'Person 2' },
       ],
+      inactiveMembers: [{ id: 3, name: 'Person 3' }],
+      removeInactiveMember: ({ id }) =>
+        set((state) => {
+          const index = state.inactiveMembers.findIndex(
+            (inactiveMember) => inactiveMember.id === id,
+          );
+          state.inactiveMembers.splice(index, 1);
+
+          return { inactiveMembers: state.inactiveMembers };
+        }),
       addMember: ({ name }) =>
         set((state) => ({
           ensembleMembers: state.ensembleMembers.concat({
@@ -94,9 +106,13 @@ export const useAppStore = create<AppStore>()(
           const index = state.ensembleMembers.findIndex(
             (ensembleMember) => ensembleMember.id === id,
           );
-          state.ensembleMembers.splice(index, 1);
+          const removedMember = state.ensembleMembers.splice(index, 1);
+          state.inactiveMembers.push(removedMember[0]);
 
-          return { ensembleMembers: state.ensembleMembers };
+          return {
+            ensembleMembers: state.ensembleMembers,
+            inactiveMembers: state.inactiveMembers,
+          };
         }),
       randomizeMembers: () =>
         set((state) => {
@@ -151,8 +167,7 @@ export const useAppStore = create<AppStore>()(
           state.setTimeRemaining();
           return { currentMode: 'break' };
         }),
-      endBreak: () =>
-        set(() => ({ currentMode: 'handoff', breakRotation: 0 })),
+      endBreak: () => set(() => ({ currentMode: 'handoff', breakRotation: 0 })),
       goToEdit: () => set(() => ({ currentMode: 'edit' })),
     }),
     {
@@ -163,6 +178,7 @@ export const useAppStore = create<AppStore>()(
         rotationsPerBreak: state.rotationsPerBreak,
         breakLength: state.breakLength,
         timerLength: state.timerLength,
+        inactiveMembers: state.inactiveMembers
       }),
     },
   ),

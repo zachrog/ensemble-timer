@@ -179,6 +179,8 @@ function RosterEdit() {
     randomizeMembers,
     nextDriver,
     previousDriver,
+    inactiveMembers,
+    removeInactiveMember,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
@@ -189,6 +191,8 @@ function RosterEdit() {
     randomizeMembers: state.randomizeMembers,
     nextDriver: state.nextDriver,
     previousDriver: state.previousDriver,
+    inactiveMembers: state.inactiveMembers,
+    removeInactiveMember: state.removeInactiveMember,
   }));
 
   const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
@@ -202,7 +206,7 @@ function RosterEdit() {
       <Card className="bg-zinc-800 text-zinc-200 ml-3 flex-grow">
         <CardHeader>
           <CardTitle className="text-4xl items-center flex text-zinc-200">
-            Ensemble{' '}
+            Active{' '}
             <Button
               className="ml-6 hover:bg-zinc-700"
               onClick={() => {
@@ -277,6 +281,34 @@ function RosterEdit() {
               Add
             </Button>
           </form>
+        </CardContent>
+        <CardHeader>
+          <CardTitle className="text-4xl items-center flex text-zinc-200">
+            Inactive
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center">
+            <div className="flex gap-2 flex-wrap">
+              {inactiveMembers.map((member) => (
+                <Badge key={member.id} className="text-2xl">
+                  <span className="text-zinc-200 ml-2">{member.name}</span>
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeInactiveMember({ id: member.id });
+                    }}
+                    className="w-8 h-8 p-1 ml-2"
+                  >
+                    <CloseIcon
+                      className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200 hover:text-red-500"
+                      strokeWidth={2}
+                    />
+                  </Button>
+                </Badge>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </>
