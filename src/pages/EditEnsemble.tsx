@@ -205,7 +205,7 @@ function RosterEdit() {
     <>
       <Card className="bg-zinc-800 text-zinc-200 ml-3 flex-grow">
         <CardHeader>
-          <CardTitle className="text-4xl items-center flex text-zinc-200">
+          <CardTitle className="text-4xl flex text-zinc-200">
             Active{' '}
             <Button
               className="ml-6 hover:bg-zinc-700"
@@ -214,9 +214,28 @@ function RosterEdit() {
               }}
             >
               <DiceIcon className="text-zinc-200 w-6 h-6" />
-              <span className="ml-2 text-xl text-zinc-200">Randomize</span>
             </Button>
           </CardTitle>
+          <form className="flex items-center gap-3">
+            <Input
+              value={newMemberName}
+              placeholder="Name"
+              onChange={(e) => setNewMemberName(e.target.value)}
+              className="w-30 bg-zinc-800 text-2xl h-10 mt-3"
+            ></Input>
+            <Button
+              className="mt-3 inline"
+              onClick={(e) => {
+                e.preventDefault();
+                addMember({ name: newMemberName });
+                setNewMemberName('');
+              }}
+              disabled={!newMemberName}
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
         </CardHeader>
         <CardContent>
           <div className="flex items-center">
@@ -262,25 +281,6 @@ function RosterEdit() {
               <RightIcon className="h-6 w-6" />
             </Button>
           </div>
-          <form className="flex items-center gap-4">
-            <Input
-              value={newMemberName}
-              placeholder="Name"
-              onChange={(e) => setNewMemberName(e.target.value)}
-              className="w-30 bg-zinc-800 text-2xl h-13 mt-3"
-            ></Input>
-            <Button
-              className="mt-3 inline"
-              onClick={(e) => {
-                e.preventDefault();
-                addMember({ name: newMemberName });
-                setNewMemberName('');
-              }}
-              disabled={!newMemberName}
-            >
-              Add
-            </Button>
-          </form>
         </CardContent>
         <CardHeader>
           <CardTitle className="text-4xl items-center flex text-zinc-200">
