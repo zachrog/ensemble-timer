@@ -21,6 +21,7 @@ export type AppStore = {
   setTimerLength: (timer: number) => void;
   breakLength: number;
   breakRotation: number;
+  setBreakRotation: (breakRotation: number) => void;
   setBreakLength: (breakLength: number) => void;
   rotationsPerBreak: number;
   currentRotation: number;
@@ -47,7 +48,7 @@ export type AppStore = {
 
 export const useAppStore = create<AppStore>()(
   persist(
-    (set, _get) => ({
+    (set) => ({
       currentMode: 'edit',
       timeStarted: 0,
       setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
@@ -59,6 +60,7 @@ export const useAppStore = create<AppStore>()(
       rotationsPerBreak: 10,
       currentRotation: 9,
       breakRotation: 9,
+      setBreakRotation: (breakRotation) => set(() => ({ breakRotation })),
       setRotationsPerBreak: (rotations) =>
         set(() => ({ rotationsPerBreak: rotations })),
       nextDriver: () =>
@@ -178,7 +180,7 @@ export const useAppStore = create<AppStore>()(
         rotationsPerBreak: state.rotationsPerBreak,
         breakLength: state.breakLength,
         timerLength: state.timerLength,
-        inactiveMembers: state.inactiveMembers
+        inactiveMembers: state.inactiveMembers,
       }),
     },
   ),
