@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { RotationProgress } from '@/components/RotationProgress';
+import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
 
 export function EditEnsemble() {
@@ -44,7 +44,7 @@ export function EditEnsemble() {
   return (
     <>
       <div className="p-3">
-        <RotationProgress />
+        <BreakProgress />
         <div className="flex mt-3">
           <EnsembleOptions />
           <RosterEdit />

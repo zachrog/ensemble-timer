@@ -1,5 +1,5 @@
 import { RendererWindowBrowser } from '@/communicationBridge/fakeWindowBrowser';
-import { RotationProgress } from '@/components/RotationProgress';
+import { BreakProgress } from '@/components/BreakProgress';
 import { Settings } from '@/components/Settings';
 import {
   CloseIcon,
@@ -52,7 +52,7 @@ export function Handoff() {
     <>
       <div className="p-3">
         <div className="flex justify-between content-center">
-          <RotationProgress />
+          <BreakProgress />
           <Settings />
         </div>
         <div className="flex justify-around items-center">
