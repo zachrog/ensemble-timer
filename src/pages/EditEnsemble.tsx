@@ -181,6 +181,7 @@ function RosterEdit() {
     previousDriver,
     inactiveMembers,
     removeInactiveMember,
+    inactiveToActive,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
@@ -193,6 +194,7 @@ function RosterEdit() {
     previousDriver: state.previousDriver,
     inactiveMembers: state.inactiveMembers,
     removeInactiveMember: state.removeInactiveMember,
+    inactiveToActive: state.inactiveToActive,
   }));
 
   const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
@@ -242,7 +244,7 @@ function RosterEdit() {
             <Button
               className="hover:bg-zinc-700"
               onClick={() => {
-                nextDriver();
+                previousDriver();
               }}
             >
               <LeftIcon className="h-6 w-6" />
@@ -265,7 +267,7 @@ function RosterEdit() {
                     className="w-8 h-8 p-1 ml-2"
                   >
                     <CloseIcon
-                      className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200 hover:text-red-500"
+                      className="w-6 h-6 rounded-full text-zinc-200 hover:text-red-500"
                       strokeWidth={2}
                     />
                   </Button>
@@ -275,7 +277,7 @@ function RosterEdit() {
             <Button
               className="hover:bg-zinc-700"
               onClick={() => {
-                previousDriver();
+                nextDriver();
               }}
             >
               <RightIcon className="h-6 w-6" />
@@ -291,20 +293,27 @@ function RosterEdit() {
           <div className="flex items-center">
             <div className="flex gap-2 flex-wrap">
               {inactiveMembers.map((member) => (
-                <Badge key={member.id} className="text-2xl">
+                <Badge
+                  key={member.id}
+                  className="text-2xl cursor-pointer hover:bg-zinc-700"
+                  onClick={() => {
+                    inactiveToActive({ id: member.id });
+                  }}
+                >
                   <span className="text-zinc-200 ml-2">{member.name}</span>
-                  <Button
+                  <button
                     onClick={(e) => {
                       e.preventDefault();
+                      e.stopPropagation();
                       removeInactiveMember({ id: member.id });
                     }}
-                    className="w-8 h-8 p-1 ml-2"
+                    className="ml-2"
                   >
                     <CloseIcon
-                      className="w-6 h-6 bg-zinc-700 rounded-full text-zinc-200 hover:text-red-500"
+                      className="w-6 h-6 rounded-full text-zinc-200 hover:text-red-500"
                       strokeWidth={2}
                     />
-                  </Button>
+                  </button>
                 </Badge>
               ))}
             </div>

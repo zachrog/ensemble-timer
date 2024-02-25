@@ -1,4 +1,3 @@
 - Make an Icon
 - Reduce install size. Windows installed size is ~300MB
-- Create Dock of people that you are not mobbing with but can be easily added in.
 - Add gradient css hover effect.

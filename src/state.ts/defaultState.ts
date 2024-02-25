@@ -35,6 +35,7 @@ export type AppStore = {
   ensembleMembers: EnsembleMember[];
   inactiveMembers: EnsembleMember[];
   removeInactiveMember: (member: { id: number }) => void;
+  inactiveToActive: (member: { id: number }) => void;
   setTimeRemaining: () => void;
   newMemberName: string;
   setNewMemberName: (name: string) => void;
@@ -58,28 +59,18 @@ export const useAppStore = create<AppStore>()(
       setBreakLength: (breakLength) =>
         set(() => ({ breakLength: breakLength })),
       rotationsPerBreak: 10,
-      currentRotation: 9,
-      breakRotation: 9,
+      currentRotation: 1000000, // Start at high rotation so we do not get into negative number logic
+      breakRotation: 0,
       setBreakRotation: (breakRotation) => set(() => ({ breakRotation })),
       setRotationsPerBreak: (rotations) =>
         set(() => ({ rotationsPerBreak: rotations })),
       nextDriver: () =>
         set((state) => {
-          const front = state.ensembleMembers.shift();
-          if (!front) {
-            return { ensembleMembers: [] };
-          }
-          state.ensembleMembers.push(front);
-          return { ensembleMembers: state.ensembleMembers };
+          return { currentRotation: state.currentRotation + 1 };
         }),
       previousDriver: () =>
         set((state) => {
-          const back = state.ensembleMembers.pop();
-          if (!back) {
-            return { ensembleMembers: [] };
-          }
-          state.ensembleMembers.unshift(back);
-          return { ensembleMembers: state.ensembleMembers };
+          return { currentRotation: state.currentRotation - 1 };
         }),
       timeRemaining: 0,
       ensembleMembers: [
@@ -95,6 +86,18 @@ export const useAppStore = create<AppStore>()(
           state.inactiveMembers.splice(index, 1);
 
           return { inactiveMembers: state.inactiveMembers };
+        }),
+      inactiveToActive: ({ id }) =>
+        set((state) => {
+          const index = state.inactiveMembers.findIndex(
+            (inactiveMember) => inactiveMember.id === id,
+          );
+          const removedMember = state.inactiveMembers.splice(index, 1);
+          state.ensembleMembers.push(removedMember[0]);
+          return {
+            ensembleMembers: state.ensembleMembers,
+            inactiveMembers: state.inactiveMembers,
+          };
         }),
       addMember: ({ name }) =>
         set((state) => ({
