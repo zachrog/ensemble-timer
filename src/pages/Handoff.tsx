@@ -1,4 +1,5 @@
 import { RendererWindowBrowser } from '@/communicationBridge/fakeWindowBrowser';
+import { sendMessage } from '@/communicationBridge/rendererCommunicationBridge';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Settings } from '@/components/Settings';
 import {
@@ -15,16 +16,15 @@ import {
   getCurrentNavigator,
   useAppStore,
 } from '@/state.ts/defaultState';
+import { customCommandChannelName } from '../../electron/communicationBridge/constants';
 import { useEffect } from 'react';
 
 export function Handoff() {
   useEffect(() => {
     RendererWindowBrowser.setOpacity(1.0);
+    sendMessage({ channel: customCommandChannelName, message: 'focus' });
     RendererWindowBrowser.maximize();
     RendererWindowBrowser.setAlwaysOnTop(false);
-    RendererWindowBrowser.focus();
-    RendererWindowBrowser.moveTop();
-    RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 
   const {

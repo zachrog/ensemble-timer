@@ -1,18 +1,18 @@
 import { RendererWindowBrowser } from '@/communicationBridge/fakeWindowBrowser';
+import { sendMessage } from '@/communicationBridge/rendererCommunicationBridge';
 import { Settings } from '@/components/Settings';
 import { CoffeeIcon } from '@/components/icons/icons';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/state.ts/defaultState';
+import { customCommandChannelName } from '../../electron/communicationBridge/constants';
 import { useEffect } from 'react';
 
 export function WantABreak() {
   useEffect(() => {
     RendererWindowBrowser.setOpacity(1.0);
+    sendMessage({ channel: customCommandChannelName, message: 'focus' });
     RendererWindowBrowser.maximize();
     RendererWindowBrowser.setAlwaysOnTop(false);
-    RendererWindowBrowser.focus();
-    RendererWindowBrowser.moveTop();
-    RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 
   const { takeBreak, skipBreak } = useAppStore((state) => ({

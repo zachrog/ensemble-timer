@@ -1,5 +1,6 @@
 import { BrowserWindow, screen, ipcMain } from 'electron';
 import { customCommandChannelName } from './constants';
+import { app } from 'electron';
 
 export function createCustomCommandReceiver({
   window,
@@ -17,6 +18,9 @@ export function createCustomCommandReceiver({
         break;
       case 'move-window-to-opposite-corner':
         moveWindowToOppositeCorner({ window });
+        break;
+      case 'focus':
+        focus();
         break;
       default:
         console.warn('UH OH no command found for: ', message);
@@ -59,4 +63,8 @@ function toggleMaximize({ window }: { window: BrowserWindow }) {
   } else {
     window.maximize();
   }
+}
+
+function focus() {
+  app.focus({ steal: true });
 }

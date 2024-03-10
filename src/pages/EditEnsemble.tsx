@@ -21,15 +21,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
+import { sendMessage } from '@/communicationBridge/rendererCommunicationBridge';
+import { customCommandChannelName } from '../../electron/communicationBridge/constants';
 
 export function EditEnsemble() {
   useEffect(() => {
     RendererWindowBrowser.setOpacity(1.0);
+    sendMessage({ channel: customCommandChannelName, message: 'focus' });
     RendererWindowBrowser.maximize();
     RendererWindowBrowser.setAlwaysOnTop(false);
-    RendererWindowBrowser.focus();
-    RendererWindowBrowser.moveTop();
-    RendererWindowBrowser.setIgnoreMouseEvents(false);
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
