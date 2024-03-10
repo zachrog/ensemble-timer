@@ -1,7 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import { createWindowBrowserReceiver } from './communicationBridge/mainCommunicationBridge';
 import { createCustomCommandReceiver } from './communicationBridge/customCommandReceiver';
+import {
+  customCommandChannelName,
+  mainCommChannelName,
+} from './communicationBridge/constants';
 
 // The built directory structure
 //
@@ -55,6 +59,8 @@ app.on('window-all-closed', () => {
   //   app.quit();
   //   win = null;
   // }
+  ipcMain.removeAllListeners(mainCommChannelName);
+  ipcMain.removeAllListeners(customCommandChannelName);
   app.quit();
   win = null;
 });
@@ -69,6 +75,13 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+app.on('quit', () => {
+  ipcMain.removeAllListeners(mainCommChannelName);
+  ipcMain.removeAllListeners(customCommandChannelName);
+  app.quit();
+  win = null;
 });
 
 app.whenReady().then(() => {
