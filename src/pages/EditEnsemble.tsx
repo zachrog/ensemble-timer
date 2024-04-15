@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { RendererWindowBrowser } from '../communicationBridge/fakeWindowBrowser';
 import {
   getCurrentDriver,
   getCurrentNavigator,
