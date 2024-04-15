@@ -21,15 +21,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
-import { sendMessage } from '@/communicationBridge/rendererCommunicationBridge';
-import { customCommandChannelName } from '../../electron/communicationBridge/constants';
+import { transitionToFullscreen } from '@/windowUtils/fullscreen';
 
 export function EditEnsemble() {
   useEffect(() => {
-    RendererWindowBrowser.setOpacity(1.0);
-    sendMessage({ channel: customCommandChannelName, message: 'focus' });
-    RendererWindowBrowser.maximize();
-    RendererWindowBrowser.setAlwaysOnTop(false);
+    transitionToFullscreen();
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
