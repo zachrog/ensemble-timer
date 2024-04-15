@@ -196,7 +196,7 @@ export function getCurrentNavigator({
   ensembleMembers: EnsembleMember[];
   currentRotation: number;
 }): EnsembleMember {
-  const index = (currentRotation + 1) % ensembleMembers.length;
+  const index = currentRotation % ensembleMembers.length;
   return ensembleMembers[index] || { id: Math.random(), name: '' };
 }
 
@@ -207,6 +207,7 @@ export function getCurrentDriver({
   ensembleMembers: EnsembleMember[];
   currentRotation: number;
 }): EnsembleMember {
-  const index = currentRotation % ensembleMembers.length;
+  const index = (currentRotation + 1) % ensembleMembers.length;
   return ensembleMembers[index] || { id: Math.random(), name: '' };
 }
+
