@@ -1,7 +1,7 @@
 {
   "name": "ensemble-timer",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build && electron-builder --windows --mac",
