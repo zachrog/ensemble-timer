@@ -51,6 +51,7 @@ export function TimerOverlay() {
 
     const interval = setInterval(() => {
       setTimeRemaining();
+      RendererWindowBrowser.setAlwaysOnTop(true); // setAlwaysOnTop does not always work. Bug in electron. Need to constantly set: https://github.com/electron/electron/issues/2097
     }, 100);
     return () => {
       clearInterval(interval);
