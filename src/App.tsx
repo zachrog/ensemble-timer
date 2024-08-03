@@ -14,7 +14,7 @@ function App() {
     <>
       <div className="flex flex-col bg-zinc-800 antialiased h-screen">
         <WindowControls />
-        {shouldDisplayTimer && <TimerOverlay />}
+        <div className='overflow-hidden'>{shouldDisplayTimer && <TimerOverlay />}</div>
         {currentMode === 'edit' && <EditEnsemble />}
         {currentMode === 'handoff' && <Handoff />}
         {currentMode === 'want-a-break?' && <WantABreak />}
