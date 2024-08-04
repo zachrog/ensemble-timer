@@ -2,47 +2,38 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "com.ensemble-timer.app",
-  "asar": true,
-  "productName": "Ensemble Timer",
-  "directories": {
-    "output": "release/${version}"
+  $schema: 'https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json',
+  appId: 'com.ensemble-timer.app',
+  asar: true,
+  productName: 'Ensemble Timer',
+  directories: {
+    output: 'release/${version}',
   },
-  "files": [
-    "dist",
-    "dist-electron"
-  ],
-  "directories": {
-    "buildResources": "public"
+  files: ['dist', 'dist-electron'],
+  directories: {
+    buildResources: 'public',
   },
-  "mac": {
-    "target": [
-      "dmg"
-    ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+  mac: {
+    target: ['dmg'],
+    artifactName: '${productName}-Mac-${version}-Installer.${ext}',
   },
-  "win": {
-    "target": [
+  win: {
+    target: [
       {
-        "target": "nsis",
-        "arch": [
-          "x64"
-        ]
-      }
+        target: 'nsis',
+        arch: ['x64'],
+      },
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    artifactName: '${productName}-Windows-${version}-Setup.${ext}',
   },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": true
+  nsis: {
+    oneClick: false,
+    perMachine: false,
+    allowToChangeInstallationDirectory: true,
+    deleteAppDataOnUninstall: true,
   },
-  "linux": {
-    "target": [
-      "AppImage"
-    ],
-    "artifactName": "${productName}-Linux-${version}.${ext}"
-  }
+  linux: {
+    target: ['AppImage'],
+    artifactName: '${productName}-Linux-${version}.${ext}',
+  },
 }
