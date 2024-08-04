@@ -13,13 +13,18 @@
     "dist",
     "dist-electron"
   ],
+  "directories": {
+    "buildResources": "public"
+  },
   "mac": {
+    "icon": "ensembleIcon.icns",
     "target": [
       "dmg"
     ],
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
   },
   "win": {
+    "icon": "ensembleIcon.ico",
     "target": [
       {
         "target": "nsis",

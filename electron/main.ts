@@ -27,7 +27,7 @@ const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    // icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     frame: false, // controls whether the window has minimize, maximaize, close. Do not want this when showing semi-transparent timer
     autoHideMenuBar: true,
     webPreferences: {
