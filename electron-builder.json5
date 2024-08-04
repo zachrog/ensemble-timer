@@ -7,12 +7,10 @@
   asar: true,
   productName: 'Ensemble Timer',
   directories: {
+    buildResources: 'public',
     output: 'release/${version}',
   },
   files: ['dist', 'dist-electron'],
-  directories: {
-    buildResources: 'public',
-  },
   mac: {
     target: ['dmg'],
     artifactName: '${productName}-Mac-${version}-Installer.${ext}',
