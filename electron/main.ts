@@ -61,8 +61,8 @@ app.on('window-all-closed', () => {
   // }
   ipcMain.removeAllListeners(mainCommChannelName);
   ipcMain.removeAllListeners(customCommandChannelName);
-  app.quit();
   win = null;
+  app.quit();
 });
 
 app.on('browser-window-focus', () => {
@@ -81,7 +81,6 @@ app.on('quit', () => {
   ipcMain.removeAllListeners(mainCommChannelName);
   ipcMain.removeAllListeners(customCommandChannelName);
   app.quit();
-  win = null;
 });
 
 app.whenReady().then(() => {
