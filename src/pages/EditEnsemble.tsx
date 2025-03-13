@@ -20,11 +20,32 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
-import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { transitionToFullscreen, restoreLastWindowSize } from '@/windowUtils/fullscreen';
+import { RendererWindowBrowser } from '@/communicationBridge/fakeWindowBrowser';
 
 export function EditEnsemble() {
   useEffect(() => {
-    transitionToFullscreen();
+    // Check if we should restore window size from timer mode
+    const { shouldRestoreWindowSize, resetShouldRestoreWindowSize } = useAppStore.getState();
+    
+    if (shouldRestoreWindowSize) {
+      // Coming from timer, restore saved size instead of maximizing
+      console.log('Restoring window size from timer mode');
+      RendererWindowBrowser.setOpacity(1.0);
+      
+      // First focus the window and make sure it's visible
+      RendererWindowBrowser.focus();
+      
+      // Then restore the saved window size
+      restoreLastWindowSize();
+      
+      // Reset the flag so we don't restore next time
+      resetShouldRestoreWindowSize();
+    } else {
+      // Normal flow, go to fullscreen
+      console.log('Normal transition to fullscreen');
+      transitionToFullscreen();
+    }
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
@@ -77,8 +98,10 @@ function EnsembleOptions() {
     setRotationsPerBreak: state.setRotationsPerBreak,
   }));
 
-  const timerLengthInMinutes = Math.round(timerLength / (60 * 1000));
-  const breakLengthInMinutes = Math.round(breakLength / (60 * 1000));
+  // Display time in minutes and seconds
+  const timerMinutes = Math.floor(timerLength / (60 * 1000));
+  const timerSeconds = (timerLength % (60 * 1000)) / 1000;
+  const timerDisplay = timerSeconds > 0 ? `${timerMinutes}:${timerSeconds === 30 ? '30' : '00'}` : `${timerMinutes}`;
   return (
     <>
       <Card className="bg-zinc-800 text-zinc-200 flex-none">
@@ -90,49 +113,62 @@ function EnsembleOptions() {
           <div className="mt-2">
             <Button
               onClick={() => {
-                setTimerLength(timerLength - 60 * 1000);
+                // Reduce by 30 seconds
+                setTimerLength(timerLength - 30 * 1000);
               }}
-              disabled={timerLengthInMinutes <= 1}
+              // Allow a minimum of 30 seconds
+              disabled={timerLength <= 30 * 1000}
               className="hover:bg-zinc-700"
             >
               <MinusIcon />
             </Button>
-            <div className="inline h-10 w-10">
-              <p className="text-2xl mx-3 inline h-10 w-10">
-                {timerLengthInMinutes}
+            <div className="inline h-10 w-16">
+              <p className="text-2xl mx-3 inline h-10 w-16">
+                {timerDisplay}
               </p>
             </div>
             <Button
               onClick={() => {
-                setTimerLength(timerLength + 60 * 1000);
+                // Increase by 30 seconds
+                setTimerLength(timerLength + 30 * 1000);
               }}
               className="hover:bg-zinc-700"
             >
               <PlusIcon />
             </Button>
-            <span className="text-2xl ml-3">Minutes</span>
+            <span className="text-2xl ml-3">{timerSeconds > 0 ? 'Min:Sec' : 'Minutes'}</span>
           </div>
           <h1 className="mt-3 text-2xl">Breaks</h1>
           <div className="mt-2">
             <Button
               className="hover:bg-zinc-700"
               onClick={() => {
-                setBreakLength(breakLength - 60 * 1000);
+                setBreakLength(breakLength - 30 * 1000);
               }}
-              disabled={breakLengthInMinutes <= 1}
+              disabled={breakLength <= 30 * 1000}
             >
               <MinusIcon />
             </Button>
-            <span className="text-2xl mx-3">{breakLengthInMinutes}</span>
+            <div className="inline h-10 w-16">
+              {breakLength % (60 * 1000) === 0 ? (
+                <span className="text-2xl mx-3">{Math.floor(breakLength / (60 * 1000))}</span>
+              ) : (
+                <span className="text-2xl mx-3">
+                  {Math.floor(breakLength / (60 * 1000))}:30
+                </span>
+              )}
+            </div>
             <Button
               className="hover:bg-zinc-700"
               onClick={() => {
-                setBreakLength(breakLength + 60 * 1000);
+                setBreakLength(breakLength + 30 * 1000);
               }}
             >
               <PlusIcon />
             </Button>
-            <span className="text-2xl ml-3">Minutes</span>
+            <span className="text-2xl ml-3">
+              {breakLength % (60 * 1000) === 0 ? "Minutes" : "Min:Sec"}
+            </span>
           </div>
           <div className="mt-2">
             <Button
@@ -154,7 +190,7 @@ function EnsembleOptions() {
               <PlusIcon />
             </Button>
             <span className="text-2xl ml-3">
-              Every {rotationsPerBreak * timerLengthInMinutes} Minutes
+              Every {rotationsPerBreak * timerMinutes + (timerSeconds > 0 ? rotationsPerBreak * 0.5 : 0)} Minutes
             </span>
           </div>
         </CardContent>

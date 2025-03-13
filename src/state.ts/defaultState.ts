@@ -15,6 +15,7 @@ export type EnsembleMember = {
 
 export type AppStore = {
   currentMode: EnsembleModes;
+  previousMode: EnsembleModes | null;
   timeStarted: number;
   setTimeStarted: () => void;
   timerLength: number;
@@ -45,12 +46,17 @@ export type AppStore = {
   takeBreak: () => void;
   endBreak: () => void;
   goToEdit: () => void;
+  shouldRestoreWindowSize: boolean;
+  resetShouldRestoreWindowSize: () => void;
 };
 
 export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
       currentMode: 'edit',
+      previousMode: null,
+      shouldRestoreWindowSize: false,
+      resetShouldRestoreWindowSize: () => set(() => ({ shouldRestoreWindowSize: false })),
       timeStarted: 0,
       setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
       timerLength: 5 * 60 * 1000,
@@ -147,33 +153,44 @@ export const useAppStore = create<AppStore>()(
         set((state) => {
           state.setTimeStarted();
           state.setTimeRemaining();
-          return { currentMode: 'timer' };
+          return { previousMode: state.currentMode, currentMode: 'timer' };
         }),
       endTurn: () =>
         set((state) => {
           const currentRotation = state.currentRotation + 1;
           const breakRotation = state.breakRotation + 1;
-          const currentMode =
+          const newMode =
             breakRotation >= state.rotationsPerBreak
               ? 'want-a-break?'
               : 'handoff';
 
+          // Save the previous mode to know we're coming from timer
           return {
-            currentMode,
+            previousMode: state.currentMode,
+            currentMode: newMode,
             currentRotation,
             breakRotation,
           };
         }),
       skipBreak: () =>
-        set(() => ({ currentMode: 'handoff', breakRotation: 0 })),
+        set((state) => ({ previousMode: state.currentMode, currentMode: 'handoff', breakRotation: 0 })),
       takeBreak: () =>
         set((state) => {
           state.setTimeStarted();
           state.setTimeRemaining();
-          return { currentMode: 'break' };
+          return { previousMode: state.currentMode, currentMode: 'break' };
         }),
-      endBreak: () => set(() => ({ currentMode: 'handoff', breakRotation: 0 })),
-      goToEdit: () => set(() => ({ currentMode: 'edit' })),
+      endBreak: () => set((state) => ({ previousMode: state.currentMode, currentMode: 'handoff', breakRotation: 0 })),
+      goToEdit: () => set((state) => { 
+        // Set flag to restore window size if coming from timer mode
+        const shouldRestore = state.currentMode === 'timer';
+        console.log('goToEdit: previousMode =', state.currentMode, 'shouldRestoreWindowSize =', shouldRestore);
+        return { 
+          previousMode: state.currentMode,
+          currentMode: 'edit',
+          shouldRestoreWindowSize: shouldRestore
+        };
+      }),
     }),
     {
       name: 'ensemble-timer-settings',

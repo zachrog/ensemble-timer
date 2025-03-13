@@ -3,11 +3,20 @@ import { CoffeeIcon } from '@/components/icons/icons';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/state.ts/defaultState';
 import { useEffect } from 'react';
-import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { transitionToFullscreen, transitionFromTimer } from '@/windowUtils/fullscreen';
 
 export function WantABreak() {
   useEffect(() => {
-    transitionToFullscreen();
+    // Check if we're coming from timer mode
+    const { previousMode } = useAppStore.getState();
+    
+    if (previousMode === 'timer') {
+      // If coming from timer, try to restore previous size
+      transitionFromTimer();
+    } else {
+      // Otherwise use full screen
+      transitionToFullscreen();
+    }
   }, []);
 
   const { takeBreak, skipBreak } = useAppStore((state) => ({
