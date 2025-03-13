@@ -35,7 +35,18 @@ export function TimerOverlay() {
   useEffect(() => {
     RendererWindowBrowser.restore();
     RendererWindowBrowser.setOpacity(0.5);
-    RendererWindowBrowser.setSize(240, 240);
+    
+    // Check if we should use a default size or restore previous size
+    sendMessage({
+      channel: customCommandChannelName,
+      message: 'restore-window-size',
+    });
+    
+    // Set the overlay size as fallback if no saved size
+    setTimeout(() => {
+      RendererWindowBrowser.setSize(240, 240);
+    }, 100);
+    
     RendererWindowBrowser.setAlwaysOnTop(true);
     sendMessage({
       channel: customCommandChannelName,
@@ -44,6 +55,11 @@ export function TimerOverlay() {
 
     const exitTimer = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        // Save window size before exiting timer
+        sendMessage({
+          channel: customCommandChannelName,
+          message: 'save-window-size',
+        });
         goToEdit();
       }
     };

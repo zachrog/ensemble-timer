@@ -2,11 +2,24 @@ import { BrowserWindow, screen, ipcMain } from 'electron';
 import { customCommandChannelName } from './constants';
 import { app } from 'electron';
 
+// Store the window size before maximizing
+let savedWindowSize: { width: number; height: number } | null = null;
+
 export function createCustomCommandReceiver({
   window,
 }: {
   window: BrowserWindow;
 }) {
+  // Listen for window resize events to track manual resizing by the user
+  window.on('resize', () => {
+    // Only save size if window is not maximized to avoid saving fullscreen dimensions
+    if (!window.isMaximized()) {
+      const [width, height] = window.getSize();
+      savedWindowSize = { width, height };
+      console.log('Window resized by user, saved size:', savedWindowSize);
+    }
+  });
+
   ipcMain.on(customCommandChannelName, async (_metadata, message: string) => {
     console.log(`${customCommandChannelName} received a message: `, message);
     switch (message) {
@@ -22,11 +35,33 @@ export function createCustomCommandReceiver({
       case 'focus':
         focus();
         break;
+      case 'save-window-size':
+        saveWindowSize({ window });
+        break;
+      case 'restore-window-size':
+        restoreWindowSize({ window });
+        break;
       default:
         console.warn('UH OH no command found for: ', message);
         break;
     }
   });
+}
+
+function saveWindowSize({ window }: { window: BrowserWindow }) {
+  if (!window.isMaximized()) {
+    const [width, height] = window.getSize();
+    savedWindowSize = { width, height };
+    console.log('Saved window size:', savedWindowSize);
+  }
+}
+
+function restoreWindowSize({ window }: { window: BrowserWindow }) {
+  if (savedWindowSize) {
+    window.unmaximize();
+    window.setSize(savedWindowSize.width, savedWindowSize.height);
+    console.log('Restored window size to:', savedWindowSize);
+  }
 }
 
 function moveWindowToBottomRight({ window }: { window: BrowserWindow }) {
