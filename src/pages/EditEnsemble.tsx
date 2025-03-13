@@ -20,11 +20,32 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
-import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { transitionToFullscreen, restoreLastWindowSize } from '@/windowUtils/fullscreen';
+import { RendererWindowBrowser } from '@/communicationBridge/fakeWindowBrowser';
 
 export function EditEnsemble() {
   useEffect(() => {
-    transitionToFullscreen();
+    // Check if we should restore window size from timer mode
+    const { shouldRestoreWindowSize, resetShouldRestoreWindowSize } = useAppStore.getState();
+    
+    if (shouldRestoreWindowSize) {
+      // Coming from timer, restore saved size instead of maximizing
+      console.log('Restoring window size from timer mode');
+      RendererWindowBrowser.setOpacity(1.0);
+      
+      // First focus the window and make sure it's visible
+      RendererWindowBrowser.focus();
+      
+      // Then restore the saved window size
+      restoreLastWindowSize();
+      
+      // Reset the flag so we don't restore next time
+      resetShouldRestoreWindowSize();
+    } else {
+      // Normal flow, go to fullscreen
+      console.log('Normal transition to fullscreen');
+      transitionToFullscreen();
+    }
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
@@ -81,8 +102,6 @@ function EnsembleOptions() {
   const timerMinutes = Math.floor(timerLength / (60 * 1000));
   const timerSeconds = (timerLength % (60 * 1000)) / 1000;
   const timerDisplay = timerSeconds > 0 ? `${timerMinutes}:${timerSeconds === 30 ? '30' : '00'}` : `${timerMinutes}`;
-  
-  const breakLengthInMinutes = Math.round(breakLength / (60 * 1000));
   return (
     <>
       <Card className="bg-zinc-800 text-zinc-200 flex-none">

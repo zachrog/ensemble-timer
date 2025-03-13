@@ -33,34 +33,40 @@ export function TimerOverlay() {
   }));
 
   useEffect(() => {
+    // Flag that we're about to do a programmatic resize
+    console.log('Initializing timer overlay');
+    
+    // First restore window (in case it was maximized)
     RendererWindowBrowser.restore();
+    
+    // Set window properties
     RendererWindowBrowser.setOpacity(0.5);
-    
-    // Check if we should use a default size or restore previous size
-    sendMessage({
-      channel: customCommandChannelName,
-      message: 'restore-window-size',
-    });
-    
-    // Set the overlay size as fallback if no saved size
-    setTimeout(() => {
-      RendererWindowBrowser.setSize(240, 240);
-    }, 100);
-    
     RendererWindowBrowser.setAlwaysOnTop(true);
-    sendMessage({
-      channel: customCommandChannelName,
-      message: 'move-to-bottom-right',
-    });
+    
+    // Set the fixed timer overlay size - this should always be 240x240
+    RendererWindowBrowser.setSize(240, 240);
+    
+    // Always position in bottom right
+    setTimeout(() => {
+      sendMessage({
+        channel: customCommandChannelName,
+        message: 'move-to-bottom-right',
+      });
+    }, 50);
 
     const exitTimer = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        // Save window size before exiting timer
+        // First save the current window size explicitly
+        console.log('Saving window size before exiting timer');
         sendMessage({
           channel: customCommandChannelName,
           message: 'save-window-size',
         });
-        goToEdit();
+        
+        // Small delay to ensure the size is saved before transitioning
+        setTimeout(() => {
+          goToEdit();
+        }, 50);
       }
     };
     document.addEventListener('keydown', exitTimer);
