@@ -61,7 +61,7 @@ function toggleMaximize({ window }: { window: BrowserWindow }) {
   if (window.isMaximized()) {
     window.unmaximize();
   } else {
-    window.maximize();
+    window.restore();
   }
 }
 
