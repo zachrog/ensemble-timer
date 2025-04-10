@@ -29,6 +29,7 @@ export function Handoff() {
     previousDriver,
     nextDriver,
     startTurn,
+    vibeCodingMode,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     currentRotation: state.currentRotation,
@@ -36,6 +37,7 @@ export function Handoff() {
     previousDriver: state.previousDriver,
     nextDriver: state.nextDriver,
     startTurn: state.startTurn,
+    vibeCodingMode: state.vibeCodingMode,
   }));
   const currentDriver = getCurrentDriver({ currentRotation, ensembleMembers });
   const currentNavigator = getCurrentNavigator({
@@ -74,21 +76,23 @@ export function Handoff() {
               <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
             </Button>
           </div>
-          <div className="flex items-center">
-            <WheelIcon className="w-24 h-24 text-white" />
-            <span className="text-white text-6xl ml-5">
-              {currentDriver.name}
-            </span>
-            <Button
-              className="ml-5 text-5xl h-19 hover:bg-zinc-700"
-              onClick={() => {
-                removeMember({ id: currentDriver.id });
-              }}
-            >
-              <p>Away</p>
-              <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
-            </Button>
-          </div>
+          {!vibeCodingMode && (
+            <div className="flex items-center">
+              <WheelIcon className="w-24 h-24 text-white" />
+              <span className="text-white text-6xl ml-5">
+                {currentDriver.name}
+              </span>
+              <Button
+                className="ml-5 text-5xl h-19 hover:bg-zinc-700"
+                onClick={() => {
+                  removeMember({ id: currentDriver.id });
+                }}
+              >
+                <p>Away</p>
+                <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
+              </Button>
+            </div>
+          )}
           <Button
             className="h-16 hover:bg-zinc-700"
             onClick={() => {

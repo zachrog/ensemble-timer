@@ -9,7 +9,12 @@ import {
   getCurrentNavigator,
   useAppStore,
 } from '../state.ts/defaultState';
-import { CoffeeIcon, NavigatorIcon, WheelIcon } from '@/components/icons/icons';
+import {
+  CoffeeIcon,
+  NavigatorIcon,
+  VibeModeIcon,
+  WheelIcon,
+} from '@/components/icons/icons';
 
 export function TimerOverlay() {
   const {
@@ -21,6 +26,7 @@ export function TimerOverlay() {
     currentMode,
     endBreak,
     goToEdit,
+    vibeCodingMode,
   } = useAppStore((state) => ({
     setTimeRemaining: state.setTimeRemaining,
     timeRemaining: state.timeRemaining,
@@ -30,6 +36,7 @@ export function TimerOverlay() {
     currentMode: state.currentMode,
     endBreak: state.endBreak,
     goToEdit: state.goToEdit,
+    vibeCodingMode: state.vibeCodingMode,
   }));
 
   useEffect(() => {
@@ -97,6 +104,7 @@ export function TimerOverlay() {
           currentDriver={currentDriver}
           currentMode={currentMode}
           currentNavigator={currentNavigator}
+          vibeCodingMode={vibeCodingMode}
         />
         <BreakDisplay currentMode={currentMode} />
         <div className="">
@@ -116,20 +124,30 @@ function TimerDisplay({
   currentDriver,
   currentNavigator,
   currentMode,
+  vibeCodingMode,
 }: {
   currentDriver: EnsembleMember;
   currentNavigator: EnsembleMember;
   currentMode: EnsembleModes;
+  vibeCodingMode: boolean;
 }) {
   if (currentMode !== 'timer') {
     return;
   }
   return (
     <>
-      <div className="flex items-center">
-        <WheelIcon className="w-6 h-6 " />
-        <span className=" text-4xl font-light pl-3">{currentDriver.name}</span>
-      </div>
+      {!vibeCodingMode ? (
+        <div className="flex items-center">
+          <WheelIcon className="w-6 h-6 " />
+          <span className="text-4xl font-light pl-3">
+            {currentDriver.name}
+          </span>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center">
+          <VibeModeIcon className="w-12 h-12 text-yellow-400" />
+        </div>
+      )}
       <div className="flex items-center">
         <NavigatorIcon className="w-6 h-6" />
         <span className="text-4xl font-light pl-3">

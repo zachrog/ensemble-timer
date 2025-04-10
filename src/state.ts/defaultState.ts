@@ -45,6 +45,8 @@ export type AppStore = {
   takeBreak: () => void;
   endBreak: () => void;
   goToEdit: () => void;
+  vibeCodingMode: boolean;
+  toggleVibeCodingMode: () => void;
 };
 
 export const useAppStore = create<AppStore>()(
@@ -61,6 +63,9 @@ export const useAppStore = create<AppStore>()(
       rotationsPerBreak: 10,
       currentRotation: 1000000, // Start at high rotation so we do not get into negative number logic
       breakRotation: 0,
+      vibeCodingMode: false,
+      toggleVibeCodingMode: () => 
+        set((state) => ({ vibeCodingMode: !state.vibeCodingMode })),
       setBreakRotation: (breakRotation) => set(() => ({ breakRotation })),
       setRotationsPerBreak: (rotations) =>
         set(() => ({ rotationsPerBreak: rotations })),
@@ -184,6 +189,7 @@ export const useAppStore = create<AppStore>()(
         breakLength: state.breakLength,
         timerLength: state.timerLength,
         inactiveMembers: state.inactiveMembers,
+        vibeCodingMode: state.vibeCodingMode,
       }),
     },
   ),

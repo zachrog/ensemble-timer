@@ -206,3 +206,27 @@ export function DiceIcon({ className = 'w-5 h-5' }: { className?: string }) {
     </svg>
   );
 }
+
+export function VibeModeIcon({ className = 'w-5 h-5' }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
+      {/* Cool sunglasses frame */}
+      <path d="M1,11 C1,9.5 2,8 3.5,8 L7,8 C9,8 9.5,9 10,10 L14,10 C14.5,9 15,8 17,8 L20.5,8 C22,8 23,9.5 23,11 L23,12 C23,13 22.5,15 20,15 L17,15 C14.5,15 14,13 14,12 L10,12 C10,13 9.5,15 7,15 L4,15 C1.5,15 1,13 1,12 L1,11 Z" />
+      
+      {/* Left lens */}
+      <circle cx="7" cy="11.5" r="2.5" fill="#000" />
+      
+      {/* Right lens */}
+      <circle cx="17" cy="11.5" r="2.5" fill="#000" />
+      
+      {/* Cool reflections on lenses */}
+      <path d="M6,10.5 L8,12.5" stroke="#fff" strokeWidth="0.5" />
+      <path d="M16,10.5 L18,12.5" stroke="#fff" strokeWidth="0.5" />
+    </svg>
+  );
+}

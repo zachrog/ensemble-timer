@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
+import { Toggle } from '@/components/ui/toggle';
 import { transitionToFullscreen } from '@/windowUtils/fullscreen';
 
 export function EditEnsemble() {
@@ -68,6 +69,8 @@ function EnsembleOptions() {
     setBreakLength,
     rotationsPerBreak,
     setRotationsPerBreak,
+    vibeCodingMode,
+    toggleVibeCodingMode,
   } = useAppStore((state) => ({
     timerLength: state.timerLength,
     setTimerLength: state.setTimerLength,
@@ -75,6 +78,8 @@ function EnsembleOptions() {
     setBreakLength: state.setBreakLength,
     rotationsPerBreak: state.rotationsPerBreak,
     setRotationsPerBreak: state.setRotationsPerBreak,
+    vibeCodingMode: state.vibeCodingMode,
+    toggleVibeCodingMode: state.toggleVibeCodingMode,
   }));
 
   const timerLengthInMinutes = Math.round(timerLength / (60 * 1000));
@@ -157,6 +162,17 @@ function EnsembleOptions() {
               Every {rotationsPerBreak * timerLengthInMinutes} Minutes
             </span>
           </div>
+          <h1 className="mt-6 text-2xl">Vibe Coding Mode</h1>
+          <div className="mt-2 flex items-center">
+            <Toggle
+              checked={vibeCodingMode}
+              onCheckedChange={toggleVibeCodingMode}
+              className="mr-3"
+            />
+            <span className="text-xl">
+              {vibeCodingMode ? 'Only navigator, no driver' : 'Standard mode with driver and navigator'}
+            </span>
+          </div>
         </CardContent>
       </Card>
     </>
@@ -177,6 +193,7 @@ function RosterEdit() {
     inactiveMembers,
     removeInactiveMember,
     inactiveToActive,
+    vibeCodingMode,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     removeMember: state.removeMember,
@@ -190,6 +207,7 @@ function RosterEdit() {
     inactiveMembers: state.inactiveMembers,
     removeInactiveMember: state.removeInactiveMember,
     inactiveToActive: state.inactiveToActive,
+    vibeCodingMode: state.vibeCodingMode,
   }));
 
   const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
@@ -247,7 +265,7 @@ function RosterEdit() {
             <div className="flex gap-2 flex-wrap px-3">
               {ensembleMembers.map((member) => (
                 <Badge key={member.id} className="text-2xl">
-                  {member.id === currentDriver.id && (
+                  {!vibeCodingMode && member.id === currentDriver.id && (
                     <WheelIcon className="w-6 h-6" />
                   )}
                   {member.id === currentNavigator.id && (
