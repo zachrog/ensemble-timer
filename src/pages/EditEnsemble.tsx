@@ -91,7 +91,7 @@ function EnsembleOptions() {
           <CardTitle className="text-4xl">Options</CardTitle>
         </CardHeader>
         <CardContent>
-          <h1 className="text-2xl">Timer</h1>
+          <h2 className="text-2xl">Timer</h2>
           <div className="mt-2">
             <Button
               onClick={() => {
@@ -117,7 +117,7 @@ function EnsembleOptions() {
             </Button>
             <span className="text-2xl ml-3">Minutes</span>
           </div>
-          <h1 className="mt-3 text-2xl">Breaks</h1>
+          <h2 className="mt-3 text-2xl">Breaks</h2>
           <div className="mt-2">
             <Button
               className="hover:bg-zinc-700"
@@ -162,16 +162,14 @@ function EnsembleOptions() {
               Every {rotationsPerBreak * timerLengthInMinutes} Minutes
             </span>
           </div>
-          <h1 className="mt-6 text-2xl">Vibe Coding Mode</h1>
+          <h2 className="mt-6 text-2xl">Vibe Coding Mode</h2>
           <div className="mt-2 flex items-center">
             <Toggle
               checked={vibeCodingMode}
               onCheckedChange={toggleVibeCodingMode}
               className="mr-3"
+              label={vibeCodingMode ? 'Only navigator, no driver' : 'Standard mode with driver and navigator'}
             />
-            <span className="text-xl">
-              {vibeCodingMode ? 'Only navigator, no driver' : 'Standard mode with driver and navigator'}
-            </span>
           </div>
         </CardContent>
       </Card>

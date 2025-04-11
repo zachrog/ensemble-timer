@@ -207,14 +207,18 @@ export function DiceIcon({ className = 'w-5 h-5' }: { className?: string }) {
   );
 }
 
-export function VibeModeIcon({ className = 'w-5 h-5' }: { className?: string }) {
+export function VibeModeIcon({ className = 'w-5 h-5', title = 'Vibe Mode' }: { className?: string, title?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
       className={className}
+      aria-hidden="false"
+      role="img"
+      aria-labelledby="vibeModeTitle"
     >
+      <title id="vibeModeTitle">{title}</title>
       {/* Cool sunglasses frame */}
       <path d="M1,11 C1,9.5 2,8 3.5,8 L7,8 C9,8 9.5,9 10,10 L14,10 C14.5,9 15,8 17,8 L20.5,8 C22,8 23,9.5 23,11 L23,12 C23,13 22.5,15 20,15 L17,15 C14.5,15 14,13 14,12 L10,12 C10,13 9.5,15 7,15 L4,15 C1.5,15 1,13 1,12 L1,11 Z" />
       

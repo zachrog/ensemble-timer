@@ -145,7 +145,7 @@ function TimerDisplay({
         </div>
       ) : (
         <div className="flex items-center justify-center">
-          <VibeModeIcon className="w-12 h-12 text-yellow-400" />
+          <VibeModeIcon className="w-12 h-12 text-yellow-400" title="Vibe Coding Mode Active" />
         </div>
       )}
       <div className="flex items-center">
