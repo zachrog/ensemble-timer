@@ -13,6 +13,11 @@ export type EnsembleMember = {
   id: number;
 };
 
+export type Goal = {
+  text: string;
+  completed: boolean;
+};
+
 export type AppStore = {
   currentMode: EnsembleModes;
   timeStarted: number;
@@ -45,6 +50,10 @@ export type AppStore = {
   takeBreak: () => void;
   endBreak: () => void;
   goToEdit: () => void;
+  goals: Goal[];
+  addGoal: (text: string) => void;
+  removeGoal: (index: number) => void;
+  toggleGoalComplete: (index: number) => void;
 };
 
 export const useAppStore = create<AppStore>()(
@@ -78,6 +87,21 @@ export const useAppStore = create<AppStore>()(
         { id: 2, name: 'Person 2' },
       ],
       inactiveMembers: [{ id: 3, name: 'Person 3' }],
+      goals: [],
+      addGoal: (text) =>
+        set((state) => ({
+          goals: [...state.goals, { text, completed: false }],
+        })),
+      removeGoal: (index) =>
+        set((state) => ({
+          goals: state.goals.filter((_, i) => i !== index),
+        })),
+      toggleGoalComplete: (index) =>
+        set((state) => ({
+          goals: state.goals.map((goal, i) =>
+            i === index ? { ...goal, completed: !goal.completed } : goal
+          ),
+        })),
       removeInactiveMember: ({ id }) =>
         set((state) => {
           const index = state.inactiveMembers.findIndex(
@@ -184,6 +208,7 @@ export const useAppStore = create<AppStore>()(
         breakLength: state.breakLength,
         timerLength: state.timerLength,
         inactiveMembers: state.inactiveMembers,
+        goals: state.goals,
       }),
     },
   ),

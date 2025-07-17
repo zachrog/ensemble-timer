@@ -21,6 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { Separator } from '@/components/ui/separator';
 import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { Goals } from '@/components/Goals';
 
 export function EditEnsemble() {
   useEffect(() => {
@@ -40,6 +41,7 @@ export function EditEnsemble() {
     <>
       <div className="p-3">
         <BreakProgress />
+        <Goals />
         <div className="flex mt-3">
           <EnsembleOptions />
           <RosterEdit />
