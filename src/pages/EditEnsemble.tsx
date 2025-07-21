@@ -41,10 +41,10 @@ export function EditEnsemble() {
     <>
       <div className="p-3">
         <BreakProgress />
-        <Goals />
         <div className="flex mt-3">
           <EnsembleOptions />
           <RosterEdit />
+          <Goals />
         </div>
         <Separator className="my-10" />
         <div className="flex">
