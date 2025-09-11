@@ -48,7 +48,7 @@ function createWindow() {
   }
   createWindowBrowserReceiver({ window: win });
   createCustomCommandReceiver({ window: win });
-  // win.webContents.openDevTools(); // opens chrome dev tools
+  win.webContents.openDevTools(); // opens chrome dev tools
 }
 
 app.on('window-all-closed', () => {

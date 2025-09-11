@@ -24,7 +24,7 @@ export function Goals() {
   };
 
   return (
-    <Card className="bg-zinc-800 text-zinc-200 mb-3 ml-3">
+    <Card className="bg-zinc-800 text-zinc-200 mb-3 ml-3 w-full">
       <CardHeader>
         <CardTitle className="text-4xl">Session Goals</CardTitle>
       </CardHeader>

@@ -25,7 +25,7 @@ import { Goals } from '@/components/Goals';
 
 export function EditEnsemble() {
   useEffect(() => {
-    transitionToFullscreen();
+    // transitionToFullscreen();
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
@@ -44,7 +44,6 @@ export function EditEnsemble() {
         <div className="flex mt-3">
           <EnsembleOptions />
           <RosterEdit />
-          <Goals />
         </div>
         <Separator className="my-10" />
         <div className="flex">
@@ -56,6 +55,11 @@ export function EditEnsemble() {
           >
             Start
           </Button>
+        </div>
+        <div className='flex w-full'>
+          <div className="flex mt-3 justify-center w-full flex-grow">
+            <Goals />
+          </div>
         </div>
       </div>
     </>
