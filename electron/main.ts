@@ -33,6 +33,9 @@ function createWindow() {
     webPreferences: {
       devTools: true,
       preload: path.join(__dirname, 'preload.js'),
+      sandbox: false,
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
