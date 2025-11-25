@@ -1,26 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 // --------- Expose some API to the Renderer process ---------
-contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer))
-
-// `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
-function withPrototype(obj: Record<string, any>) {
-  const protos = Object.getPrototypeOf(obj)
-
-  for (const [key, value] of Object.entries(protos)) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) continue
-
-    if (typeof value === 'function') {
-      // Some native APIs, like `NodeJS.EventEmitter['on']`, don't work in the Renderer process. Wrapping them into a function.
-      obj[key] = function (...args: any) {
-        return value.call(obj, ...args)
-      }
-    } else {
-      obj[key] = value
-    }
-  }
-  return obj
-}
+contextBridge.exposeInMainWorld('ipcRenderer', {
+  send: (channel: string, ...args: any[]) => ipcRenderer.send(channel, ...args),
+  on: (channel: string, listener: (...args: any[]) => void) => {
+    const subscription = (_event: any, ...args: any[]) => listener(...args)
+    ipcRenderer.on(channel, subscription)
+    return () => ipcRenderer.removeListener(channel, subscription)
+  },
+  once: (channel: string, listener: (...args: any[]) => void) => {
+    ipcRenderer.once(channel, (_event, ...args) => listener(...args))
+  },
+})
 
 // --------- Preload scripts loading ---------
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
