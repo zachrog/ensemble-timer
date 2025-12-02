@@ -32,7 +32,7 @@ export function Handoff() {
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
     currentRotation: state.currentRotation,
-    removeMember: state.removeMember,
+    removeMember: state.activeToInactive,
     previousDriver: state.previousDriver,
     nextDriver: state.nextDriver,
     startTurn: state.startTurn,

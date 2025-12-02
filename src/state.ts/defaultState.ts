@@ -30,7 +30,7 @@ export type AppStore = {
   nextDriver: () => void;
   timeRemaining: number;
   addMember: (member: { name: string }) => void;
-  removeMember: (member: { id: number }) => void;
+  activeToInactive: (member: { id: number }) => void;
   randomizeMembers: () => void;
   ensembleMembers: EnsembleMember[];
   inactiveMembers: EnsembleMember[];
@@ -83,7 +83,9 @@ export const useAppStore = create<AppStore>()(
           const index = state.inactiveMembers.findIndex(
             (inactiveMember) => inactiveMember.id === id,
           );
-          state.inactiveMembers.splice(index, 1);
+          if (index !== -1) {
+            state.inactiveMembers.splice(index, 1);
+          }
 
           return { inactiveMembers: state.inactiveMembers };
         }),
@@ -92,8 +94,11 @@ export const useAppStore = create<AppStore>()(
           const index = state.inactiveMembers.findIndex(
             (inactiveMember) => inactiveMember.id === id,
           );
-          const removedMember = state.inactiveMembers.splice(index, 1);
-          state.ensembleMembers.push(removedMember[0]);
+          if (index !== -1) {
+            const removedMember = state.inactiveMembers.splice(index, 1);
+            state.ensembleMembers.push(removedMember[0]);
+          }
+
           return {
             ensembleMembers: state.ensembleMembers,
             inactiveMembers: state.inactiveMembers,
@@ -106,13 +111,15 @@ export const useAppStore = create<AppStore>()(
             id: Math.random(),
           }),
         })),
-      removeMember: ({ id }) =>
+      activeToInactive: ({ id }) =>
         set((state) => {
           const index = state.ensembleMembers.findIndex(
             (ensembleMember) => ensembleMember.id === id,
           );
-          const removedMember = state.ensembleMembers.splice(index, 1);
-          state.inactiveMembers.push(removedMember[0]);
+          if (index !== -1) {
+            const removedMember = state.ensembleMembers.splice(index, 1);
+            state.inactiveMembers.push(removedMember[0]);
+          }
 
           return {
             ensembleMembers: state.ensembleMembers,

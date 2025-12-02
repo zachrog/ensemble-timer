@@ -29,7 +29,7 @@ export function EditEnsemble() {
 
   const { startProgramming } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
-    removeMember: state.removeMember,
+    removeMember: state.activeToInactive,
     addMember: state.addMember,
     newMemberName: state.newMemberName,
     setNewMemberName: state.setNewMemberName,
@@ -179,7 +179,7 @@ function RosterEdit() {
     inactiveToActive,
   } = useAppStore((state) => ({
     ensembleMembers: state.ensembleMembers,
-    removeMember: state.removeMember,
+    removeMember: state.activeToInactive,
     addMember: state.addMember,
     newMemberName: state.newMemberName,
     setNewMemberName: state.setNewMemberName,
