@@ -4,7 +4,6 @@ import {
   getCurrentNavigator,
   useAppStore,
 } from '../state.ts/defaultState';
-import { Badge } from '@/components/ui/badge';
 import {
   CloseIcon,
   DiceIcon,
@@ -17,10 +16,10 @@ import {
 } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
-import { Separator } from '@/components/ui/separator';
 import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { cn } from '@/lib/utils';
 
 export function EditEnsemble() {
   useEffect(() => {
@@ -28,35 +27,34 @@ export function EditEnsemble() {
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
-    ensembleMembers: state.ensembleMembers,
-    removeMember: state.activeToInactive,
-    addMember: state.addMember,
-    newMemberName: state.newMemberName,
-    setNewMemberName: state.setNewMemberName,
     startProgramming: state.startTurn,
   }));
 
   return (
-    <>
-      <div className="p-3">
-        <BreakProgress />
-        <div className="flex mt-3">
+    <div className="flex flex-col h-full min-h-screen p-6 gap-6 max-w-7xl mx-auto w-full overflow-x-hidden">
+      {/* Hero Section */}
+      <section className="flex flex-col gap-6 w-full">
+        <Button
+          onClick={startProgramming}
+          className="w-full h-32 md:h-40 text-5xl md:text-6xl font-light tracking-tight bg-emerald-600 hover:bg-emerald-500 border-2 border-emerald-500/50 shadow-[0_0_30px_-5px_var(--tw-shadow-color)] shadow-emerald-900/40 text-white rounded-2xl transition-all transform hover:scale-[1.01]"
+        >
+          Start Session
+        </Button>
+      </section>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 w-full overflow-x-hidden">
+        {/* Options Panel */}
+        <div className="xl:col-span-4 space-y-6 h-full min-w-0 w-full">
           <EnsembleOptions />
+        </div>
+
+        {/* Roster Panel */}
+        <div className="xl:col-span-8 space-y-6 h-full min-w-0">
           <RosterEdit />
         </div>
-        <Separator className="my-10" />
-        <div className="flex">
-          <Button
-            onClick={() => {
-              startProgramming();
-            }}
-            className="hover:bg-emerald-500 flex-grow h-25 text-6xl flex font-thin p-3 border-zinc-700 border bg-emerald-600 text-zinc-200"
-          >
-            Start
-          </Button>
-        </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -79,87 +77,126 @@ function EnsembleOptions() {
 
   const timerLengthInMinutes = Math.round(timerLength / (60 * 1000));
   const breakLengthInMinutes = Math.round(breakLength / (60 * 1000));
+
   return (
-    <>
-      <Card className="bg-zinc-800 text-zinc-200 flex-none">
-        <CardHeader>
-          <CardTitle className="text-4xl">Options</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <h1 className="text-2xl">Timer</h1>
-          <div className="mt-2">
-            <Button
-              onClick={() => {
-                setTimerLength(timerLength - 60 * 1000);
-              }}
-              disabled={timerLengthInMinutes <= 1}
-              className="hover:bg-zinc-700"
-            >
-              <MinusIcon />
-            </Button>
-            <div className="inline h-10 w-10">
-              <p className="text-2xl mx-3 inline h-10 w-10">
-                {timerLengthInMinutes}
-              </p>
-            </div>
-            <Button
-              onClick={() => {
-                setTimerLength(timerLength + 60 * 1000);
-              }}
-              className="hover:bg-zinc-700"
-            >
-              <PlusIcon />
-            </Button>
-            <span className="text-2xl ml-3">Minutes</span>
-          </div>
-          <h1 className="mt-3 text-2xl">Breaks</h1>
-          <div className="mt-2">
-            <Button
-              className="hover:bg-zinc-700"
-              onClick={() => {
-                setBreakLength(breakLength - 60 * 1000);
-              }}
-              disabled={breakLengthInMinutes <= 1}
-            >
-              <MinusIcon />
-            </Button>
-            <span className="text-2xl mx-3">{breakLengthInMinutes}</span>
-            <Button
-              className="hover:bg-zinc-700"
-              onClick={() => {
-                setBreakLength(breakLength + 60 * 1000);
-              }}
-            >
-              <PlusIcon />
-            </Button>
-            <span className="text-2xl ml-3">Minutes</span>
-          </div>
-          <div className="mt-2">
-            <Button
-              className="hover:bg-zinc-700"
-              onClick={() => {
-                setRotationsPerBreak(rotationsPerBreak - 1);
-              }}
-              disabled={rotationsPerBreak <= 1}
-            >
-              <MinusIcon />
-            </Button>
-            <span className="text-2xl mx-3">{rotationsPerBreak}</span>
-            <Button
-              className="hover:bg-zinc-700"
-              onClick={() => {
-                setRotationsPerBreak(rotationsPerBreak + 1);
-              }}
-            >
-              <PlusIcon />
-            </Button>
-            <span className="text-2xl ml-3">
-              Every {rotationsPerBreak * timerLengthInMinutes} Minutes
+    <Card className="bg-zinc-800/50 border-zinc-700 shadow-xl h-full w-full flex flex-col overflow-hidden">
+      <CardHeader>
+        <CardTitle className="text-2xl text-zinc-100">Session Settings</CardTitle>
+        <CardDescription className="text-zinc-400">
+          Configure timer turns and breaks.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-8 flex-grow flex flex-col overflow-x-hidden">
+        {/* Timer Duration */}
+        <div className="space-y-3 w-full">
+          <div className="flex justify-between items-center text-zinc-200">
+            <span className="text-lg font-medium">Turn Duration</span>
+            <span className="font-mono text-xl text-emerald-400">
+              {timerLengthInMinutes}m
             </span>
           </div>
-        </CardContent>
-      </Card>
-    </>
+          <div className="flex items-center gap-4 bg-zinc-900/50 p-2 rounded-lg border border-zinc-800">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setTimerLength(timerLength - 60 * 1000)}
+              disabled={timerLengthInMinutes <= 1}
+              className="hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100"
+            >
+              <MinusIcon className="h-6 w-6" />
+            </Button>
+            <div className="flex-grow text-center">
+              <span className="text-sm text-zinc-500 uppercase tracking-wider">
+                Minutes
+              </span>
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setTimerLength(timerLength + 60 * 1000)}
+              className="hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100"
+            >
+              <PlusIcon className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Break Duration */}
+        <div className="space-y-3 w-full">
+          <div className="flex justify-between items-center text-zinc-200">
+            <span className="text-lg font-medium">Break Duration</span>
+            <span className="font-mono text-xl text-emerald-400">
+              {breakLengthInMinutes}m
+            </span>
+          </div>
+          <div className="flex items-center gap-4 bg-zinc-900/50 p-2 rounded-lg border border-zinc-800">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setBreakLength(breakLength - 60 * 1000)}
+              disabled={breakLengthInMinutes <= 1}
+              className="hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100"
+            >
+              <MinusIcon className="h-6 w-6" />
+            </Button>
+            <div className="flex-grow text-center">
+              <span className="text-sm text-zinc-500 uppercase tracking-wider">
+                Minutes
+              </span>
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setBreakLength(breakLength + 60 * 1000)}
+              className="hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100"
+            >
+              <PlusIcon className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Rotations */}
+        <div className="space-y-3 w-full">
+          <div className="flex justify-between items-center text-zinc-200">
+            <span className="text-lg font-medium">Break Frequency</span>
+            <span className="font-mono text-xl text-emerald-400">
+              {rotationsPerBreak} turns
+            </span>
+          </div>
+          <div className="flex items-center gap-4 bg-zinc-900/50 p-2 rounded-lg border border-zinc-800">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setRotationsPerBreak(rotationsPerBreak - 1)}
+              disabled={rotationsPerBreak <= 1}
+              className="hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100"
+            >
+              <MinusIcon className="h-6 w-6" />
+            </Button>
+            <div className="flex-grow text-center">
+              <div className="text-sm text-zinc-400">
+                Total:{' '}
+                <span className="text-zinc-200">
+                  {rotationsPerBreak * timerLengthInMinutes}m
+                </span>
+              </div>
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setRotationsPerBreak(rotationsPerBreak + 1)}
+              className="hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100"
+            >
+              <PlusIcon className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-zinc-700 mt-auto w-full overflow-x-hidden">
+          <BreakProgress className="w-full" />
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -199,122 +236,178 @@ function RosterEdit() {
   });
 
   return (
-    <>
-      <Card className="bg-zinc-800 text-zinc-200 ml-3 flex-grow">
-        <CardHeader>
-          <CardTitle className="text-4xl flex text-zinc-200">
-            Active{' '}
-            <Button
-              className="ml-6 hover:bg-zinc-700"
-              onClick={() => {
-                randomizeMembers();
-              }}
-            >
-              <DiceIcon className="text-zinc-200 w-6 h-6" />
-            </Button>
-          </CardTitle>
-          <form className="flex items-center gap-3">
-            <Input
-              value={newMemberName}
-              placeholder="Name"
-              onChange={(e) => setNewMemberName(e.target.value)}
-              className="w-30 bg-zinc-800 text-2xl h-10 mt-3"
-            ></Input>
-            <Button
-              className="mt-3 inline"
-              onClick={(e) => {
-                e.preventDefault();
-                addMember({ name: newMemberName });
-                setNewMemberName('');
-              }}
-              disabled={!newMemberName}
-              type="submit"
-            >
-              Add
-            </Button>
-          </form>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center">
-            <Button
-              className="hover:bg-zinc-700"
-              onClick={() => {
-                previousDriver();
-              }}
-            >
-              <LeftIcon className="h-6 w-6" />
-            </Button>
-            <div className="flex gap-2 flex-wrap px-3">
-              {ensembleMembers.map((member) => (
-                <Badge key={member.id} className="text-2xl">
-                  {member.id === currentDriver.id && (
-                    <WheelIcon className="w-6 h-6" />
-                  )}
-                  {member.id === currentNavigator.id && (
-                    <NavigatorIcon className="w-6 h-6" />
-                  )}
-                  <span className="text-zinc-200 ml-2">{member.name}</span>
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      removeMember({ id: member.id });
-                    }}
-                    className="w-8 h-8 p-1 ml-2"
-                  >
-                    <CloseIcon
-                      className="w-6 h-6 rounded-full text-zinc-200 hover:text-red-500"
-                      strokeWidth={2}
-                    />
-                  </Button>
-                </Badge>
-              ))}
+    <Card className="bg-zinc-800/50 border-zinc-700 shadow-xl h-full flex flex-col">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-2xl text-zinc-100">Team Roster</CardTitle>
+          <CardDescription className="text-zinc-400">
+            Manage drivers, navigators, and active participants.
+          </CardDescription>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:text-emerald-400 text-zinc-300 gap-2"
+          onClick={randomizeMembers}
+        >
+          <DiceIcon className="w-4 h-4" />
+          <span>Shuffle</span>
+        </Button>
+      </CardHeader>
+
+      <CardContent className="space-y-6 flex-grow">
+        {/* Driver Selection */}
+        <div className="bg-zinc-900/50 rounded-xl p-4 border border-zinc-800 flex items-center justify-between gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={previousDriver}
+            className="hover:bg-zinc-700 text-zinc-400 hover:text-white"
+          >
+            <LeftIcon className="h-8 w-8" />
+          </Button>
+
+          <div className="flex-grow text-center space-y-1">
+            <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">
+              Current Driver
             </div>
-            <Button
-              className="hover:bg-zinc-700"
-              onClick={() => {
-                nextDriver();
-              }}
-            >
-              <RightIcon className="h-6 w-6" />
-            </Button>
+            <div className="text-3xl font-light text-emerald-400">
+              {currentDriver?.name || 'Start adding members'}
+            </div>
+            {currentNavigator && (
+              <div className="text-sm text-zinc-400 flex items-center justify-center gap-2">
+                <NavigatorIcon className="w-4 h-4" />
+                Navigator: {currentNavigator.name}
+              </div>
+            )}
           </div>
-        </CardContent>
-        <CardHeader>
-          <CardTitle className="text-4xl items-center flex text-zinc-200">
-            Inactive
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center">
-            <div className="flex gap-2 flex-wrap">
-              {inactiveMembers.map((member) => (
-                <Badge
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={nextDriver}
+            className="hover:bg-zinc-700 text-zinc-400 hover:text-white"
+          >
+            <RightIcon className="h-8 w-8" />
+          </Button>
+        </div>
+
+        {/* Add Member Input */}
+        <form
+          className="flex gap-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (newMemberName) {
+              addMember({ name: newMemberName });
+              setNewMemberName('');
+            }
+          }}
+        >
+          <Input
+            value={newMemberName}
+            placeholder="Enter name to add..."
+            onChange={(e) => setNewMemberName(e.target.value)}
+            className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500"
+          />
+          <Button
+            type="submit"
+            disabled={!newMemberName}
+            className="bg-zinc-700 hover:bg-zinc-600 text-white"
+          >
+            Add
+          </Button>
+        </form>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Active Members List */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-zinc-400 uppercase tracking-wider">
+              Active ({ensembleMembers.length})
+            </h3>
+            <div className="space-y-2 min-h-[100px]">
+              {ensembleMembers.map((member) => (
+                <div
                   key={member.id}
-                  className="text-2xl cursor-pointer hover:bg-zinc-700"
-                  onClick={() => {
-                    inactiveToActive({ id: member.id });
-                  }}
+                  className={cn(
+                    'group flex items-center justify-between p-3 rounded-lg border transition-all',
+                    member.id === currentDriver?.id
+                      ? 'bg-emerald-900/20 border-emerald-500/30'
+                      : 'bg-zinc-900/40 border-zinc-800 hover:border-zinc-700',
+                  )}
                 >
-                  <span className="text-zinc-200 ml-2">{member.name}</span>
-                  <button
+                  <div className="flex items-center gap-3">
+                    {member.id === currentDriver?.id && (
+                      <WheelIcon className="w-5 h-5 text-emerald-500" />
+                    )}
+                    {member.id === currentNavigator?.id && (
+                      <NavigatorIcon className="w-5 h-5 text-indigo-400" />
+                    )}
+                    <span
+                      className={cn(
+                        'text-lg theme-transition',
+                        member.id === currentDriver?.id
+                          ? 'text-emerald-200 font-medium'
+                          : 'text-zinc-300',
+                      )}
+                    >
+                      {member.name}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeMember({ id: member.id })}
+                    className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-red-400 hover:bg-red-900/20"
+                  >
+                    <CloseIcon className="w-5 h-5" />
+                  </Button>
+                </div>
+              ))}
+              {ensembleMembers.length === 0 && (
+                <div className="p-4 border border-dashed border-zinc-800 rounded-lg text-center text-zinc-600">
+                  No active members
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Inactive Members List */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">
+              Inactive ({inactiveMembers.length})
+            </h3>
+            <div className="space-y-2">
+              {inactiveMembers.map((member) => (
+                <div
+                  key={member.id}
+                  onClick={() => inactiveToActive({ id: member.id })}
+                  className="group cursor-pointer flex items-center justify-between p-3 rounded-lg border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-800/50 hover:border-zinc-700 transition-all opacity-70 hover:opacity-100"
+                >
+                  <span className="text-lg text-zinc-400 group-hover:text-zinc-200">
+                    {member.name}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={(e) => {
-                      e.preventDefault();
                       e.stopPropagation();
                       removeInactiveMember({ id: member.id });
                     }}
-                    className="ml-2"
+                    className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-600 hover:text-red-400 hover:bg-red-900/20"
                   >
-                    <CloseIcon
-                      className="w-6 h-6 rounded-full text-zinc-200 hover:text-red-500"
-                      strokeWidth={2}
-                    />
-                  </button>
-                </Badge>
+                    <CloseIcon className="w-5 h-5" />
+                  </Button>
+                </div>
               ))}
+              {inactiveMembers.length === 0 && (
+                <div className="p-4 border border-dashed border-zinc-800 rounded-lg text-center text-zinc-700 text-sm">
+                  No inactive members
+                </div>
+              )}
             </div>
           </div>
-        </CardContent>
-      </Card>
-    </>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
