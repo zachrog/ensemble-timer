@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils';
 
 export function EditEnsemble() {
   useEffect(() => {
-    transitionToFullscreen();
+    // transitionToFullscreen();
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
@@ -31,7 +31,7 @@ export function EditEnsemble() {
   }));
 
   return (
-    <div className="flex flex-col h-full min-h-screen p-6 gap-6 max-w-7xl mx-auto w-full overflow-x-hidden">
+    <div className="flex flex-col flex-1 min-h-0 p-6 gap-6 max-w-7xl mx-auto w-full overflow-hidden">
       {/* Hero Section */}
       <section className="flex flex-col gap-6 w-full">
         <Button
@@ -42,15 +42,14 @@ export function EditEnsemble() {
         </Button>
       </section>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 w-full overflow-x-hidden">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 w-full overflow-hidden flex-1 min-h-0">
         {/* Options Panel */}
-        <div className="xl:col-span-4 space-y-6 h-full min-w-0 w-full">
+        <div className="xl:col-span-4 space-y-6 h-full min-w-0 w-full flex flex-col min-h-0 overflow-hidden">
           <EnsembleOptions />
         </div>
 
         {/* Roster Panel */}
-        <div className="xl:col-span-8 space-y-6 h-full min-w-0">
+        <div className="xl:col-span-8 space-y-6 h-full min-w-0 flex flex-col min-h-0 overflow-hidden">
           <RosterEdit />
         </div>
       </div>
@@ -91,9 +90,6 @@ function EnsembleOptions() {
         <div className="space-y-3 w-full">
           <div className="flex justify-between items-center text-zinc-200">
             <span className="text-lg font-medium">Turn Duration</span>
-            <span className="font-mono text-xl text-emerald-400">
-              {timerLengthInMinutes}m
-            </span>
           </div>
           <div className="flex items-center gap-4 bg-zinc-900/50 p-2 rounded-lg border border-zinc-800">
             <Button
@@ -106,8 +102,8 @@ function EnsembleOptions() {
               <MinusIcon className="h-6 w-6" />
             </Button>
             <div className="flex-grow text-center">
-              <span className="text-sm text-zinc-500 uppercase tracking-wider">
-                Minutes
+              <span className="font-mono text-xl text-emerald-400">
+                {timerLengthInMinutes} min
               </span>
             </div>
             <Button
@@ -125,9 +121,6 @@ function EnsembleOptions() {
         <div className="space-y-3 w-full">
           <div className="flex justify-between items-center text-zinc-200">
             <span className="text-lg font-medium">Break Duration</span>
-            <span className="font-mono text-xl text-emerald-400">
-              {breakLengthInMinutes}m
-            </span>
           </div>
           <div className="flex items-center gap-4 bg-zinc-900/50 p-2 rounded-lg border border-zinc-800">
             <Button
@@ -140,8 +133,8 @@ function EnsembleOptions() {
               <MinusIcon className="h-6 w-6" />
             </Button>
             <div className="flex-grow text-center">
-              <span className="text-sm text-zinc-500 uppercase tracking-wider">
-                Minutes
+              <span className="font-mono text-xl text-emerald-400">
+                {breakLengthInMinutes} min
               </span>
             </div>
             <Button
@@ -159,9 +152,6 @@ function EnsembleOptions() {
         <div className="space-y-3 w-full">
           <div className="flex justify-between items-center text-zinc-200">
             <span className="text-lg font-medium">Break Frequency</span>
-            <span className="font-mono text-xl text-emerald-400">
-              {rotationsPerBreak} turns
-            </span>
           </div>
           <div className="flex items-center gap-4 bg-zinc-900/50 p-2 rounded-lg border border-zinc-800">
             <Button
@@ -174,11 +164,8 @@ function EnsembleOptions() {
               <MinusIcon className="h-6 w-6" />
             </Button>
             <div className="flex-grow text-center">
-              <div className="text-sm text-zinc-400">
-                Total:{' '}
-                <span className="text-zinc-200">
-                  {rotationsPerBreak * timerLengthInMinutes}m
-                </span>
+              <div className="font-mono text-xl text-emerald-400">
+                Every {rotationsPerBreak} turns
               </div>
             </div>
             <Button
@@ -255,7 +242,7 @@ function RosterEdit() {
         </Button>
       </CardHeader>
 
-      <CardContent className="space-y-6 flex-grow">
+      <CardContent className="space-y-6 flex-1 flex flex-col min-h-0 overflow-hidden">
         {/* Driver Selection */}
         <div className="bg-zinc-900/50 rounded-xl p-4 border border-zinc-800 flex items-center justify-between gap-4">
           <Button
@@ -307,7 +294,7 @@ function RosterEdit() {
             value={newMemberName}
             placeholder="Enter name to add..."
             onChange={(e) => setNewMemberName(e.target.value)}
-            className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500"
+            className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-600"
           />
           <Button
             type="submit"
@@ -318,13 +305,13 @@ function RosterEdit() {
           </Button>
         </form>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0 flex-1 overflow-hidden">
           {/* Active Members List */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium text-zinc-400 uppercase tracking-wider">
+          <div className="space-y-3 flex flex-col min-h-0 h-full">
+            <h3 className="text-sm font-medium text-zinc-400 uppercase tracking-wider shrink-0">
               Active ({ensembleMembers.length})
             </h3>
-            <div className="space-y-2 min-h-[100px]">
+            <div className="space-y-2 overflow-y-auto pr-2 min-h-0 flex-1">
               {ensembleMembers.map((member) => (
                 <div
                   key={member.id}
@@ -372,11 +359,11 @@ function RosterEdit() {
           </div>
 
           {/* Inactive Members List */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">
+          <div className="space-y-3 flex flex-col min-h-0 h-full">
+            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider shrink-0">
               Inactive ({inactiveMembers.length})
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-2 overflow-y-auto pr-2 min-h-0 flex-1">
               {inactiveMembers.map((member) => (
                 <div
                   key={member.id}
