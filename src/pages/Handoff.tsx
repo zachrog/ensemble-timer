@@ -1,21 +1,11 @@
 import { BreakProgress } from '@/components/BreakProgress';
-import { Settings } from '@/components/Settings';
-import {
-  CloseIcon,
-  LeftIcon,
-  NavigatorIcon,
-  RightIcon,
-  WheelIcon,
-} from '@/components/icons/icons';
+import { EnsembleRotationDisplay } from '@/components/EnsembleRotationDisplay';
+import { GearIcon } from '@/components/icons/icons';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import {
-  getCurrentDriver,
-  getCurrentNavigator,
-  useAppStore,
-} from '@/state.ts/defaultState';
-import { useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAppStore } from '@/state.ts/defaultState';
 import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { useEffect } from 'react';
 
 export function Handoff() {
   useEffect(() => {
@@ -23,93 +13,55 @@ export function Handoff() {
   }, []);
 
   const {
-    ensembleMembers,
-    currentRotation,
-    removeMember,
-    previousDriver,
-    nextDriver,
     startTurn,
+    goToEdit,
   } = useAppStore((state) => ({
-    ensembleMembers: state.ensembleMembers,
-    currentRotation: state.currentRotation,
-    removeMember: state.activeToInactive,
-    previousDriver: state.previousDriver,
-    nextDriver: state.nextDriver,
     startTurn: state.startTurn,
+    goToEdit: state.goToEdit,
   }));
-  const currentDriver = getCurrentDriver({ currentRotation, ensembleMembers });
-  const currentNavigator = getCurrentNavigator({
-    currentRotation,
-    ensembleMembers,
-  });
 
   return (
-    <>
-      <div className="p-3">
-        <div className="flex justify-between content-center">
-          <BreakProgress />
-          <Settings />
-        </div>
-        <div className="flex justify-around items-center">
-          <Button
-            className="h-16 hover:bg-zinc-700"
-            onClick={() => {
-              previousDriver();
-            }}
-          >
-            <LeftIcon className="h-16 w-16" />
-          </Button>
-          <div className="flex items-center">
-            <NavigatorIcon className="w-24 h-24 text-white" />
-            <span className="text-white text-6xl ml-5">
-              {currentNavigator.name}
-            </span>
-            <Button
-              className="ml-5 text-5xl h-22 hover:bg-zinc-700"
-              onClick={() => {
-                removeMember({ id: currentNavigator.id });
-              }}
-            >
-              <p className="text-5xl">Away</p>
-              <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
-            </Button>
-          </div>
-          <div className="flex items-center">
-            <WheelIcon className="w-24 h-24 text-white" />
-            <span className="text-white text-6xl ml-5">
-              {currentDriver.name}
-            </span>
-            <Button
-              className="ml-5 text-5xl h-19 hover:bg-zinc-700"
-              onClick={() => {
-                removeMember({ id: currentDriver.id });
-              }}
-            >
-              <p>Away</p>
-              <CloseIcon className="w-10 h-10 ml-2 text-red-500" />
-            </Button>
+    <div className="flex flex-col flex-1 min-h-0 p-6 gap-6 max-w-7xl mx-auto w-full overflow-hidden">
+      {/* Hero Section - Continue Button */}
+      <section className="flex flex-col gap-6 w-full">
+        <Button
+          onClick={() => startTurn()}
+          className="w-full h-32 md:h-40 text-5xl md:text-6xl font-light tracking-tight bg-emerald-600 hover:bg-emerald-500 border-2 border-emerald-500/50 shadow-[0_0_30px_-5px_var(--tw-shadow-color)] shadow-emerald-900/40 text-white rounded-2xl transition-all transform hover:scale-[1.01]"
+        >
+          Start Turn
+        </Button>
+      </section>
+
+      {/* Main Content Card */}
+      <Card className="bg-zinc-800/50 border-zinc-700 shadow-xl flex-1 flex flex-col overflow-hidden min-h-0">
+        <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-zinc-700/50 mb-4">
+          <div className="space-y-1">
+            <CardTitle className="text-2xl text-zinc-100">Next Up</CardTitle>
+            <CardDescription className="text-zinc-400">
+              Confirm roles for the next turn.
+            </CardDescription>
           </div>
           <Button
-            className="h-16 hover:bg-zinc-700"
-            onClick={() => {
-              nextDriver();
-            }}
+            variant="ghost"
+            size="icon"
+            onClick={goToEdit}
+            className="text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700"
           >
-            <RightIcon className="h-16 w-16" />
+            <GearIcon className="h-6 w-6" />
           </Button>
-        </div>
-        <Separator className="bg-zinc-500 my-10" />
-        <div className="flex justify-center">
-          <Button
-            onClick={() => {
-              startTurn();
-            }}
-            className="hover:bg-emerald-500 flex-grow h-25 text-6xl flex font-thin p-5 border-zinc-700 border bg-emerald-600"
-          >
-            Continue
-          </Button>
-        </div>
-      </div>
-    </>
+        </CardHeader>
+        
+        <CardContent className="space-y-8 flex-grow flex flex-col justify-center relative">
+          
+          <div className="flex-1 flex flex-col justify-center gap-8 md:gap-12 w-full">
+             <EnsembleRotationDisplay />
+          </div>
+
+          <div className="pt-6 border-t border-zinc-700/50 w-full">
+            <BreakProgress />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

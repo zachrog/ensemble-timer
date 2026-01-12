@@ -4,14 +4,13 @@ import {
   getCurrentNavigator,
   useAppStore,
 } from '../state.ts/defaultState';
+import { EnsembleRotationDisplay } from '@/components/EnsembleRotationDisplay';
 import {
   CloseIcon,
   DiceIcon,
-  LeftIcon,
   MinusIcon,
   NavigatorIcon,
   PlusIcon,
-  RightIcon,
   WheelIcon,
 } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
@@ -23,7 +22,7 @@ import { cn } from '@/lib/utils';
 
 export function EditEnsemble() {
   useEffect(() => {
-    // transitionToFullscreen();
+    transitionToFullscreen();
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({
@@ -50,7 +49,7 @@ export function EditEnsemble() {
 
         {/* Roster Panel */}
         <div className="xl:col-span-8 space-y-6 h-full min-w-0 flex flex-col min-h-0 overflow-hidden">
-          <RosterEdit />
+          <RosterEdit /> 
         </div>
       </div>
     </div>
@@ -196,8 +195,6 @@ function RosterEdit() {
     setNewMemberName,
     currentRotation,
     randomizeMembers,
-    nextDriver,
-    previousDriver,
     inactiveMembers,
     removeInactiveMember,
     inactiveToActive,
@@ -209,8 +206,6 @@ function RosterEdit() {
     setNewMemberName: state.setNewMemberName,
     currentRotation: state.currentRotation,
     randomizeMembers: state.randomizeMembers,
-    nextDriver: state.nextDriver,
-    previousDriver: state.previousDriver,
     inactiveMembers: state.inactiveMembers,
     removeInactiveMember: state.removeInactiveMember,
     inactiveToActive: state.inactiveToActive,
@@ -244,40 +239,7 @@ function RosterEdit() {
 
       <CardContent className="space-y-6 flex-1 flex flex-col min-h-0 overflow-hidden">
         {/* Driver Selection */}
-        <div className="bg-zinc-900/50 rounded-xl p-4 border border-zinc-800 flex items-center justify-between gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={previousDriver}
-            className="hover:bg-zinc-700 text-zinc-400 hover:text-white"
-          >
-            <LeftIcon className="h-8 w-8" />
-          </Button>
-
-          <div className="flex-grow text-center space-y-1">
-            <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">
-              Current Driver
-            </div>
-            <div className="text-3xl font-light text-emerald-400">
-              {currentDriver?.name || 'Start adding members'}
-            </div>
-            {currentNavigator && (
-              <div className="text-sm text-zinc-400 flex items-center justify-center gap-2">
-                <NavigatorIcon className="w-4 h-4" />
-                Navigator: {currentNavigator.name}
-              </div>
-            )}
-          </div>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextDriver}
-            className="hover:bg-zinc-700 text-zinc-400 hover:text-white"
-          >
-            <RightIcon className="h-8 w-8" />
-          </Button>
-        </div>
+        <EnsembleRotationDisplay />
 
         {/* Add Member Input */}
         <form

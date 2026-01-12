@@ -5,7 +5,7 @@ This is an Electron application built with React, Vite, TypeScript, and Zustand.
 ## Architecture & Code Organization
 
 - **Framework**: Electron (Main process) + Vite React (Renderer process).
-- **Styling**: Tailwind CSS + Shadcn UI (`src/components/ui/`) + `lucide-react` icons.
+- **Styling**: Tailwind CSS + Shadcn UI (`src/components/ui/`) + `lucide-react` icons. See [ui_context.md](ui_context.md) for detailed UI guidelines.
 - **State Management**: Zustand (`src/state.ts/defaultState.ts`).
 
 ### Routing Strategy
