@@ -8,6 +8,8 @@ export type EnsembleModes =
   | 'want-a-break?'
   | 'break';
 
+export type Corner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
 export type EnsembleMember = {
   name: string;
   id: number;
@@ -26,6 +28,8 @@ export type AppStore = {
   rotationsPerBreak: number;
   currentRotation: number;
   setRotationsPerBreak: (rotations: number) => void;
+  timerStartCorner: Corner;
+  setTimerStartCorner: (corner: Corner) => void;
   previousDriver: () => void;
   nextDriver: () => void;
   timeRemaining: number;
@@ -50,7 +54,7 @@ export type AppStore = {
 export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
-      currentMode: 'handoff',
+      currentMode: 'edit',
       timeStarted: 0,
       setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
       timerLength: 5 * 60 * 1000,
@@ -64,6 +68,9 @@ export const useAppStore = create<AppStore>()(
       setBreakRotation: (breakRotation) => set(() => ({ breakRotation })),
       setRotationsPerBreak: (rotations) =>
         set(() => ({ rotationsPerBreak: rotations })),
+      timerStartCorner: 'bottom-right',
+      setTimerStartCorner: (timerStartCorner) =>
+        set(() => ({ timerStartCorner })),
       nextDriver: () =>
         set((state) => {
           return { currentRotation: state.currentRotation + 1 };
@@ -191,6 +198,7 @@ export const useAppStore = create<AppStore>()(
         breakLength: state.breakLength,
         timerLength: state.timerLength,
         inactiveMembers: state.inactiveMembers,
+        timerStartCorner: state.timerStartCorner,
       }),
     },
   ),

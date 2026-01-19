@@ -21,6 +21,7 @@ export function TimerOverlay() {
     currentMode,
     endBreak,
     goToEdit,
+    timerStartCorner,
   } = useAppStore((state) => ({
     setTimeRemaining: state.setTimeRemaining,
     timeRemaining: state.timeRemaining,
@@ -30,6 +31,7 @@ export function TimerOverlay() {
     currentMode: state.currentMode,
     endBreak: state.endBreak,
     goToEdit: state.goToEdit,
+    timerStartCorner: state.timerStartCorner,
   }));
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function TimerOverlay() {
     RendererWindowBrowser.setAlwaysOnTop(true);
     sendMessage({
       channel: customCommandChannelName,
-      message: 'move-to-bottom-right',
+      message: `move-to-${timerStartCorner || 'bottom-right'}`,
     });
 
     const exitTimer = (event: KeyboardEvent) => {

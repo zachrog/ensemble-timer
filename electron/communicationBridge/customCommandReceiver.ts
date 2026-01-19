@@ -13,6 +13,15 @@ export function createCustomCommandReceiver({
       case 'move-to-bottom-right':
         moveWindowToBottomRight({ window });
         break;
+      case 'move-to-bottom-left':
+        moveWindowToBottomLeft({ window });
+        break;
+      case 'move-to-top-right':
+        moveWindowToTopRight({ window });
+        break;
+      case 'move-to-top-left':
+        moveWindowToTopLeft({ window });
+        break;
       case 'toggle-maximize':
         toggleMaximize({ window });
         break;
@@ -46,14 +55,43 @@ function moveWindowToBottomLeft({ window }: { window: BrowserWindow }) {
   window.setPosition(x, y);
 }
 
+function moveWindowToTopRight({ window }: { window: BrowserWindow }) {
+  const display = screen.getDisplayMatching(window.getBounds());
+  const x =
+    display.workArea.x + display.workAreaSize.width - window.getSize()[0];
+  const y = display.workArea.y;
+  window.setPosition(x, y);
+}
+
+function moveWindowToTopLeft({ window }: { window: BrowserWindow }) {
+  const display = screen.getDisplayMatching(window.getBounds());
+  const x = display.workArea.x;
+  const y = display.workArea.y;
+  window.setPosition(x, y);
+}
+
 function moveWindowToOppositeCorner({ window }: { window: BrowserWindow }) {
   const display = screen.getDisplayMatching(window.getBounds());
-  const displayCenterLine = display.workArea.x + display.workArea.width / 2;
-  const [currentWindowX] = window.getPosition();
-  if (currentWindowX < displayCenterLine) {
-    moveWindowToBottomRight({ window });
+  const displayCenterX = display.workArea.x + display.workArea.width / 2;
+  const displayCenterY = display.workArea.y + display.workArea.height / 2;
+  const [currentWindowX, currentWindowY] = window.getPosition();
+
+  const isLeft = currentWindowX < displayCenterX;
+  const isTop = currentWindowY < displayCenterY;
+
+  if (isTop) {
+    if (isLeft) {
+      moveWindowToTopRight({ window });
+    } else {
+      moveWindowToTopLeft({ window });
+    }
   } else {
-    moveWindowToBottomLeft({ window });
+    // Bottom
+    if (isLeft) {
+      moveWindowToBottomRight({ window });
+    } else {
+      moveWindowToBottomLeft({ window });
+    }
   }
 }
 

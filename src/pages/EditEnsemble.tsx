@@ -15,6 +15,7 @@ import { BreakProgress } from '@/components/BreakProgress';
 import { transitionToFullscreen } from '@/windowUtils/fullscreen';
 import { ActiveMembersList } from '@/components/ActiveMembersList';
 import { InactiveMembersList } from '@/components/InactiveMembersList';
+import { TimerPositionControl } from '@/components/TimerPositionControl';
 
 export function EditEnsemble() {
   useEffect(() => {
@@ -60,6 +61,8 @@ function EnsembleOptions() {
     setBreakLength,
     rotationsPerBreak,
     setRotationsPerBreak,
+    timerStartCorner,
+    setTimerStartCorner,
   } = useAppStore((state) => ({
     timerLength: state.timerLength,
     setTimerLength: state.setTimerLength,
@@ -67,6 +70,8 @@ function EnsembleOptions() {
     setBreakLength: state.setBreakLength,
     rotationsPerBreak: state.rotationsPerBreak,
     setRotationsPerBreak: state.setRotationsPerBreak,
+    timerStartCorner: state.timerStartCorner,
+    setTimerStartCorner: state.setTimerStartCorner,
   }));
 
   const timerLengthInMinutes = Math.round(timerLength / (60 * 1000));
@@ -173,6 +178,12 @@ function EnsembleOptions() {
             </Button>
           </div>
         </div>
+
+        {/* Timer Position */}
+        <TimerPositionControl
+          timerStartCorner={timerStartCorner}
+          setTimerStartCorner={setTimerStartCorner}
+        />
 
         <div className="pt-4 border-t border-zinc-700 mt-auto w-full overflow-x-hidden">
           <BreakProgress className="w-full" />
