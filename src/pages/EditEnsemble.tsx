@@ -185,7 +185,7 @@ function EnsembleOptions() {
           setTimerStartCorner={setTimerStartCorner}
         />
 
-        <div className="pt-4 border-t border-zinc-700 mt-auto w-full overflow-x-hidden">
+        <div className="pt-4 border-t border-zinc-700 mt-auto w-full">
           <BreakProgress className="w-full" />
         </div>
       </CardContent>
