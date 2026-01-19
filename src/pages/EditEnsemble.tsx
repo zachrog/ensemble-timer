@@ -12,14 +12,14 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
-import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { restoreNormalWindow } from '@/windowUtils/fullscreen';
 import { ActiveMembersList } from '@/components/ActiveMembersList';
 import { InactiveMembersList } from '@/components/InactiveMembersList';
 import { TimerPositionControl } from '@/components/TimerPositionControl';
 
 export function EditEnsemble() {
   useEffect(() => {
-    transitionToFullscreen();
+    restoreNormalWindow();
   }, []);
 
   const { startProgramming } = useAppStore((state) => ({

@@ -9,12 +9,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useAppStore } from '@/state.ts/defaultState';
-import { transitionToFullscreen } from '@/windowUtils/fullscreen';
+import { restoreNormalWindow } from '@/windowUtils/fullscreen';
 import { useEffect } from 'react';
 
 export function Handoff() {
   useEffect(() => {
-    transitionToFullscreen();
+    restoreNormalWindow();
   }, []);
 
   const {

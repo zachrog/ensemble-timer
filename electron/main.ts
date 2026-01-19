@@ -6,6 +6,7 @@ import {
   customCommandChannelName,
   mainCommChannelName,
 } from './communicationBridge/constants';
+import { setupWindowStateTracking } from './windowStateManager';
 
 // The built directory structure
 //
@@ -51,6 +52,8 @@ function createWindow() {
   }
   createWindowBrowserReceiver({ window: win });
   createCustomCommandReceiver({ window: win });
+  setupWindowStateTracking(win);
+  
   // win.webContents.openDevTools(); // opens chrome dev tools
 }
 

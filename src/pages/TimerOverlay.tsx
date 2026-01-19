@@ -41,6 +41,10 @@ export function TimerOverlay() {
     RendererWindowBrowser.setAlwaysOnTop(true);
     sendMessage({
       channel: customCommandChannelName,
+      message: 'enter-timer-mode',
+    });
+    sendMessage({
+      channel: customCommandChannelName,
       message: `move-to-${timerStartCorner || 'bottom-right'}`,
     });
 

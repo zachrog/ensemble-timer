@@ -1,6 +1,7 @@
 import { BrowserWindow, screen, ipcMain } from 'electron';
 import { customCommandChannelName } from './constants';
 import { app } from 'electron';
+import { getSavedNormalBounds, setIsTimerMode } from '../windowStateManager';
 
 export function createCustomCommandReceiver({
   window,
@@ -30,6 +31,12 @@ export function createCustomCommandReceiver({
         break;
       case 'focus':
         focus();
+        break;
+      case 'enter-timer-mode':
+        setIsTimerMode(true);
+        break;
+      case 'restore-normal-window':
+        restoreNormalWindow({ window });
         break;
       default:
         console.warn('UH OH no command found for: ', message);
@@ -105,4 +112,24 @@ function toggleMaximize({ window }: { window: BrowserWindow }) {
 
 function focus() {
   app.focus({ steal: true });
+}
+
+function restoreNormalWindow({ window }: { window: BrowserWindow }) {
+  setIsTimerMode(false);
+  window.setOpacity(1.0);
+  window.setAlwaysOnTop(true);
+  
+  const bounds = getSavedNormalBounds();
+  if (bounds) {
+    window.setBounds(bounds);
+    console.log('Restored normal bounds:', bounds);
+  } else {
+    window.maximize();
+    console.log('No saved bounds, maximizing');
+  }
+  
+  // Remove always on top after a delay
+  setTimeout(() => {
+    window.setAlwaysOnTop(false);
+  }, 100);
 }
