@@ -1,5 +1,5 @@
 import { BreakProgress } from '@/components/BreakProgress';
-import { EnsembleRotationDisplay } from '@/components/EnsembleRotationDisplay';
+import { EnsembleRotation } from '@/components/EnsembleRotation';
 import { GearIcon } from '@/components/icons/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -54,7 +54,7 @@ export function Handoff() {
         <CardContent className="space-y-8 flex-grow flex flex-col justify-center relative">
           
           <div className="flex-1 flex flex-col justify-center gap-8 md:gap-12 w-full">
-             <EnsembleRotationDisplay />
+             <EnsembleRotation />
           </div>
 
           <div className="pt-6 border-t border-zinc-700/50 w-full">

@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-export function EnsembleRotationDisplay() {
+export function EnsembleRotation() {
   const {
     ensembleMembers,
     currentRotation,

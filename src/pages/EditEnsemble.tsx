@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import {
   useAppStore,
 } from '../state.ts/defaultState';
-import { EnsembleRotationDisplay } from '@/components/EnsembleRotationDisplay';
+import { EnsembleRotation } from '@/components/EnsembleRotation';
 import {
   DiceIcon,
   MinusIcon,
@@ -227,7 +227,7 @@ function RosterEdit() {
 
       <CardContent className="space-y-6 flex-1 flex flex-col min-h-0 overflow-hidden">
         {/* Driver Selection */}
-        <EnsembleRotationDisplay />
+        <EnsembleRotation />
 
         {/* Add Member Input */}
         <form
