@@ -1,5 +1,4 @@
 import { Corner } from '@/state.ts/defaultState';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface TimerPositionControlProps {
@@ -16,46 +15,50 @@ export function TimerPositionControl({
       <div className="flex justify-between items-center text-zinc-200">
         <span className="text-lg font-medium">Timer Position</span>
       </div>
-      <div className="grid grid-cols-2 gap-2 bg-zinc-900/50 p-4 rounded-lg border border-zinc-800 w-48 mx-auto">
-        <Button
-          variant={timerStartCorner === 'top-left' ? 'default' : 'outline'}
-          className={cn(
-            'h-12 w-full',
-            timerStartCorner === 'top-left'
-              ? 'bg-emerald-600 hover:bg-emerald-500 border-transparent'
-              : 'bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400',
-          )}
+      {/* Screen representation with corner indicators */}
+      <div className="relative bg-zinc-900/50 rounded-lg border border-zinc-800 w-64 h-40 mx-auto p-3">
+        {/* Top-left corner */}
+        <button
           onClick={() => setTimerStartCorner('top-left')}
-        />
-        <Button
-          variant={timerStartCorner === 'top-right' ? 'default' : 'outline'}
           className={cn(
-            'h-12 w-full',
-            timerStartCorner === 'top-right'
-              ? 'bg-emerald-600 hover:bg-emerald-500 border-transparent'
-              : 'bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400',
+            'absolute top-3 left-3 w-10 h-10 rounded transition-all',
+            timerStartCorner === 'top-left'
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-zinc-700 hover:bg-zinc-600 border border-zinc-600',
           )}
+        />
+        
+        {/* Top-right corner */}
+        <button
           onClick={() => setTimerStartCorner('top-right')}
-        />
-        <Button
-          variant={timerStartCorner === 'bottom-left' ? 'default' : 'outline'}
           className={cn(
-            'h-12 w-full',
-            timerStartCorner === 'bottom-left'
-              ? 'bg-emerald-600 hover:bg-emerald-500 border-transparent'
-              : 'bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400',
+            'absolute top-3 right-3 w-10 h-10 rounded transition-all',
+            timerStartCorner === 'top-right'
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-zinc-700 hover:bg-zinc-600 border border-zinc-600',
           )}
+        />
+        
+        {/* Bottom-left corner */}
+        <button
           onClick={() => setTimerStartCorner('bottom-left')}
-        />
-        <Button
-          variant={timerStartCorner === 'bottom-right' ? 'default' : 'outline'}
           className={cn(
-            'h-12 w-full',
-            timerStartCorner === 'bottom-right' || !timerStartCorner
-              ? 'bg-emerald-600 hover:bg-emerald-500 border-transparent'
-              : 'bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400',
+            'absolute bottom-3 left-3 w-10 h-10 rounded transition-all',
+            timerStartCorner === 'bottom-left'
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-zinc-700 hover:bg-zinc-600 border border-zinc-600',
           )}
+        />
+        
+        {/* Bottom-right corner */}
+        <button
           onClick={() => setTimerStartCorner('bottom-right')}
+          className={cn(
+            'absolute bottom-3 right-3 w-10 h-10 rounded transition-all',
+            timerStartCorner === 'bottom-right' || !timerStartCorner
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-zinc-700 hover:bg-zinc-600 border border-zinc-600',
+          )}
         />
       </div>
     </div>
