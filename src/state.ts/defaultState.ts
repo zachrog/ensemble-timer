@@ -50,7 +50,7 @@ export type AppStore = {
 export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
-      currentMode: 'edit',
+      currentMode: 'handoff',
       timeStarted: 0,
       setTimeStarted: () => set(() => ({ timeStarted: Date.now() })),
       timerLength: 5 * 60 * 1000,

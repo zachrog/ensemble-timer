@@ -1,24 +1,20 @@
 import { useEffect } from 'react';
 import {
-  getCurrentDriver,
-  getCurrentNavigator,
   useAppStore,
 } from '../state.ts/defaultState';
 import { EnsembleRotationDisplay } from '@/components/EnsembleRotationDisplay';
 import {
-  CloseIcon,
   DiceIcon,
   MinusIcon,
-  NavigatorIcon,
   PlusIcon,
-  WheelIcon,
 } from '@/components/icons/icons';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BreakProgress } from '@/components/BreakProgress';
 import { transitionToFullscreen } from '@/windowUtils/fullscreen';
-import { cn } from '@/lib/utils';
+import { ActiveMembersList } from '@/components/ActiveMembersList';
+import { InactiveMembersList } from '@/components/InactiveMembersList';
 
 export function EditEnsemble() {
   useEffect(() => {
@@ -193,7 +189,6 @@ function RosterEdit() {
     addMember,
     newMemberName,
     setNewMemberName,
-    currentRotation,
     randomizeMembers,
     inactiveMembers,
     removeInactiveMember,
@@ -204,18 +199,11 @@ function RosterEdit() {
     addMember: state.addMember,
     newMemberName: state.newMemberName,
     setNewMemberName: state.setNewMemberName,
-    currentRotation: state.currentRotation,
     randomizeMembers: state.randomizeMembers,
     inactiveMembers: state.inactiveMembers,
     removeInactiveMember: state.removeInactiveMember,
     inactiveToActive: state.inactiveToActive,
   }));
-
-  const currentDriver = getCurrentDriver({ ensembleMembers, currentRotation });
-  const currentNavigator = getCurrentNavigator({
-    ensembleMembers,
-    currentRotation,
-  });
 
   return (
     <Card className="bg-zinc-800/50 border-zinc-700 shadow-xl h-full flex flex-col">
@@ -269,92 +257,17 @@ function RosterEdit() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0 flex-1 overflow-hidden">
           {/* Active Members List */}
-          <div className="space-y-3 flex flex-col min-h-0 h-full">
-            <h3 className="text-sm font-medium text-zinc-400 uppercase tracking-wider shrink-0">
-              Active ({ensembleMembers.length})
-            </h3>
-            <div className="space-y-2 overflow-y-auto pr-2 min-h-0 flex-1">
-              {ensembleMembers.map((member) => (
-                <div
-                  key={member.id}
-                  className={cn(
-                    'group flex items-center justify-between p-3 rounded-lg border transition-all',
-                    member.id === currentDriver?.id
-                      ? 'bg-emerald-900/20 border-emerald-500/30'
-                      : 'bg-zinc-900/40 border-zinc-800 hover:border-zinc-700',
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    {member.id === currentDriver?.id && (
-                      <WheelIcon className="w-5 h-5 text-emerald-500" />
-                    )}
-                    {member.id === currentNavigator?.id && (
-                      <NavigatorIcon className="w-5 h-5 text-indigo-400" />
-                    )}
-                    <span
-                      className={cn(
-                        'text-lg theme-transition',
-                        member.id === currentDriver?.id
-                          ? 'text-emerald-200 font-medium'
-                          : 'text-zinc-300',
-                      )}
-                    >
-                      {member.name}
-                    </span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeMember({ id: member.id })}
-                    className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-red-400 hover:bg-red-900/20"
-                  >
-                    <CloseIcon className="w-5 h-5" />
-                  </Button>
-                </div>
-              ))}
-              {ensembleMembers.length === 0 && (
-                <div className="p-4 border border-dashed border-zinc-800 rounded-lg text-center text-zinc-600">
-                  No active members
-                </div>
-              )}
-            </div>
-          </div>
+          <ActiveMembersList
+            ensembleMembers={ensembleMembers}
+            removeMember={removeMember}
+          />
 
           {/* Inactive Members List */}
-          <div className="space-y-3 flex flex-col min-h-0 h-full">
-            <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider shrink-0">
-              Inactive ({inactiveMembers.length})
-            </h3>
-            <div className="space-y-2 overflow-y-auto pr-2 min-h-0 flex-1">
-              {inactiveMembers.map((member) => (
-                <div
-                  key={member.id}
-                  onClick={() => inactiveToActive({ id: member.id })}
-                  className="group cursor-pointer flex items-center justify-between p-3 rounded-lg border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-800/50 hover:border-zinc-700 transition-all opacity-70 hover:opacity-100"
-                >
-                  <span className="text-lg text-zinc-400 group-hover:text-zinc-200">
-                    {member.name}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeInactiveMember({ id: member.id });
-                    }}
-                    className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-600 hover:text-red-400 hover:bg-red-900/20"
-                  >
-                    <CloseIcon className="w-5 h-5" />
-                  </Button>
-                </div>
-              ))}
-              {inactiveMembers.length === 0 && (
-                <div className="p-4 border border-dashed border-zinc-800 rounded-lg text-center text-zinc-700 text-sm">
-                  No inactive members
-                </div>
-              )}
-            </div>
-          </div>
+          <InactiveMembersList
+            inactiveMembers={inactiveMembers}
+            inactiveToActive={inactiveToActive}
+            removeInactiveMember={removeInactiveMember}
+          />
         </div>
       </CardContent>
     </Card>
