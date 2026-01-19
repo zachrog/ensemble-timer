@@ -12,7 +12,7 @@ export function TimerPositionControl({
   setTimerStartCorner,
 }: TimerPositionControlProps) {
   return (
-    <div className="space-y-3 w-full">
+    <div className="space-y-1 w-full">
       <div className="flex justify-between items-center text-zinc-200">
         <span className="text-lg font-medium">Timer Position</span>
       </div>

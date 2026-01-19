@@ -85,9 +85,9 @@ function EnsembleOptions() {
           Configure timer turns and breaks.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-8 flex-grow flex flex-col overflow-x-hidden">
+      <CardContent className="space-y-4 flex-grow flex flex-col overflow-x-hidden">
         {/* Timer Duration */}
-        <div className="space-y-3 w-full">
+        <div className="space-y-1 w-full">
           <div className="flex justify-between items-center text-zinc-200">
             <span className="text-lg font-medium">Turn Duration</span>
           </div>
@@ -118,7 +118,7 @@ function EnsembleOptions() {
         </div>
 
         {/* Break Duration */}
-        <div className="space-y-3 w-full">
+        <div className="space-y-1 w-full">
           <div className="flex justify-between items-center text-zinc-200">
             <span className="text-lg font-medium">Break Duration</span>
           </div>
@@ -149,7 +149,7 @@ function EnsembleOptions() {
         </div>
 
         {/* Rotations */}
-        <div className="space-y-3 w-full">
+        <div className="space-y-1 w-full">
           <div className="flex justify-between items-center text-zinc-200">
             <span className="text-lg font-medium">Break Frequency</span>
           </div>
